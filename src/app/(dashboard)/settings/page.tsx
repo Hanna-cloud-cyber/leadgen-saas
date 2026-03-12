@@ -285,18 +285,31 @@ export default function SettingsPage() {
             </p>
             <div className="flex gap-3">
               <input
-                type="password"
-                value="lgai_sk_••••••••••••••••••••••••"
+                type={apiKeyFull ? "text" : "password"}
+                value={apiKeyFull || apiKeyMasked || "Aucune clé générée"}
                 readOnly
                 className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm font-mono"
               />
-              <button className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
+              <button
+                onClick={handleCopyApiKey}
+                disabled={!apiKeyFull}
+                className="bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm transition-colors"
+              >
                 Copier
               </button>
-              <button className="bg-red-900/30 hover:bg-red-900/50 text-red-400 px-4 py-2 rounded-lg text-sm transition-colors">
-                Regénérer
+              <button
+                onClick={handleRegenerateApiKey}
+                disabled={loadingApiKey}
+                className="bg-red-900/30 hover:bg-red-900/50 text-red-400 px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-50"
+              >
+                {loadingApiKey ? "Génération..." : "Regénérer"}
               </button>
             </div>
+            {apiKeyFull && (
+              <p className="text-xs text-amber-400 mt-2">
+                Copiez votre clé maintenant. Elle ne sera plus affichée en clair après avoir quitté cette page.
+              </p>
+            )}
 
             <div className="mt-6">
               <h3 className="font-medium text-sm mb-2">Endpoints disponibles :</h3>
