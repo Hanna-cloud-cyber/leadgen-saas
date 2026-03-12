@@ -4,12 +4,13 @@ import crypto from "crypto";
 
 export async function GET() {
   try {
-    const { userId, supabase } = await requireAuth();
+    const { user, supabase, error: authError } = await requireAuth();
+    if (authError) return authError;
 
     const { data: profile } = await supabase
       .from("profiles")
       .select("api_key")
-      .eq("id", userId)
+      .eq("id", user.id)
       .single();
 
     if (!profile?.api_key) {
@@ -28,7 +29,8 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const { userId, supabase } = await requireAuth();
+    const { user, supabase, error: authError } = await requireAuth();
+    if (authError) return authError;
 
     // Generate a new API key
     const apiKey = `lgai_sk_${crypto.randomBytes(24).toString("hex")}`;
@@ -36,7 +38,7 @@ export async function POST() {
     const { error } = await supabase
       .from("profiles")
       .update({ api_key: apiKey, updated_at: new Date().toISOString() })
-      .eq("id", userId);
+      .eq("id", user.id);
 
     if (error) throw error;
 

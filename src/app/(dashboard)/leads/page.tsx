@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { getAllCountries } from "@/lib/engine/countries";
 import { INDUSTRIES } from "@/lib/engine/industries";
 import type { Lead } from "@/types/lead";
@@ -257,7 +257,8 @@ export default function LeadsPage() {
               </thead>
               <tbody>
                 {leads.map((lead, i) => (
-                  <tr key={i} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
+                  <React.Fragment key={i}>
+                  <tr className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
                     <td className="p-4">
                       <span
                         className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-xs font-bold ${
@@ -364,6 +365,7 @@ export default function LeadsPage() {
                       </td>
                     </tr>
                   )}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
