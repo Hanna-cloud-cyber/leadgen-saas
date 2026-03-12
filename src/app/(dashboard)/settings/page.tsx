@@ -12,6 +12,7 @@ export default function SettingsPage() {
   const [companyName, setCompanyName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadProfile() {
@@ -48,6 +49,47 @@ export default function SettingsPage() {
       setSaveMessage("Erreur réseau");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleSelectPlan(planId: string) {
+    if (planId === "free" || planId === currentPlan) return;
+    setLoadingPlan(planId);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Checkout error:", data.error);
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
+  async function handleManageSubscription() {
+    setLoadingPlan("manage");
+    try {
+      const res = await fetch("/api/stripe/portal", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Portal error:", data.error);
+      }
+    } catch (err) {
+      console.error("Portal error:", err);
+    } finally {
+      setLoadingPlan(null);
     }
   }
 
@@ -126,15 +168,36 @@ export default function SettingsPage() {
                   className={`w-full mt-6 py-2 rounded-lg text-sm font-medium transition-colors ${
                     currentPlan === plan.id
                       ? "bg-gray-800 text-gray-400 cursor-default"
-                      : "bg-indigo-600 hover:bg-indigo-500 text-white"
+                      : plan.id === "free"
+                        ? "bg-gray-700 text-gray-300 cursor-default"
+                        : "bg-indigo-600 hover:bg-indigo-500 text-white"
                   }`}
-                  disabled={currentPlan === plan.id}
+                  disabled={currentPlan === plan.id || plan.id === "free" || loadingPlan !== null}
+                  onClick={() => handleSelectPlan(plan.id)}
                 >
-                  {currentPlan === plan.id ? "Plan actuel" : "Choisir ce plan"}
+                  {loadingPlan === plan.id
+                    ? "Redirection..."
+                    : currentPlan === plan.id
+                      ? "Plan actuel"
+                      : plan.id === "free"
+                        ? "Plan gratuit"
+                        : "Choisir ce plan"}
                 </button>
               </div>
             ))}
           </div>
+
+          {currentPlan !== "free" && (
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={handleManageSubscription}
+                disabled={loadingPlan === "manage"}
+                className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-6 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+              >
+                {loadingPlan === "manage" ? "Redirection..." : "Gerer mon abonnement"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
