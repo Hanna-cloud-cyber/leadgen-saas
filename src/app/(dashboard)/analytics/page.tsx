@@ -1,53 +1,132 @@
 "use client";
 
-import { buildConversionFunnel, type QuotaUsage } from "@/lib/analytics";
+import { useEffect, useState } from "react";
+import { buildConversionFunnel, type QuotaUsage, type RankingItem, type FunnelStep } from "@/lib/analytics";
 
-// Données de démonstration pour l'affichage
-const demoFunnel = buildConversionFunnel({
-  searches: 150,
-  leadsFound: 1200,
-  withEmail: 840,
-  emailsVerified: 720,
-  emailsSent: 350,
-  replies: 42,
-});
+interface AnalyticsStats {
+  totalLeads: number;
+  totalContacts: number;
+  totalEmailsSent: number;
+  totalReplies: number;
+  leadsThisMonth: number;
+  leadsLastMonth: number;
+  growthRate: number;
+  avgLeadScore: number;
+}
 
-const demoQuota: QuotaUsage = {
-  leads: { used: 3, limit: 10, percentage: 30 },
-  contacts: { used: 5, limit: 10, percentage: 50 },
-  verifications: { used: 28, limit: 50, percentage: 56 },
-  aiEmails: { used: 2, limit: 5, percentage: 40 },
-  campaigns: { used: 0, limit: 0, percentage: 0 },
-};
+interface FunnelData {
+  searches: number;
+  leadsFound: number;
+  withEmail: number;
+  emailsVerified: number;
+  emailsSent: number;
+  replies: number;
+}
 
-const demoStats = {
-  totalLeads: 156,
-  totalContacts: 89,
-  totalEmailsSent: 350,
-  totalReplies: 42,
-  leadsThisMonth: 45,
-  leadsLastMonth: 32,
-  growthRate: 41,
-  avgLeadScore: 62,
-};
-
-const topSectors = [
-  { label: "Immobilier", count: 34, percentage: 22 },
-  { label: "Tech & IT", count: 28, percentage: 18 },
-  { label: "Marketing", count: 22, percentage: 14 },
-  { label: "Finance", count: 18, percentage: 12 },
-  { label: "Juridique", count: 15, percentage: 10 },
-];
-
-const topCountries = [
-  { label: "France", count: 89, percentage: 57 },
-  { label: "Belgique", count: 23, percentage: 15 },
-  { label: "Suisse", count: 18, percentage: 12 },
-  { label: "Canada", count: 15, percentage: 10 },
-  { label: "Maroc", count: 11, percentage: 7 },
-];
+interface AnalyticsData {
+  stats: AnalyticsStats;
+  topSectors: RankingItem[];
+  topCountries: RankingItem[];
+  funnel: FunnelData;
+  quota: QuotaUsage;
+}
 
 export default function AnalyticsPage() {
+  const [data, setData] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchAnalytics() {
+      try {
+        const res = await fetch("/api/analytics");
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || "Erreur lors du chargement des analytics");
+        }
+        const json = await res.json();
+        setData(json.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Erreur inconnue");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAnalytics();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">Analytics</h1>
+          <p className="text-gray-400 mt-1">Chargement...</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-5 animate-pulse">
+              <div className="h-8 bg-gray-800 rounded w-16 mb-2"></div>
+              <div className="h-4 bg-gray-800 rounded w-24"></div>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-6 animate-pulse">
+              <div className="h-5 bg-gray-800 rounded w-40 mb-4"></div>
+              <div className="space-y-3">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="h-4 bg-gray-800 rounded w-full"></div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">Analytics</h1>
+          <p className="text-red-400 mt-1">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = data?.stats ?? {
+    totalLeads: 0,
+    totalContacts: 0,
+    totalEmailsSent: 0,
+    totalReplies: 0,
+    leadsThisMonth: 0,
+    leadsLastMonth: 0,
+    growthRate: 0,
+    avgLeadScore: 0,
+  };
+
+  const funnel: FunnelStep[] = data
+    ? buildConversionFunnel(data.funnel)
+    : [];
+
+  const quota: QuotaUsage = data?.quota ?? {
+    leads: { used: 0, limit: 0, percentage: 0 },
+    contacts: { used: 0, limit: 0, percentage: 0 },
+    verifications: { used: 0, limit: 0, percentage: 0 },
+    aiEmails: { used: 0, limit: 0, percentage: 0 },
+    campaigns: { used: 0, limit: 0, percentage: 0 },
+  };
+
+  const topSectors = data?.topSectors ?? [];
+  const topCountries = data?.topCountries ?? [];
+
+  const replyRate = stats.totalEmailsSent > 0
+    ? Math.round((stats.totalReplies / stats.totalEmailsSent) * 100)
+    : 0;
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -58,17 +137,19 @@ export default function AnalyticsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Leads ce mois", value: demoStats.leadsThisMonth, change: `+${demoStats.growthRate}%`, positive: true },
-          { label: "Total contacts", value: demoStats.totalContacts, change: "+12", positive: true },
-          { label: "Emails envoyés", value: demoStats.totalEmailsSent, change: "+87", positive: true },
-          { label: "Réponses", value: demoStats.totalReplies, change: `${Math.round((demoStats.totalReplies / demoStats.totalEmailsSent) * 100)}%`, positive: true },
+          { label: "Leads ce mois", value: stats.leadsThisMonth, change: `+${stats.growthRate}%`, positive: stats.growthRate >= 0 },
+          { label: "Total contacts", value: stats.totalContacts, change: "", positive: true },
+          { label: "Emails envoyés", value: stats.totalEmailsSent, change: "", positive: true },
+          { label: "Réponses", value: stats.totalReplies, change: `${replyRate}%`, positive: true },
         ].map((kpi) => (
           <div key={kpi.label} className="bg-gray-900 border border-gray-800 rounded-xl p-5">
             <p className="text-3xl font-bold text-white">{kpi.value}</p>
             <p className="text-sm text-gray-400 mt-1">{kpi.label}</p>
-            <p className={`text-xs mt-2 ${kpi.positive ? "text-green-400" : "text-red-400"}`}>
-              {kpi.change}
-            </p>
+            {kpi.change && (
+              <p className={`text-xs mt-2 ${kpi.positive ? "text-green-400" : "text-red-400"}`}>
+                {kpi.change}
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -77,42 +158,46 @@ export default function AnalyticsPage() {
         {/* Conversion Funnel */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Funnel de conversion</h2>
-          <div className="space-y-3">
-            {demoFunnel.map((step) => (
-              <div key={step.label}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-300">{step.label}</span>
-                  <span className="text-gray-400">{step.count} ({step.percentage}%)</span>
+          {funnel.length > 0 ? (
+            <div className="space-y-3">
+              {funnel.map((step) => (
+                <div key={step.label}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-300">{step.label}</span>
+                    <span className="text-gray-400">{step.count} ({step.percentage}%)</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-2.5">
+                    <div
+                      className="h-2.5 rounded-full transition-all"
+                      style={{ width: `${step.percentage}%`, backgroundColor: step.color }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-800 rounded-full h-2.5">
-                  <div
-                    className="h-2.5 rounded-full transition-all"
-                    style={{ width: `${step.percentage}%`, backgroundColor: step.color }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-sm">Aucune donnée</p>
+          )}
         </div>
 
         {/* Quota Usage */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Utilisation des quotas</h2>
           <div className="space-y-4">
-            {Object.entries(demoQuota).map(([key, data]) => (
+            {Object.entries(quota).map(([key, qData]) => (
               <div key={key}>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-300 capitalize">{key}</span>
-                  <span className="text-gray-400">{data.used}/{data.limit === 0 ? "N/A" : data.limit}</span>
+                  <span className="text-gray-400">{qData.used}/{qData.limit === 0 ? "N/A" : qData.limit}</span>
                 </div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full transition-all ${
-                      data.percentage >= 80 ? "bg-red-500" :
-                      data.percentage >= 50 ? "bg-yellow-500" :
+                      qData.percentage >= 80 ? "bg-red-500" :
+                      qData.percentage >= 50 ? "bg-yellow-500" :
                       "bg-indigo-500"
                     }`}
-                    style={{ width: `${data.percentage}%` }}
+                    style={{ width: `${qData.percentage}%` }}
                   ></div>
                 </div>
               </div>
@@ -123,43 +208,51 @@ export default function AnalyticsPage() {
         {/* Top Sectors */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Top secteurs</h2>
-          <div className="space-y-3">
-            {topSectors.map((sector, i) => (
-              <div key={sector.label} className="flex items-center gap-3">
-                <span className="text-gray-500 text-sm w-4">{i + 1}</span>
-                <div className="flex-1">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-300">{sector.label}</span>
-                    <span className="text-gray-400">{sector.count}</span>
-                  </div>
-                  <div className="w-full bg-gray-800 rounded-full h-1.5">
-                    <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${sector.percentage}%` }}></div>
+          {topSectors.length > 0 ? (
+            <div className="space-y-3">
+              {topSectors.map((sector, i) => (
+                <div key={sector.label} className="flex items-center gap-3">
+                  <span className="text-gray-500 text-sm w-4">{i + 1}</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-300">{sector.label}</span>
+                      <span className="text-gray-400">{sector.count}</span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-1.5">
+                      <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${sector.percentage}%` }}></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-sm">Aucune donnée</p>
+          )}
         </div>
 
         {/* Top Countries */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Top pays</h2>
-          <div className="space-y-3">
-            {topCountries.map((country, i) => (
-              <div key={country.label} className="flex items-center gap-3">
-                <span className="text-gray-500 text-sm w-4">{i + 1}</span>
-                <div className="flex-1">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-300">{country.label}</span>
-                    <span className="text-gray-400">{country.count}</span>
-                  </div>
-                  <div className="w-full bg-gray-800 rounded-full h-1.5">
-                    <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${country.percentage}%` }}></div>
+          {topCountries.length > 0 ? (
+            <div className="space-y-3">
+              {topCountries.map((country, i) => (
+                <div key={country.label} className="flex items-center gap-3">
+                  <span className="text-gray-500 text-sm w-4">{i + 1}</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-300">{country.label}</span>
+                      <span className="text-gray-400">{country.count}</span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-1.5">
+                      <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${country.percentage}%` }}></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-sm">Aucune donnée</p>
+          )}
         </div>
       </div>
 
@@ -180,11 +273,11 @@ export default function AnalyticsPage() {
                 fill="none"
                 stroke="#6366f1"
                 strokeWidth="3"
-                strokeDasharray={`${demoStats.avgLeadScore}, 100`}
+                strokeDasharray={`${stats.avgLeadScore}, 100`}
               />
             </svg>
             <span className="absolute inset-0 flex items-center justify-center text-xl font-bold text-white">
-              {demoStats.avgLeadScore}
+              {stats.avgLeadScore}
             </span>
           </div>
           <div>
