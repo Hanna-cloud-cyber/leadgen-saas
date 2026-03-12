@@ -223,3 +223,149 @@ export async function incrementLeadsUsed(
       .eq("id", userId);
   }
 }
+
+// ═══════════════════════════════════════════
+// CAMPAIGNS
+// ═══════════════════════════════════════════
+
+export async function saveCampaign(
+  supabase: SupabaseClient,
+  userId: string,
+  campaign: {
+    name: string;
+    sequence: unknown[];
+    settings: Record<string, unknown>;
+  }
+) {
+  const { data, error } = await supabase
+    .from("campaigns")
+    .insert({
+      user_id: userId,
+      name: campaign.name,
+      status: "draft",
+      sequence: campaign.sequence,
+      settings: campaign.settings,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function getCampaigns(
+  supabase: SupabaseClient,
+  userId: string
+) {
+  const { data, error } = await supabase
+    .from("campaigns")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+export async function getCampaign(
+  supabase: SupabaseClient,
+  userId: string,
+  campaignId: string
+) {
+  const { data, error } = await supabase
+    .from("campaigns")
+    .select("*")
+    .eq("id", campaignId)
+    .eq("user_id", userId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCampaign(
+  supabase: SupabaseClient,
+  userId: string,
+  campaignId: string,
+  updates: Record<string, unknown>
+) {
+  const { data, error } = await supabase
+    .from("campaigns")
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq("id", campaignId)
+    .eq("user_id", userId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCampaign(
+  supabase: SupabaseClient,
+  userId: string,
+  campaignId: string
+) {
+  const { error } = await supabase
+    .from("campaigns")
+    .delete()
+    .eq("id", campaignId)
+    .eq("user_id", userId);
+  if (error) throw error;
+}
+
+export async function addCampaignRecipients(
+  supabase: SupabaseClient,
+  campaignId: string,
+  recipients: {
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    leadId?: string;
+    contactId?: string;
+  }[]
+) {
+  const rows = recipients.map((r) => ({
+    campaign_id: campaignId,
+    email: r.email,
+    first_name: r.firstName || null,
+    last_name: r.lastName || null,
+    company: r.company || null,
+    lead_id: r.leadId || null,
+    contact_id: r.contactId || null,
+    status: "pending",
+    current_step: 0,
+  }));
+
+  const { data, error } = await supabase
+    .from("campaign_recipients")
+    .insert(rows)
+    .select();
+  if (error) throw error;
+  return data;
+}
+
+export async function getCampaignRecipients(
+  supabase: SupabaseClient,
+  campaignId: string
+) {
+  const { data, error } = await supabase
+    .from("campaign_recipients")
+    .select("*")
+    .eq("campaign_id", campaignId)
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCampaignRecipient(
+  supabase: SupabaseClient,
+  recipientId: string,
+  updates: Record<string, unknown>
+) {
+  const { data, error } = await supabase
+    .from("campaign_recipients")
+    .update(updates)
+    .eq("id", recipientId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
