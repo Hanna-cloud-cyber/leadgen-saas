@@ -36,6 +36,7 @@ export async function middleware(request: NextRequest) {
 
   // Routes protégées : tout le dashboard
   const isProtectedRoute =
+    request.nextUrl.pathname.startsWith("/dashboard") ||
     request.nextUrl.pathname.startsWith("/leads") ||
     request.nextUrl.pathname.startsWith("/contacts") ||
     request.nextUrl.pathname.startsWith("/campaigns") ||
@@ -52,7 +53,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAuthRoute && user) {
-    return NextResponse.redirect(new URL("/leads", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return supabaseResponse;
@@ -60,6 +61,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/dashboard/:path*",
     "/leads/:path*",
     "/contacts/:path*",
     "/campaigns/:path*",
