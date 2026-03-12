@@ -7,6 +7,10 @@ export async function POST(request: Request) {
   const { user, supabase, error } = await requireAuth();
   if (error) return error;
 
+  if (!stripe) {
+    return NextResponse.json({ error: "Stripe non configuré" }, { status: 503 });
+  }
+
   try {
     const { planId } = await request.json();
 

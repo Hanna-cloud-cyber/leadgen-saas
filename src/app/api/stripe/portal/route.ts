@@ -6,6 +6,10 @@ export async function POST() {
   const { user, supabase, error } = await requireAuth();
   if (error) return error;
 
+  if (!stripe) {
+    return NextResponse.json({ error: "Stripe non configuré" }, { status: 503 });
+  }
+
   try {
     // Get stripe_customer_id from profile
     const { data: profile } = await supabase
