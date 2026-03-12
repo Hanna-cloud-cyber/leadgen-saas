@@ -14,8 +14,64 @@ export default function LeadsPage() {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<Record<string, number> | null>(null);
   const [error, setError] = useState("");
+  const [contactingIndex, setContactingIndex] = useState<number | null>(null);
+  const [generatedEmail, setGeneratedEmail] = useState<{ subject: string; body: string } | null>(null);
+  const [contactLoading, setContactLoading] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const countries = getAllCountries();
+
+  async function handleContact(index: number) {
+    const lead = leads[index];
+    if (!lead.emails.length) return;
+
+    setContactingIndex(index);
+    setGeneratedEmail(null);
+    setContactLoading(true);
+    setEmailSent(false);
+
+    try {
+      const res = await fetch("/api/generate-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: lead.emails[0], company: lead.company, website: lead.website }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur lors de la génération");
+      setGeneratedEmail({ subject: data.subject, body: data.body });
+    } catch {
+      setError("Impossible de générer l'email");
+      setContactingIndex(null);
+    } finally {
+      setContactLoading(false);
+    }
+  }
+
+  async function handleSendEmail(index: number) {
+    if (!generatedEmail) return;
+    const lead = leads[index];
+
+    setSendingEmail(true);
+    try {
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: lead.emails[0],
+          subject: generatedEmail.subject,
+          body: generatedEmail.body,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur lors de l'envoi");
+      setEmailSent(true);
+    } catch {
+      setError("Impossible d'envoyer l'email");
+    } finally {
+      setSendingEmail(false);
+    }
+  }
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -242,11 +298,72 @@ export default function LeadsPage() {
                       )}
                     </td>
                     <td className="p-4">
-                      <button className="text-xs bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition-colors">
+                      <button
+                        onClick={() => handleContact(i)}
+                        disabled={lead.emails.length === 0}
+                        className="text-xs bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-700 disabled:cursor-not-allowed px-3 py-1 rounded transition-colors"
+                      >
                         Contacter
                       </button>
                     </td>
                   </tr>
+                  {contactingIndex === i && (
+                    <tr className="border-b border-gray-800/50">
+                      <td colSpan={7} className="p-4">
+                        <div className="bg-gray-800 rounded-lg p-4 space-y-3">
+                          {contactLoading && (
+                            <div className="flex items-center gap-2 text-gray-400 text-sm">
+                              <div className="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                              Génération de l&apos;email...
+                            </div>
+                          )}
+                          {generatedEmail && (
+                            <>
+                              {emailSent ? (
+                                <div className="text-green-400 text-sm font-medium">Email envoyé avec succès !</div>
+                              ) : (
+                                <>
+                                  <div>
+                                    <label className="block text-xs text-gray-400 mb-1">Objet</label>
+                                    <input
+                                      type="text"
+                                      value={generatedEmail.subject}
+                                      onChange={(e) => setGeneratedEmail({ ...generatedEmail, subject: e.target.value })}
+                                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-gray-400 mb-1">Corps</label>
+                                    <textarea
+                                      value={generatedEmail.body}
+                                      onChange={(e) => setGeneratedEmail({ ...generatedEmail, body: e.target.value })}
+                                      rows={6}
+                                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+                                    />
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => handleSendEmail(i)}
+                                      disabled={sendingEmail}
+                                      className="text-xs bg-green-600 hover:bg-green-500 disabled:bg-gray-700 px-4 py-2 rounded font-medium transition-colors"
+                                    >
+                                      {sendingEmail ? "Envoi..." : "Envoyer"}
+                                    </button>
+                                    <button
+                                      onClick={() => { setContactingIndex(null); setGeneratedEmail(null); setEmailSent(false); }}
+                                      className="text-xs bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition-colors"
+                                    >
+                                      Fermer
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                 ))}
               </tbody>
             </table>
