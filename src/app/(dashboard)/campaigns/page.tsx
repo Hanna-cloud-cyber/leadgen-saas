@@ -1,10 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import { SEQUENCE_TEMPLATES, type Campaign, type CampaignSettings } from "@/lib/campaigns";
+import { useState, useEffect, useCallback } from "react";
+import { SEQUENCE_TEMPLATES, type CampaignSettings } from "@/lib/campaigns";
+
+interface CampaignRow {
+  id: string;
+  user_id: string;
+  name: string;
+  status: string;
+  sequence: { stepNumber: number; subject: string; body: string; delayDays: number; skipIfReplied: boolean; tone: string; useAI: boolean }[];
+  settings: Record<string, unknown>;
+  stats: {
+    totalRecipients: number;
+    sent: number;
+    opened: number;
+    replied: number;
+    bounced: number;
+    unsubscribed: number;
+    openRate: number;
+    replyRate: number;
+    bounceRate: number;
+  };
+  created_at: string;
+  started_at: string | null;
+  updated_at: string;
+}
 
 export default function CampaignsPage() {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<CampaignRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(0);
   const [campaignName, setCampaignName] = useState("");
@@ -22,22 +47,73 @@ export default function CampaignsPage() {
     unsubscribeLink: true,
   });
 
-  function handleCreateCampaign() {
-    const newCampaign: Campaign = {
-      userId: "temp",
-      name: campaignName || `Campagne ${campaigns.length + 1}`,
-      status: "draft",
-      sequence: SEQUENCE_TEMPLATES[selectedTemplate].steps.map((s) => ({ ...s, useAI: false })),
-      recipients: [],
-      settings: settings as CampaignSettings,
-      stats: {
-        totalRecipients: 0, sent: 0, opened: 0, replied: 0,
-        bounced: 0, unsubscribed: 0, openRate: 0, replyRate: 0, bounceRate: 0,
-      },
-    };
-    setCampaigns([...campaigns, newCampaign]);
-    setShowCreate(false);
-    setCampaignName("");
+  const fetchCampaigns = useCallback(async () => {
+    try {
+      const res = await fetch("/api/campaigns");
+      if (!res.ok) throw new Error("Erreur de chargement");
+      const json = await res.json();
+      setCampaigns(json.data || []);
+    } catch (err) {
+      console.error("Failed to load campaigns:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCampaigns();
+  }, [fetchCampaigns]);
+
+  async function handleCreateCampaign() {
+    setSaving(true);
+    try {
+      const sequence = SEQUENCE_TEMPLATES[selectedTemplate].steps.map((s) => ({ ...s, useAI: false }));
+      const res = await fetch("/api/campaigns", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: campaignName || `Campagne ${campaigns.length + 1}`,
+          sequence,
+          settings,
+        }),
+      });
+      if (!res.ok) throw new Error("Erreur lors de la création");
+      const json = await res.json();
+      setCampaigns([json.data, ...campaigns]);
+      setShowCreate(false);
+      setCampaignName("");
+    } catch (err) {
+      console.error("Failed to create campaign:", err);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleUpdateStatus(campaignId: string, newStatus: string) {
+    try {
+      const res = await fetch(`/api/campaigns/${campaignId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error("Erreur de mise à jour");
+      const json = await res.json();
+      setCampaigns(campaigns.map((c) => (c.id === campaignId ? json.data : c)));
+    } catch (err) {
+      console.error("Failed to update campaign status:", err);
+    }
+  }
+
+  async function handleDeleteCampaign(campaignId: string) {
+    try {
+      const res = await fetch(`/api/campaigns/${campaignId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Erreur de suppression");
+      setCampaigns(campaigns.filter((c) => c.id !== campaignId));
+    } catch (err) {
+      console.error("Failed to delete campaign:", err);
+    }
   }
 
   return (
@@ -144,9 +220,10 @@ export default function CampaignsPage() {
           <div className="flex gap-3">
             <button
               onClick={handleCreateCampaign}
-              className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              disabled={saving}
+              className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
             >
-              Créer la campagne
+              {saving ? "Création..." : "Créer la campagne"}
             </button>
             <button
               onClick={() => setShowCreate(false)}
@@ -158,8 +235,15 @@ export default function CampaignsPage() {
         </div>
       )}
 
+      {/* Loading */}
+      {loading && (
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-12 text-center">
+          <p className="text-gray-400 text-sm">Chargement des campagnes...</p>
+        </div>
+      )}
+
       {/* Campaigns List */}
-      {campaigns.length === 0 && !showCreate && (
+      {!loading && campaigns.length === 0 && !showCreate && (
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-12 text-center">
           <div className="text-4xl mb-3">&#x2709;</div>
           <h3 className="text-lg font-semibold">Aucune campagne</h3>
@@ -169,25 +253,46 @@ export default function CampaignsPage() {
         </div>
       )}
 
-      {campaigns.map((campaign, i) => (
-        <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-4">
+      {campaigns.map((campaign) => (
+        <div key={campaign.id} className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-white">{campaign.name}</h3>
               <p className="text-xs text-gray-400 mt-1">
-                {campaign.sequence.length} étapes &middot; {campaign.recipients.length} destinataires
+                {campaign.sequence.length} étapes &middot; {campaign.stats.totalRecipients} destinataires
               </p>
             </div>
             <div className="flex items-center gap-3">
               <span className={`px-2 py-1 rounded text-xs font-medium ${
                 campaign.status === "draft" ? "bg-gray-800 text-gray-400" :
                 campaign.status === "active" ? "bg-green-900/30 text-green-400" :
-                "bg-yellow-900/30 text-yellow-400"
+                campaign.status === "paused" ? "bg-yellow-900/30 text-yellow-400" :
+                campaign.status === "completed" ? "bg-blue-900/30 text-blue-400" :
+                "bg-gray-800 text-gray-500"
               }`}>
                 {campaign.status}
               </span>
-              <button className="bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded text-xs transition-colors">
-                Modifier
+              {(campaign.status === "draft" || campaign.status === "paused") && (
+                <button
+                  onClick={() => handleUpdateStatus(campaign.id, "active")}
+                  className="bg-green-700 hover:bg-green-600 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+                >
+                  Lancer
+                </button>
+              )}
+              {campaign.status === "active" && (
+                <button
+                  onClick={() => handleUpdateStatus(campaign.id, "paused")}
+                  className="bg-yellow-700 hover:bg-yellow-600 px-3 py-1.5 rounded text-xs font-medium transition-colors"
+                >
+                  Pause
+                </button>
+              )}
+              <button
+                onClick={() => handleDeleteCampaign(campaign.id)}
+                className="bg-gray-800 hover:bg-red-900/50 hover:text-red-400 px-3 py-1.5 rounded text-xs transition-colors"
+              >
+                Supprimer
               </button>
             </div>
           </div>
