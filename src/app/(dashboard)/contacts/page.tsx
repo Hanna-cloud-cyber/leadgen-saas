@@ -14,8 +14,59 @@ export default function ContactsPage() {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<Record<string, number> | null>(null);
   const [error, setError] = useState("");
+  const [showCampaignSelect, setShowCampaignSelect] = useState<string | null>(null);
+  const [campaigns, setCampaigns] = useState<{ id: string; name: string }[]>([]);
+  const [campaignsLoading, setCampaignsLoading] = useState(false);
+  const [campaignAdded, setCampaignAdded] = useState<string | null>(null);
 
   const countries = getAllCountries();
+
+  async function handleShowCampaigns(contactIndex: string) {
+    if (showCampaignSelect === contactIndex) {
+      setShowCampaignSelect(null);
+      return;
+    }
+    setShowCampaignSelect(contactIndex);
+    setCampaignsLoading(true);
+    setCampaignAdded(null);
+    try {
+      const res = await fetch("/api/campaigns");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur");
+      setCampaigns(data.campaigns || data.data || []);
+    } catch {
+      setError("Impossible de charger les campagnes");
+      setShowCampaignSelect(null);
+    } finally {
+      setCampaignsLoading(false);
+    }
+  }
+
+  async function handleAddToCampaign(campaignId: string, contact: Contact) {
+    try {
+      const res = await fetch(`/api/campaigns/${campaignId}/recipients`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: contact.email,
+          fullName: contact.fullName,
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          company: contact.company,
+          jobTitle: contact.jobTitle,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur");
+      setCampaignAdded(campaignId);
+      setTimeout(() => {
+        setShowCampaignSelect(null);
+        setCampaignAdded(null);
+      }, 1500);
+    } catch {
+      setError("Impossible d'ajouter le contact à la campagne");
+    }
+  }
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -237,15 +288,44 @@ export default function ContactsPage() {
               )}
 
               {/* Links */}
-              <div className="mt-3 flex gap-3">
+              <div className="mt-3 flex gap-3 relative">
                 {contact.linkedin && (
                   <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline">
                     LinkedIn
                   </a>
                 )}
-                <button className="text-xs bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition-colors">
-                  Ajouter à une campagne
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => handleShowCampaigns(String(i))}
+                    className="text-xs bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition-colors"
+                  >
+                    Ajouter à une campagne
+                  </button>
+                  {showCampaignSelect === String(i) && (
+                    <div className="absolute left-0 top-8 z-10 bg-gray-800 border border-gray-700 rounded-lg shadow-xl min-w-[220px] p-2">
+                      {campaignsLoading ? (
+                        <div className="flex items-center gap-2 text-gray-400 text-xs p-2">
+                          <div className="w-3 h-3 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                          Chargement...
+                        </div>
+                      ) : campaigns.length === 0 ? (
+                        <p className="text-xs text-gray-400 p-2">Aucune campagne trouvée</p>
+                      ) : (
+                        campaigns.map((campaign) => (
+                          <button
+                            key={campaign.id}
+                            onClick={() => handleAddToCampaign(campaign.id, contact)}
+                            className={`w-full text-left text-xs px-3 py-2 rounded hover:bg-gray-700 transition-colors ${
+                              campaignAdded === campaign.id ? "text-green-400" : "text-gray-300"
+                            }`}
+                          >
+                            {campaignAdded === campaign.id ? "Ajouté !" : campaign.name}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))}
