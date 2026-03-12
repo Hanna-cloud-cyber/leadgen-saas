@@ -13,6 +13,9 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [apiKeyMasked, setApiKeyMasked] = useState<string | null>(null);
+  const [apiKeyFull, setApiKeyFull] = useState<string | null>(null);
+  const [loadingApiKey, setLoadingApiKey] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -32,7 +35,53 @@ export default function SettingsPage() {
       }
     }
     loadProfile();
+    loadApiKey();
   }, []);
+
+  async function loadApiKey() {
+    try {
+      const res = await fetch("/api/api-keys");
+      if (res.ok) {
+        const { data } = await res.json();
+        if (data?.masked) {
+          setApiKeyMasked(data.masked);
+        }
+      }
+    } catch {
+      // Ignore
+    }
+  }
+
+  async function handleRegenerateApiKey() {
+    setLoadingApiKey(true);
+    setApiKeyFull(null);
+    try {
+      const res = await fetch("/api/api-keys", { method: "POST" });
+      if (res.ok) {
+        const { data } = await res.json();
+        if (data?.apiKey) {
+          setApiKeyFull(data.apiKey);
+          // Also update masked display
+          const key = data.apiKey;
+          setApiKeyMasked(key.substring(0, 12) + "••••••••••••" + key.substring(key.length - 4));
+        }
+      }
+    } catch {
+      // Ignore
+    } finally {
+      setLoadingApiKey(false);
+    }
+  }
+
+  async function handleCopyApiKey() {
+    const keyToCopy = apiKeyFull;
+    if (!keyToCopy) return;
+    try {
+      await navigator.clipboard.writeText(keyToCopy);
+    } catch {
+      // Fallback: ignore
+    }
+  }
 
   async function handleSaveProfile(e: React.FormEvent) {
     e.preventDefault();
