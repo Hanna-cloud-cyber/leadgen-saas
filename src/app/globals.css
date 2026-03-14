@@ -1,50 +1,50 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f5;
+  --foreground: #1a1a1a;
+  --gold: #b8860b;
+  --gold-light: #d4a843;
+  --gold-dark: #8b6914;
+  --cream: #f5f0e8;
+  --cream-dark: #e8dfd0;
+  --black-soft: #2d2d2d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
 
-/* Glow effects */
-.glow-indigo {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15), 0 0 60px rgba(99, 102, 241, 0.05);
+/* Elegant gold glow */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.15), 0 0 60px rgba(184, 134, 11, 0.05);
 }
 
-.glow-purple {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.1), 0 0 80px rgba(139, 92, 246, 0.05);
-}
-
-/* Gradient border effect */
-.gradient-border {
+/* Gold gradient border */
+.gradient-border-gold {
   position: relative;
 }
-.gradient-border::before {
+.gradient-border-gold::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.4), rgba(212, 168, 67, 0.2), transparent);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -52,50 +52,99 @@ body {
   pointer-events: none;
 }
 
-/* Hero background mesh */
-.hero-gradient {
+/* Hero with subtle pattern */
+.hero-abaya {
   background:
-    radial-gradient(ellipse 50% 50% at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 100%),
-    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 60% 40% at 50% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(184, 134, 11, 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(139, 105, 20, 0.04) 0%, transparent 100%),
+    linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
 }
 
-/* Smooth fade-in animation */
+/* Smooth animations */
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+  animation: fade-in-up 0.6s ease-out forwards;
 }
 
-.animate-delay-100 { animation-delay: 100ms; }
-.animate-delay-200 { animation-delay: 200ms; }
-.animate-delay-300 { animation-delay: 300ms; }
-.animate-delay-400 { animation-delay: 400ms; }
-
-/* Pulse glow for CTA buttons */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.5); }
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out forwards;
 }
 
-/* Glass effect */
-.glass {
-  background: rgba(17, 17, 27, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.animate-delay-100 { animation-delay: 100ms; opacity: 0; }
+.animate-delay-200 { animation-delay: 200ms; opacity: 0; }
+.animate-delay-300 { animation-delay: 300ms; opacity: 0; }
+.animate-delay-400 { animation-delay: 400ms; opacity: 0; }
+.animate-delay-500 { animation-delay: 500ms; opacity: 0; }
+
+/* Elegant button hover */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: white;
+  transition: all 0.3s ease;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+  box-shadow: 0 4px 20px rgba(184, 134, 11, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-outline-gold {
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+  transition: all 0.3s ease;
+}
+.btn-outline-gold:hover {
+  background: var(--gold);
+  color: white;
+}
+
+/* Product card hover */
+.product-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+.product-card:hover .product-image {
+  transform: scale(1.03);
+}
+
+.product-image {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glass nav */
+.glass-nav {
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Elegant divider */
+.divider-gold {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
 }
 
 /* Scrollbar */
@@ -107,9 +156,26 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(184, 134, 11, 0.2);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+  background: rgba(184, 134, 11, 0.4);
+}
+
+/* Category card */
+.category-card {
+  transition: all 0.4s ease;
+}
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(184, 134, 11, 0.1);
+}
+.category-card:hover .category-icon {
+  background: var(--gold);
+  color: white;
+}
+
+.category-icon {
+  transition: all 0.3s ease;
 }

@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LeadGen AI — Générez des leads qualifiés automatiquement",
+  title: "QTP Abayas — Élégance & Modestie",
   description:
-    "Trouvez des entreprises et contacts dans 16 pays. Emails vérifiés, prospection IA, campagnes automatiques. Le SaaS de génération de leads tout-en-un.",
-  keywords: "leads, prospection, scraping, email, B2B, CRM, marketing",
+    "Découvrez notre collection exclusive d'abayas de luxe. Designs modernes, tissus premium, livraison mondiale. QTP Abayas — L'élégance au quotidien.",
+  keywords: "abayas, mode modeste, hijab, robe islamique, abaya luxe, mode femme musulmane, QTP",
 };
 
 export default function RootLayout({
