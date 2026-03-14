@@ -20,6 +20,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex items-center gap-6">
+            <Link href="/buy-leads" className="text-sm text-gray-400 hover:text-white transition-colors">Buy Leads</Link>
             <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors">Connexion</Link>
             <Link href="#pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</Link>
             <Link href="/signup" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200">
