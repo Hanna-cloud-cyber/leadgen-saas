@@ -1,115 +1,153 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a1a;
+  --foreground: #f0f0f5;
+  --primary: #8b1538;
+  --primary-light: #c41e4a;
+  --accent: #d4af37;
+  --accent-light: #f0d060;
+  --success: #10b981;
+  --card-bg: #12122a;
+  --card-border: #1e1e3a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-success: var(--success);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --font-sans: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
-/* Glow effects */
-.glow-indigo {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15), 0 0 60px rgba(99, 102, 241, 0.05);
-}
-
-.glow-purple {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.1), 0 0 80px rgba(139, 92, 246, 0.05);
-}
-
-/* Gradient border effect */
-.gradient-border {
-  position: relative;
-}
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.1), transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Hero background mesh */
-.hero-gradient {
+/* World Cup gradient hero */
+.hero-wc {
   background:
-    radial-gradient(ellipse 50% 50% at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 100%),
-    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 60% 40% at 50% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(139, 21, 56, 0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 50% 80%, rgba(139, 21, 56, 0.1) 0%, transparent 70%);
 }
 
-/* Smooth fade-in animation */
+/* Gold glow for premium items */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), 0 0 60px rgba(212, 175, 55, 0.08);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(139, 21, 56, 0.3), 0 0 60px rgba(139, 21, 56, 0.1);
+}
+
+/* Flag shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.flag-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Fade in animation */
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+  animation: fade-in-up 0.6s ease-out forwards;
 }
 
 .animate-delay-100 { animation-delay: 100ms; }
 .animate-delay-200 { animation-delay: 200ms; }
 .animate-delay-300 { animation-delay: 300ms; }
 .animate-delay-400 { animation-delay: 400ms; }
+.animate-delay-500 { animation-delay: 500ms; }
 
-/* Pulse glow for CTA buttons */
+/* Pulse glow for CTA */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.5); }
+  0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Glass effect */
 .glass {
-  background: rgba(17, 17, 27, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(18, 18, 42, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Product card hover */
+.product-card {
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.15);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Country flag card */
+.country-card {
+  transition: all 0.3s ease;
+  border: 1px solid var(--card-border);
+}
+
+.country-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.4); }
+
+/* Badge */
+.badge-new {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+/* Qty buttons */
+.qty-btn {
+  transition: all 0.2s ease;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+.qty-btn:hover {
+  background: var(--accent);
+  color: #000;
 }
