@@ -20,6 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/require-auth";
 import { runEnergyUsPipeline } from "@/lib/engine/energy-pipeline";
 import { ENERGY_US_SUBSECTORS, getEnergySubSector, getUsState } from "@/lib/engine/energy-us";
+import { countSeedsBySector } from "@/lib/engine/energy-seeds";
 import {
   saveLeads,
   saveSearch,
@@ -63,6 +64,8 @@ export async function POST(request: NextRequest) {
       maxQueries,
       scrapeDirectories,
       verify,
+      useSeeds,
+      seedsOnly,
     } = body;
 
     // Validation
@@ -96,6 +99,8 @@ export async function POST(request: NextRequest) {
       maxQueries: typeof maxQueries === "number" ? Math.min(maxQueries, 8) : undefined,
       scrapeDirectories: scrapeDirectories !== false,
       verify: verify !== false,
+      useSeeds: useSeeds !== false,
+      seedsOnly: seedsOnly === true,
     });
 
     const duration = Date.now() - startTime;
@@ -145,6 +150,8 @@ export async function GET() {
   const auth = await requireAuth();
   if (auth.error) return auth.error;
 
+  const seedCounts = countSeedsBySector();
+
   return NextResponse.json({
     success: true,
     data: {
@@ -155,6 +162,7 @@ export async function GET() {
         description: s.description,
         naics: s.naics,
         directoriesCount: s.directories?.length ?? 0,
+        seedsCount: seedCounts[s.id] ?? 0,
       })),
     },
   });

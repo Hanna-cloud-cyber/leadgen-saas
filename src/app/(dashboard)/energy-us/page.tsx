@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { US_STATES } from "@/lib/engine/energy-us";
+import { countSeedsBySector } from "@/lib/engine/energy-seeds";
 import type { Lead } from "@/types/lead";
 
 interface SubSectorOption {
@@ -15,6 +16,7 @@ interface SubSectorOption {
 
 interface Stats {
   queriesUsed: number;
+  seedsUsed: number;
   sitesFound: number;
   directoriesScraped: number;
   sitesScraped: number;
@@ -23,6 +25,8 @@ interface Stats {
   leadsGenerated: number;
   duration: number;
 }
+
+const SEED_COUNTS: Record<string, number> = countSeedsBySector();
 
 const SUBSECTORS: SubSectorOption[] = [
   { id: "solar_residential", name: "Residential Solar Installer", icon: "☀️", description: "Installateurs solaire résidentiel (homeowners).", naics: ["238220"], directoriesCount: 2 },
@@ -61,6 +65,8 @@ export default function EnergyUsPage() {
   const [scrapeDirectories, setScrapeDirectories] = useState(true);
   const [verify, setVerify] = useState(true);
   const [advanced, setAdvanced] = useState(false);
+  const [useSeeds, setUseSeeds] = useState(true);
+  const [seedsOnly, setSeedsOnly] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -72,8 +78,7 @@ export default function EnergyUsPage() {
     [subSectorId]
   );
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
+  async function runSearch(overrides?: { seedsOnly?: boolean }) {
     setLoading(true);
     setError("");
     setLeads([]);
@@ -93,6 +98,8 @@ export default function EnergyUsPage() {
           maxPerQuery,
           scrapeDirectories,
           verify,
+          useSeeds,
+          seedsOnly: overrides?.seedsOnly ?? seedsOnly,
         }),
       });
 
@@ -106,6 +113,15 @@ export default function EnergyUsPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    await runSearch();
+  }
+
+  async function handleQuickStart() {
+    await runSearch({ seedsOnly: true });
   }
 
   async function handleExport(format: "csv" | "json") {
@@ -139,12 +155,35 @@ export default function EnergyUsPage() {
         </div>
       </div>
 
+      {/* Quick Start banner */}
+      <div className="mb-6 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-amber-900/10 border border-amber-700/30 rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="text-sm font-semibold text-amber-200 flex items-center gap-2">
+            🚀 Quick Start — base seed pré-chargée
+          </h2>
+          <p className="text-xs text-gray-400 mt-1">
+            {SEED_COUNTS[subSectorId] ?? 0} entreprises US connues prêtes à scraper pour
+            <span className="text-amber-300"> {SUBSECTORS.find((s) => s.id === subSectorId)?.name}</span>.
+            Aucun appel Google requis — résultats en ~30 sec.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleQuickStart}
+          disabled={loading || (SEED_COUNTS[subSectorId] ?? 0) === 0}
+          className="bg-amber-500 hover:bg-amber-400 disabled:bg-gray-700 disabled:cursor-not-allowed text-gray-950 px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-amber-500/20"
+        >
+          {loading ? "..." : "🚀 Démarrer maintenant"}
+        </button>
+      </div>
+
       {/* Sub-sector picker */}
       <div className="mb-6">
         <label className="block text-sm text-gray-400 mb-2 font-medium">1. Sous-secteur</label>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
           {SUBSECTORS.map((s) => {
             const active = s.id === subSectorId;
+            const seedCount = SEED_COUNTS[s.id] ?? 0;
             return (
               <button
                 key={s.id}
@@ -160,11 +199,18 @@ export default function EnergyUsPage() {
                   <span className="text-xl">{s.icon}</span>
                   <span className={`text-xs font-medium ${active ? "text-amber-200" : "text-gray-200"}`}>{s.name}</span>
                 </div>
-                {s.directoriesCount > 0 && (
-                  <span className="mt-1.5 inline-block text-[10px] text-amber-400/80">
-                    +{s.directoriesCount} annuaire{s.directoriesCount > 1 ? "s" : ""}
-                  </span>
-                )}
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {seedCount > 0 && (
+                    <span className="inline-block text-[10px] text-amber-300 bg-amber-900/30 px-1.5 py-0.5 rounded">
+                      🌱 {seedCount} seeds
+                    </span>
+                  )}
+                  {s.directoriesCount > 0 && (
+                    <span className="inline-block text-[10px] text-gray-400 bg-gray-800/60 px-1.5 py-0.5 rounded">
+                      +{s.directoriesCount} annuaire{s.directoriesCount > 1 ? "s" : ""}
+                    </span>
+                  )}
+                </div>
               </button>
             );
           })}
@@ -275,6 +321,24 @@ export default function EnergyUsPage() {
               <label className="flex items-center gap-2 text-xs text-gray-300">
                 <input
                   type="checkbox"
+                  checked={useSeeds}
+                  onChange={(e) => setUseSeeds(e.target.checked)}
+                  className="accent-amber-500"
+                />
+                Inclure base seed
+              </label>
+              <label className="flex items-center gap-2 text-xs text-gray-300">
+                <input
+                  type="checkbox"
+                  checked={seedsOnly}
+                  onChange={(e) => setSeedsOnly(e.target.checked)}
+                  className="accent-amber-500"
+                />
+                Seeds uniquement (skip Google)
+              </label>
+              <label className="flex items-center gap-2 text-xs text-gray-300">
+                <input
+                  type="checkbox"
                   checked={scrapeDirectories}
                   onChange={(e) => setScrapeDirectories(e.target.checked)}
                   className="accent-amber-500"
@@ -324,8 +388,9 @@ export default function EnergyUsPage() {
 
       {/* Stats */}
       {stats && (
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
           {[
+            { label: "Seeds", value: stats.seedsUsed },
             { label: "Requêtes", value: stats.queriesUsed },
             { label: "Sites Google", value: stats.sitesFound },
             { label: "Annuaires", value: stats.directoriesScraped },

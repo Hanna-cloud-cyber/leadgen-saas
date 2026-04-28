@@ -22,6 +22,7 @@ import {
   applyEnergyScoring,
   type EnergySubSector,
 } from "./energy-us";
+import { getSeeds } from "./energy-seeds";
 import type { Lead } from "@/types/lead";
 
 const USER_AGENT =
@@ -39,12 +40,15 @@ export interface EnergyPipelineOptions {
   scrapeDirectories?: boolean;  // scraper aussi les annuaires sectoriels (défaut true)
   verify?: boolean;        // vérifier MX des emails (défaut true)
   concurrency?: number;    // nb de scrapes en parallèle (défaut 4)
+  useSeeds?: boolean;      // ajouter la base seed au pool (défaut true)
+  seedsOnly?: boolean;     // mode Quick Start : skip Google + annuaires (défaut false)
   onProgress?: (s: EnergyPipelineStep) => void;
 }
 
 export interface EnergyPipelineStep {
   stage:
     | "building_queries"
+    | "loading_seeds"
     | "searching"
     | "scraping_directories"
     | "scraping_sites"
@@ -60,6 +64,7 @@ export interface EnergyPipelineResult {
   leads: Lead[];
   stats: {
     queriesUsed: number;
+    seedsUsed: number;
     sitesFound: number;
     directoriesScraped: number;
     sitesScraped: number;
@@ -201,66 +206,89 @@ export async function runEnergyUsPipeline(
   const scrapeDirs = opts.scrapeDirectories ?? true;
   const shouldVerify = opts.verify ?? true;
   const exclude = opts.excludeKeywords ?? [];
+  const useSeeds = opts.useSeeds ?? true;
+  const seedsOnly = opts.seedsOnly ?? false;
 
   const progress = (s: EnergyPipelineStep) => opts.onProgress?.(s);
 
-  // ── 1. Build queries ──
-  progress({
-    stage: "building_queries",
-    current: 0,
-    total: 1,
-    message: `Construction des requêtes ${sector.name}${stateName ? ` (${stateName})` : ""}...`,
-  });
+  // ── 1. Seeds (Quick Start) ──
+  const seeds = useSeeds ? getSeeds(opts.subSectorId, opts.state) : [];
+  const seedUrls = seeds.map((s) => s.website);
 
-  const queries = buildEnergyQueries({
-    subSectorId: opts.subSectorId,
-    state: opts.state,
-    city: opts.city,
-    extraKeywords: opts.extraKeywords,
-    maxQueries,
-  });
+  if (useSeeds && seedUrls.length > 0) {
+    progress({
+      stage: "loading_seeds",
+      current: seedUrls.length,
+      total: seedUrls.length,
+      message: `${seedUrls.length} entreprises seed chargées (${sector.name}${stateName ? `, ${stateName}` : ""})`,
+    });
+  }
 
-  // ── 2. Recherches Google parallèles ──
-  progress({
-    stage: "searching",
-    current: 0,
-    total: queries.length,
-    message: `Lancement de ${queries.length} recherches Google...`,
-  });
+  // ── 2. Build queries (sauf en mode seedsOnly) ──
+  const queries = seedsOnly
+    ? []
+    : buildEnergyQueries({
+        subSectorId: opts.subSectorId,
+        state: opts.state,
+        city: opts.city,
+        extraKeywords: opts.extraKeywords,
+        maxQueries,
+      });
 
-  const searchResults = await runWithConcurrency(
-    queries,
-    async (q, idx) => {
-      try {
-        const res = await searchGoogle({
-          keywords: q,
-          country: "United States",
-          maxResults: maxPerQuery,
-        });
-        progress({
-          stage: "searching",
-          current: idx + 1,
-          total: queries.length,
-          message: `${res.length} sites trouvés pour "${q}"`,
-        });
-        return res;
-      } catch {
-        return [];
-      }
-    },
-    Math.min(concurrency, 3)
-  );
+  if (queries.length > 0) {
+    progress({
+      stage: "building_queries",
+      current: 0,
+      total: 1,
+      message: `Construction des requêtes ${sector.name}${stateName ? ` (${stateName})` : ""}...`,
+    });
+  }
 
-  const flatGoogleUrls = searchResults
-    .flat()
-    .map((r) => r.url)
-    .filter(Boolean);
+  // ── 3. Recherches Google parallèles (sauf en mode seedsOnly) ──
+  let flatGoogleUrls: string[] = [];
 
-  // ── 3. Annuaires sectoriels (optionnel) ──
+  if (queries.length > 0) {
+    progress({
+      stage: "searching",
+      current: 0,
+      total: queries.length,
+      message: `Lancement de ${queries.length} recherches Google...`,
+    });
+
+    const searchResults = await runWithConcurrency(
+      queries,
+      async (q, idx) => {
+        try {
+          const res = await searchGoogle({
+            keywords: q,
+            country: "United States",
+            maxResults: maxPerQuery,
+          });
+          progress({
+            stage: "searching",
+            current: idx + 1,
+            total: queries.length,
+            message: `${res.length} sites trouvés pour "${q}"`,
+          });
+          return res;
+        } catch {
+          return [];
+        }
+      },
+      Math.min(concurrency, 3)
+    );
+
+    flatGoogleUrls = searchResults
+      .flat()
+      .map((r) => r.url)
+      .filter(Boolean);
+  }
+
+  // ── 4. Annuaires sectoriels (optionnel, sauf en mode seedsOnly) ──
   let directoryUrls: string[] = [];
   let directoriesScraped = 0;
 
-  if (scrapeDirs && sector.directories?.length) {
+  if (!seedsOnly && scrapeDirs && sector.directories?.length) {
     progress({
       stage: "scraping_directories",
       current: 0,
@@ -287,8 +315,12 @@ export async function runEnergyUsPipeline(
     directoriesScraped = sector.directories.length;
   }
 
-  // ── 4. Dédup + filtre ──
-  const allCandidateUrls = dedupeByDomain([...flatGoogleUrls, ...directoryUrls]);
+  // ── 5. Dédup + filtre (seeds prioritaires en tête) ──
+  const allCandidateUrls = dedupeByDomain([
+    ...seedUrls,
+    ...flatGoogleUrls,
+    ...directoryUrls,
+  ]);
 
   // ── 5. Scraping ──
   progress({
@@ -431,6 +463,7 @@ export async function runEnergyUsPipeline(
     leads: finalLeads,
     stats: {
       queriesUsed: queries.length,
+      seedsUsed: seedUrls.length,
       sitesFound: flatGoogleUrls.length,
       directoriesScraped,
       sitesScraped: allCandidateUrls.length,
