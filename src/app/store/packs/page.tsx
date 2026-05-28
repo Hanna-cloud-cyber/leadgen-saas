@@ -1,161 +1,114 @@
 "use client";
 
-import Link from "next/link";
 import { WORLD_CUP_COUNTRIES, getCountryByCode, generateProducts } from "@/lib/store/countries";
 import { useCart } from "@/lib/store/cart-context";
 import { useState } from "react";
 
-const POPULAR_PACKS = ["fr", "br", "ar", "de", "es", "us", "ma", "jp", "pt", "it", "nl", "be"];
+const POPULAR = ["fr", "br", "ar", "de", "es", "us", "ma", "jp", "pt", "it", "nl", "be"];
 
 export default function PacksPage() {
   const { addItem } = useCart();
   const [addedPack, setAddedPack] = useState<string | null>(null);
 
-  const handleAddPack = (countryCode: string) => {
-    const country = getCountryByCode(countryCode)!;
+  const handleAdd = (code: string) => {
+    const country = getCountryByCode(code)!;
     const products = generateProducts(country);
     addItem(products[0], products[0].variants?.[0] || "default");
     addItem(products[1], products[1].variants?.[0] || "default");
-    setAddedPack(countryCode);
+    setAddedPack(code);
     setTimeout(() => setAddedPack(null), 2000);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div>
       {/* Hero */}
-      <div className="text-center mb-12">
-        <span className="badge-promo px-3 py-1 rounded-full inline-block mb-4">ÉCONOMISE 20%</span>
-        <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">
-          Packs <span className="gradient-text-static">Duo</span>
-        </h1>
-        <p className="text-gray-400 max-w-xl mx-auto">
-          Coque + Crocs aux couleurs de ton pays. Le combo parfait pour la Coupe du Monde 2026.
-          <strong className="text-white"> Économise 20% </strong> sur le pack.
-        </p>
-
-        <div className="flex items-center justify-center gap-6 mt-8">
-          <div className="text-center">
-            <div className="text-xs text-muted line-through">69,98€</div>
-            <div className="text-3xl font-black gradient-text-static">55,99€</div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-4xl">📱</span>
-            <span className="text-xl text-accent font-black">+</span>
-            <span className="text-4xl">👟</span>
+      <div className="bg-dark-bg text-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
+          <span className="badge-sale inline-block mb-4">ÉCONOMISE 20%</span>
+          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">Packs Duo</h1>
+          <p className="text-sm text-gray-400 mt-3 max-w-md mx-auto">
+            Coque + Crocs aux couleurs de ton pays. Le combo parfait pour supporter ton équipe.
+          </p>
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <div className="flex items-center gap-2 text-4xl">📱 <span className="text-lg">+</span> 👟</div>
+            <div>
+              <span className="text-sm text-gray-500 line-through">69,98 €</span>
+              <span className="text-2xl font-black text-white ml-2">55,99 €</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Popular packs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {POPULAR_PACKS.map(code => {
-          const country = getCountryByCode(code)!;
-          const isAdded = addedPack === code;
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Popular packs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {POPULAR.map(code => {
+            const country = getCountryByCode(code)!;
+            const isAdded = addedPack === code;
 
-          return (
-            <div
-              key={code}
-              className="bundle-card rounded-2xl overflow-hidden"
-            >
-              {/* Pack visual */}
-              <div
-                className="h-48 flex items-center justify-center relative overflow-hidden"
-                style={{
-                  background: `linear-gradient(160deg, ${country.colors[0]}25 0%, ${country.colors[1]}25 50%, rgba(5,5,16,0.9) 100%)`,
-                }}
-              >
-                <div className="flag-shimmer absolute inset-0" />
-                <div className="relative z-10 flex items-center gap-4">
+            return (
+              <div key={code} className="border border-border hover:border-accent transition-colors">
+                {/* Visual */}
+                <div
+                  className="h-48 flex items-center justify-center relative"
+                  style={{ background: `linear-gradient(135deg, ${country.colors[0]}15 0%, ${country.colors[1]}15 100%)` }}
+                >
+                  <span className="badge-sale absolute top-0 left-0">-20%</span>
                   <div className="text-center">
-                    <div className="text-5xl mb-1">{country.flag}</div>
-                    <div className="flex gap-3">
-                      <span className="text-3xl">📱</span>
-                      <span className="text-3xl">👟</span>
+                    <div className="text-5xl mb-2">{country.flag}</div>
+                    <div className="flex gap-2 justify-center text-2xl">
+                      <span>📱</span><span className="text-sm self-center">+</span><span>👟</span>
                     </div>
                   </div>
-                </div>
-
-                <div className="absolute top-3 left-3 z-10">
-                  <span className="badge-promo px-2 py-1 rounded-lg">PACK -20%</span>
-                </div>
-
-                <div className="absolute top-3 right-3 flex gap-1 z-10">
-                  {country.icons.slice(0, 3).map((icon, i) => (
-                    <span key={i} className="text-base opacity-50">{icon}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Pack info */}
-              <div className="p-5">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs text-muted bg-white/5 px-2 py-0.5 rounded-md font-semibold">Gr. {country.group}</span>
-                  <div className="stars text-xs">★★★★★</div>
-                </div>
-
-                <h3 className="font-black text-base">Pack {country.name} {country.flag}</h3>
-                <p className="text-[11px] text-muted mt-1">
-                  Coque + Crocs — {country.icons.join(" ")} {country.famousThings.join(" · ")}
-                </p>
-
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-                  <div>
-                    <span className="text-xs text-muted line-through mr-2">69,98€</span>
-                    <span className="text-lg font-black text-white">55,99€</span>
+                  <div className="absolute top-3 right-3 flex gap-1 opacity-40">
+                    {country.icons.slice(0, 3).map((icon, i) => (
+                      <span key={i} className="text-sm">{icon}</span>
+                    ))}
                   </div>
-                  <button
-                    onClick={() => handleAddPack(code)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      isAdded
-                        ? "bg-success text-white"
-                        : "btn-primary"
-                    }`}
-                  >
-                    {isAdded ? "✓ Ajouté !" : "🛒 Ajouter"}
-                  </button>
+                </div>
+
+                <div className="p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Pack Duo — Groupe {country.group}</p>
+                  <h3 className="font-bold text-sm mt-1">Pack {country.name} {country.flag}</h3>
+                  <p className="text-[11px] text-muted mt-1">{country.famousThings.join(" · ")}</p>
+
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-border-light">
+                    <div>
+                      <span className="text-xs text-muted line-through mr-2">69,98 €</span>
+                      <span className="text-base font-bold">55,99 €</span>
+                    </div>
+                    <button
+                      onClick={() => handleAdd(code)}
+                      className={`text-xs font-bold uppercase tracking-wide px-4 py-2.5 transition-all ${
+                        isAdded
+                          ? "bg-success text-white"
+                          : "btn-dark"
+                      }`}
+                    >
+                      {isAdded ? "✓ AJOUTÉ" : "AJOUTER"}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* All countries packs */}
-      <div className="mt-16">
-        <h2 className="text-xl font-black mb-6">Tous les packs disponibles</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-          {WORLD_CUP_COUNTRIES.filter(c => !POPULAR_PACKS.includes(c.code)).map(country => (
-            <button
-              key={country.code}
-              onClick={() => handleAddPack(country.code)}
-              className="country-card bg-card-bg rounded-xl p-3 text-center hover:bg-card-bg-hover"
-            >
-              <div className="text-2xl mb-1">{country.flag}</div>
-              <div className="text-[10px] font-semibold text-gray-300 truncate">{country.name}</div>
-              <div className="text-[10px] font-bold text-accent mt-1">55,99€</div>
-            </button>
-          ))}
+            );
+          })}
         </div>
-      </div>
 
-      {/* Benefits */}
-      <div className="mt-16 surface-elevated rounded-2xl p-8 sm:p-10 text-center">
-        <h3 className="text-xl font-black mb-6">Pourquoi choisir un pack ?</h3>
-        <div className="grid sm:grid-cols-3 gap-6">
-          <div>
-            <div className="text-3xl mb-2">💰</div>
-            <div className="text-sm font-bold">Économise 20%</div>
-            <div className="text-xs text-muted mt-1">55,99€ au lieu de 69,98€</div>
-          </div>
-          <div>
-            <div className="text-3xl mb-2">🎯</div>
-            <div className="text-sm font-bold">Look complet</div>
-            <div className="text-xs text-muted mt-1">Coque + Crocs assortis</div>
-          </div>
-          <div>
-            <div className="text-3xl mb-2">🚚</div>
-            <div className="text-sm font-bold">Livraison offerte</div>
-            <div className="text-xs text-muted mt-1">Gratuite dès 50€</div>
+        {/* All nations packs */}
+        <div className="mt-14">
+          <h2 className="text-lg font-black uppercase tracking-wide mb-6">Tous les packs</h2>
+          <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-3">
+            {WORLD_CUP_COUNTRIES.filter(c => !POPULAR.includes(c.code)).map(c => (
+              <button
+                key={c.code}
+                onClick={() => handleAdd(c.code)}
+                className="flex flex-col items-center gap-1.5 p-3 border border-border hover:border-accent transition-colors"
+              >
+                <span className="text-2xl">{c.flag}</span>
+                <span className="text-[10px] font-semibold text-muted">{c.name}</span>
+                <span className="text-[10px] font-bold">55,99 €</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>
