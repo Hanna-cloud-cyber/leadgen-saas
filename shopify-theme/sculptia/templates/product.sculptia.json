@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "sculptia-product",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
