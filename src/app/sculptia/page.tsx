@@ -8,6 +8,7 @@ import {
   faqs,
   reviewAverage,
   reviewBreakdown,
+  reviews,
   reviewTotal,
   sizes,
 } from "./data";
@@ -210,14 +211,14 @@ export default function SculptiaPage() {
                     }`}
                   />
                   <span className="flex-1">
-                    <span className="block font-bold text-sm">{b.label}</span>
+                    <span className="block font-bold text-sm text-[#161616]">{b.label}</span>
                     <span className="block text-xs text-neutral-500">{b.sublabel}</span>
                     <span className="block text-xs text-neutral-500 mt-1">
                       Économisez {b.compareAt - b.price}€ · soit {(b.price / b.qty).toFixed(2)}€/pièce
                     </span>
                   </span>
                   <span className="text-right">
-                    <span className="block font-black">{b.price.toFixed(2)} €</span>
+                    <span className="block font-black text-[#161616]">{b.price.toFixed(2)} €</span>
                     <span className="block text-xs text-neutral-400 line-through">
                       {b.compareAt.toFixed(2)} €
                     </span>
@@ -229,6 +230,11 @@ export default function SculptiaPage() {
             <button className="w-full bg-[#161616] text-white font-bold tracking-wide py-4 mt-5 hover:bg-neutral-800 transition-colors">
               AJOUTER AU PANIER · {bundle.price.toFixed(2)} €
             </button>
+            <p className="text-center text-xs text-neutral-400 mt-1.5">
+              {bundle.free > 0
+                ? `Soit ${bundle.qty} legging${bundle.qty > 1 ? "s" : ""} dont ${bundle.free} offert${bundle.free > 1 ? "s" : ""}`
+                : "1 legging"}
+            </p>
 
             <p className="text-center text-xs text-neutral-500 mt-2">
               En stock · Livraison offerte · Remboursé 30 jours
@@ -264,49 +270,52 @@ export default function SculptiaPage() {
           </p>
         </section>
 
-        {/* Infographics: Goodbye cellulite + Drainage lines */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-16">
-          <FullImage
-            src={`${ASSETS}/infographic-goodbye-cellulite.png`}
-            alt="Goodbye Cellulite, Hello Confidence — bénéfices Sculptia"
-          />
-          <FullImage
-            src={`${ASSETS}/infographic-drainage-lines-rebrand.png`}
-            alt="3D Drainage Lines — technologie Sculptia"
-          />
-          <FullImage
-            src={`${ASSETS}/infographic-high-waist-tummy-control.png`}
-            alt="Ceinture haute et gainage ventre Sculptia"
-          />
-        </section>
-
-        {/* Result / Mechanism / Skin */}
+        {/* Result / Mechanism / Comparison / Waist / Skin — all native, in French */}
         <ImageTextRow
           eyebrow="LE RÉSULTAT"
           title="Une silhouette visuellement plus galbée"
-          text="La ceinture haute gaine le ventre, les panneaux arrière relèvent les fessiers et la compression affine les cuisses. Le miroir répond avant même la salle de sport."
+          text="La ceinture haute gaine le ventre, les panneaux arrière relèvent les fessiers et la compression affine les cuisses."
           bullets={["Taille visuellement affinée", "Fessiers relevés et rebondis", "Cuisses lissées, sans marques"]}
-          image={`${ASSETS}/colorway-black.png`}
+          image={`${ASSETS}/lifestyle-yoga.png`}
         />
         <ImageTextRow
           eyebrow="LE MÉCANISME"
           title="Sa structure 3D fait la différence"
           text=""
           bullets={[]}
-          image={`${ASSETS}/lifestyle-yoga.png`}
+          image={`${ASSETS}/lifestyle-couch.png`}
           reverse
           richBullets={[
-            { title: "Maille nid d'abeille.", text: "Des milliers d'alvéoles en relief épousent la peau et créent un micro-massage à chaque pas." },
-            { title: "Panneaux contournés.", text: "Découpés en 3D, ils soutiennent les fessiers comme une main invisible." },
-            { title: "Compression graduée.", text: "Plus ferme au ventre et aux cuisses, plus souple aux genoux pour garder une liberté totale." },
+            { title: "Maille nid d'abeille.", text: "Des alvéoles en relief créent un micro-massage à chaque pas." },
+            { title: "Panneaux contournés.", text: "Soutiennent les fessiers comme une main invisible." },
+            { title: "Compression graduée.", text: "Ferme au ventre, souple aux genoux." },
           ]}
+        />
+        <ImageTextRow
+          eyebrow="LA CIRCULATION"
+          title="Le tissu qui masse à chaque mouvement"
+          text="Les lignes de drainage 3D stimulent la circulation et le drainage lymphatique dès l'enfilage."
+          bullets={[]}
+          image={`${ASSETS}/colorway-gray-chine.png`}
+          richBullets={[
+            { title: "Sans Sculptia.", text: "Circulation ralentie, cellulite persistante." },
+            { title: "Avec Sculptia.", text: "Circulation stimulée, peau plus lisse." },
+          ]}
+        />
+        <ImageTextRow
+          eyebrow="LA TAILLE"
+          title="Taille haute, ventre plat"
+          text="La large ceinture maintient le ventre en douceur et sublime la silhouette, sans jamais rouler."
+          bullets={["Maintien doux et sécurisé", "Ne roule jamais, ne glisse pas", "Silhouette naturellement sublimée"]}
+          image={`${ASSETS}/colorway-navy.png`}
+          reverse
         />
         <ImageTextRow
           eyebrow="LA PEAU"
           title="Une peau à l'apparence plus lisse"
-          text="À chaque mouvement, le relief de la maille stimule la surface de la peau et active la circulation. Porté régulièrement, l'aspect peau d'orange s'estompe visiblement."
+          text="Le relief de la maille stimule la peau à chaque mouvement. L'aspect peau d'orange s'estompe visiblement."
           bullets={[]}
-          image={`${ASSETS}/lifestyle-couch.png`}
+          image={`${ASSETS}/colorway-charcoal.png`}
         />
 
         {/* Timeline */}
@@ -329,27 +338,33 @@ export default function SculptiaPage() {
         <section className="bg-neutral-50 py-16 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto grid sm:grid-cols-2 gap-4">
             {[
-              ["Ne roule jamais", "La ceinture large reste en place, même en squat."],
-              ["100 % opaque", "Testé squat : aucune transparence, même en clair."],
-              ["Sans coutures gênantes", "Pas de frottement, pas de pincement."],
-              ["Respirant", "Évacue l'humidité et sèche vite."],
+              ["Ne roule jamais", "Tient en place, même en squat."],
+              ["100 % opaque", "Zéro transparence, testé squat."],
+              ["Sans coutures gênantes", "Aucun frottement, aucun pincement."],
+              ["Respirant", "Évacue l'humidité, sèche vite."],
             ].map(([t, d]) => (
               <div key={t} className="bg-white border border-neutral-200 p-6">
                 <h3 className="font-bold">{t}</h3>
-                <p className="text-sm text-neutral-500 mt-1">{d}</p>
+                <p className="text-sm text-neutral-500 mt-1 whitespace-nowrap">{d}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Daily use */}
+        {/*
+          NOTE: pas de photo "ville" (femme qui marche en extérieur) disponible
+          dans les visuels fournis — tous les clichés reçus sont en studio ou en
+          intérieur. En attendant une vraie photo lifestyle extérieure, on utilise
+          un coloris différent pour ne pas répéter les mêmes visuels.
+        */}
         <ImageTextRow
           eyebrow="AU QUOTIDIEN"
           title="Du sport à la vie de tous les jours"
-          text="Yoga du matin, courses de midi, brunch du dimanche : il se porte avec des baskets comme avec des bottes. Un seul legging, toutes vos journées."
+          text="Se porte avec des baskets comme avec des bottes, du yoga du matin au brunch du dimanche."
           bullets={[]}
           tags={["SPORT", "BUREAU", "VOYAGE", "VILLE"]}
-          image={`${ASSETS}/colorway-black.png`}
+          image={`${ASSETS}/colorway-beige.png`}
         />
 
         {/* Material */}
@@ -389,32 +404,41 @@ export default function SculptiaPage() {
             </div>
             <div className="text-sm text-neutral-500">{reviewTotal} avis vérifiés</div>
 
-            <div className="mt-6 space-y-2 text-left">
-              {reviewBreakdown.map((r) => (
-                <div key={r.stars} className="flex items-center gap-3 text-sm">
-                  <span className="w-8 text-neutral-500">{r.stars} ★</span>
-                  <div className="flex-1 h-2 bg-neutral-100">
-                    <div
-                      className="h-2 bg-[#161616]"
-                      style={{ width: `${(r.count / reviewTotal) * 100}%` }}
-                    />
+            <div className="mt-7 space-y-3 text-left">
+              {reviewBreakdown.map((r) => {
+                const pct = (r.count / reviewTotal) * 100;
+                return (
+                  <div key={r.stars} className="flex items-center gap-3 text-sm">
+                    <span className="w-10 shrink-0 font-semibold">{r.stars} ★</span>
+                    <div className="flex-1 h-3 bg-neutral-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#161616] rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="w-12 shrink-0 text-right text-neutral-500 tabular-nums">
+                      {pct.toFixed(0)}%
+                    </span>
                   </div>
-                  <span className="w-8 text-right text-neutral-500">{r.count}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
-          <blockquote className="border border-neutral-200 p-6 mt-4">
-            <Stars rating={5} />
-            <p className="mt-3 text-[15px]">
-              &ldquo;La matière est vraiment particulière, je sens un léger massage quand je le
-              porte. Après quelques semaines, la différence est visible.&rdquo;
-            </p>
-          </blockquote>
+          <div className="mt-6 space-y-4">
+            {reviews.map((r) => (
+              <blockquote key={r.name} className="border border-neutral-200 p-6">
+                <div className="flex items-center justify-between">
+                  <Stars rating={r.rating} />
+                  <span className="text-xs font-semibold text-neutral-500">{r.name}</span>
+                </div>
+                <p className="mt-3 text-[15px]">&ldquo;{r.text}&rdquo;</p>
+              </blockquote>
+            ))}
+          </div>
 
           <p className="text-center text-xs text-neutral-400 mt-4">
-            D&apos;autres avis clients Sculptia seront ajoutés ici.
+            D&apos;autres avis clients Sculptia seront ajoutés au fur et à mesure.
           </p>
         </section>
 
@@ -445,6 +469,9 @@ export default function SculptiaPage() {
         <button className="w-full bg-[#161616] text-white font-bold tracking-wide py-3">
           AJOUTER AU PANIER · {bundle.price.toFixed(2)} €
         </button>
+        <p className="text-center text-[11px] text-neutral-400 mt-1">
+          {bundle.free > 0 ? `${bundle.qty} leggings dont ${bundle.free} offert${bundle.free > 1 ? "s" : ""}` : "1 legging"}
+        </p>
       </div>
 
       {/* Footer */}
@@ -482,14 +509,6 @@ export default function SculptiaPage() {
           © {new Date().getFullYear()} Sculptia. Tous droits réservés.
         </p>
       </footer>
-    </div>
-  );
-}
-
-function FullImage({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="relative w-full aspect-[1055/1045] max-w-2xl mx-auto">
-      <Image src={src} alt={alt} fill className="object-contain" />
     </div>
   );
 }
