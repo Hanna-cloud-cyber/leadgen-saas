@@ -7,10 +7,10 @@
 {%- assign size_option_index = -1 -%}
 {%- for opt in product.options_with_values -%}
   {%- assign opt_name_down = opt.name | downcase -%}
-  {%- if opt_name_down contains 'couleur' or opt_name_down contains 'color' -%}
+  {%- if opt_name_down contains 'color' or opt_name_down contains 'couleur' -%}
     {%- assign color_option_index = forloop.index0 -%}
   {%- endif -%}
-  {%- if opt_name_down contains 'taille' or opt_name_down contains 'size' -%}
+  {%- if opt_name_down contains 'size' or opt_name_down contains 'taille' -%}
     {%- assign size_option_index = forloop.index0 -%}
   {%- endif -%}
 {%- endfor -%}
@@ -20,7 +20,7 @@
      data-size-option-index="{{ size_option_index }}"
      data-product-handle="{{ product.handle }}">
 
-  <div class="scp-announce">{{ section.settings.announcement | default: "LIVRAISON OFFERTE DÈS 49€ · 2 ACHETÉS + 1 OFFERT — AUJOURD'HUI SEULEMENT" }}</div>
+  <div class="scp-announce">{{ section.settings.announcement | default: "FREE SHIPPING OVER $65 · BUY 2 GET 1 FREE — TODAY ONLY" }}</div>
 
   <section class="scp-hero" id="scp-top">
     <div>
@@ -28,13 +28,13 @@
       <div class="scp-gallery-thumbs" id="scp-gallery-thumbs"></div>
     </div>
     <div>
-      <span class="scp-badge">{{ section.settings.badge_text | default: "Best-seller" }}</span>
+      <span class="scp-badge">{{ section.settings.badge_text | default: "Best-Seller" }}</span>
       <h1 class="scp-title">{{ product.title }}</h1>
 
       <div class="scp-rating-row">
         <div class="scp-stars" id="scp-stars-hero"></div>
         <span class="scp-rating-num">{{ section.settings.review_average | default: 4.7 }}</span>
-        <a class="scp-rating-link" href="#scp-avis">({{ section.settings.review_count | default: 355 }} avis)</a>
+        <a class="scp-rating-link" href="#scp-reviews">({{ section.settings.review_count | default: 355 }} reviews)</a>
       </div>
 
       <div class="scp-price-row">
@@ -54,154 +54,163 @@
 
       {%- if color_option_index > -1 -%}
       <div class="scp-field">
-        <span class="scp-field-label">{{ product.options[color_option_index] | upcase }} : <b id="scp-color-label"></b></span>
+        <span class="scp-field-label">{{ product.options[color_option_index] | upcase }}: <b id="scp-color-label"></b></span>
         <div class="scp-color-row" id="scp-color-row"></div>
       </div>
       {%- endif -%}
 
       {%- if size_option_index > -1 -%}
       <div class="scp-field">
-        <span class="scp-field-label">{{ product.options[size_option_index] | upcase }} : <b id="scp-size-label"></b></span>
+        <span class="scp-field-label">{{ product.options[size_option_index] | upcase }}: <b id="scp-size-label"></b></span>
         <div class="scp-size-row" id="scp-size-row"></div>
       </div>
       {%- endif -%}
 
-      <div class="scp-urgency">{{ section.settings.urgency_text | default: "L'OFFRE SE TERMINE CE SOIR" }} <span class="scp-dot">·</span> <span class="scp-num" id="scp-countdown">29:35</span></div>
+      <div class="scp-urgency">{{ section.settings.urgency_text | default: "OFFER ENDS TONIGHT" }} <span class="scp-dot">·</span> <span class="scp-num" id="scp-countdown">29:35</span></div>
 
       <div class="scp-bundles" id="scp-bundles"></div>
 
       <button class="scp-cta" id="scp-cta-main" type="button">
-        AJOUTER AU PANIER · <span class="scp-num" id="scp-cta-price"></span>
+        ADD TO CART · <span class="scp-num" id="scp-cta-price"></span>
       </button>
-      <p class="scp-microcopy" id="scp-stock-note">En stock · Livraison offerte · Remboursé 30 jours</p>
+      <p class="scp-cta-note" id="scp-cta-note"></p>
+      <p class="scp-microcopy" id="scp-stock-note">In stock · Free shipping · 30-day refund</p>
 
       <div class="scp-trust-row">
-        <div>{% render 'scp-icon-truck' %}Livraison offerte 49€+</div>
-        <div>{% render 'scp-icon-return' %}Retours 30 jours</div>
-        <div>{% render 'scp-icon-shield' %}Paiement sécurisé</div>
+        <div>{% render 'scp-icon-truck' %}Free shipping $65+</div>
+        <div>{% render 'scp-icon-return' %}30-day returns</div>
+        <div>{% render 'scp-icon-shield' %}Secure checkout</div>
       </div>
     </div>
   </section>
 
   <section class="scp-promise">
-    <p class="scp-eyebrow">LA PROMESSE {{ shop.name | upcase }}</p>
-    <h2>{{ section.settings.promise_title | default: "Sublime ta silhouette" }}</h2>
-    <p>{{ section.settings.promise_text | default: "Un seul legging pour tout changer : il gaine, lifte et lisse dès la première minute." }}</p>
-  </section>
-
-  <section class="scp-infographics">
-    {%- if section.settings.infographic_1 != blank -%}
-      <div class="scp-infographic-frame"><img src="{{ section.settings.infographic_1 | image_url: width: 900 }}" alt="" loading="lazy"></div>
-    {%- else -%}
-      <div class="scp-infographic-frame"><img src="{{ 'sculptia-infographic-goodbye-cellulite.jpg' | asset_url }}" alt="" loading="lazy"></div>
-    {%- endif -%}
-    {%- if section.settings.infographic_2 != blank -%}
-      <div class="scp-infographic-frame"><img src="{{ section.settings.infographic_2 | image_url: width: 900 }}" alt="" loading="lazy"></div>
-    {%- else -%}
-      <div class="scp-infographic-frame"><img src="{{ 'sculptia-infographic-drainage-lines-rebrand.jpg' | asset_url }}" alt="" loading="lazy"></div>
-    {%- endif -%}
-    {%- if section.settings.infographic_3 != blank -%}
-      <div class="scp-infographic-frame"><img src="{{ section.settings.infographic_3 | image_url: width: 900 }}" alt="" loading="lazy"></div>
-    {%- else -%}
-      <div class="scp-infographic-frame"><img src="{{ 'sculptia-infographic-high-waist-tummy-control.jpg' | asset_url }}" alt="" loading="lazy"></div>
-    {%- endif -%}
+    <p class="scp-eyebrow">THE {{ shop.name | upcase }} PROMISE</p>
+    <h2>{{ section.settings.promise_title | default: "Sculpt Your Silhouette" }}</h2>
+    <p>{{ section.settings.promise_text | default: "One legging changes everything: it shapes, lifts, and smooths from the very first wear." }}</p>
   </section>
 
   <section class="scp-chapter">
-    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-black.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-lifestyle-yoga.jpg' | asset_url }}" alt="" loading="lazy"></div>
     <div class="scp-chapter-copy">
-      <p class="scp-eyebrow scp-accent">LE RÉSULTAT</p>
-      <h2>Une silhouette visuellement plus galbée</h2>
-      <p>La ceinture haute gaine le ventre, les panneaux arrière relèvent les fessiers et la compression affine les cuisses. Le miroir répond avant même la salle de sport.</p>
+      <p class="scp-eyebrow scp-accent">THE RESULT</p>
+      <h2>A visibly more sculpted silhouette</h2>
+      <p>The high waistband shapes your tummy, the back panels lift your glutes, and the compression slims your thighs.</p>
       <ul class="scp-bullets">
-        <li><span class="scp-check">✓</span>Taille visuellement affinée</li>
-        <li><span class="scp-check">✓</span>Fessiers relevés et rebondis</li>
-        <li><span class="scp-check">✓</span>Cuisses lissées, sans marques</li>
+        <li><span class="scp-check">✓</span>Visibly slimmer waist</li>
+        <li><span class="scp-check">✓</span>Lifted, rounder glutes</li>
+        <li><span class="scp-check">✓</span>Smoother thighs, no marks</li>
       </ul>
     </div>
   </section>
 
   <section class="scp-chapter scp-reverse">
-    <div class="scp-chapter-media"><img src="{{ 'sculptia-lifestyle-yoga.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-lifestyle-couch.jpg' | asset_url }}" alt="" loading="lazy"></div>
     <div class="scp-chapter-copy">
-      <p class="scp-eyebrow scp-accent">LE MÉCANISME</p>
-      <h2>Sa structure 3D fait la différence</h2>
+      <p class="scp-eyebrow scp-accent">THE MECHANISM</p>
+      <h2>3D structure makes the difference</h2>
       <ul class="scp-rich-bullets">
-        <li><b>Maille nid d'abeille.</b> <span>Des milliers d'alvéoles en relief épousent la peau et créent un micro-massage à chaque pas.</span></li>
-        <li><b>Panneaux contournés.</b> <span>Découpés en 3D, ils soutiennent les fessiers comme une main invisible.</span></li>
-        <li><b>Compression graduée.</b> <span>Plus ferme au ventre et aux cuisses, plus souple aux genoux pour garder une liberté totale.</span></li>
+        <li><b>Honeycomb mesh.</b> <span>Raised cells create a micro-massage with every step.</span></li>
+        <li><b>Contoured panels.</b> <span>Lift your glutes like an invisible hand.</span></li>
+        <li><b>Graduated compression.</b> <span>Firm at the waist, flexible at the knee.</span></li>
       </ul>
     </div>
   </section>
 
   <section class="scp-chapter">
-    <div class="scp-chapter-media"><img src="{{ 'sculptia-lifestyle-couch.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-gray-chine.jpg' | asset_url }}" alt="" loading="lazy"></div>
     <div class="scp-chapter-copy">
-      <p class="scp-eyebrow scp-accent">LA PEAU</p>
-      <h2>Une peau à l'apparence plus lisse</h2>
-      <p>À chaque mouvement, le relief de la maille stimule la surface de la peau et active la circulation. Porté régulièrement, l'aspect peau d'orange s'estompe visiblement.</p>
+      <p class="scp-eyebrow scp-accent">CIRCULATION</p>
+      <h2>Fabric that massages with every move</h2>
+      <p>3D drainage lines boost circulation and lymphatic drainage from the moment you put them on.</p>
+      <ul class="scp-rich-bullets">
+        <li><b>Without Sculptia.</b> <span>Sluggish circulation, stubborn cellulite.</span></li>
+        <li><b>With Sculptia.</b> <span>Boosted circulation, smoother skin.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="scp-chapter scp-reverse">
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-navy.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-copy">
+      <p class="scp-eyebrow scp-accent">THE WAISTBAND</p>
+      <h2>High waist, flat tummy</h2>
+      <p>The wide waistband holds your tummy gently in place and shapes your silhouette — without ever rolling down.</p>
+      <ul class="scp-bullets">
+        <li><span class="scp-check">✓</span>Gentle, secure hold</li>
+        <li><span class="scp-check">✓</span>Never rolls, never slips</li>
+        <li><span class="scp-check">✓</span>Naturally flattering shape</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="scp-chapter">
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-charcoal.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-copy">
+      <p class="scp-eyebrow scp-accent">YOUR SKIN</p>
+      <h2>Visibly smoother-looking skin</h2>
+      <p>The textured mesh stimulates your skin with every move. The look of dimpled skin visibly fades.</p>
     </div>
   </section>
 
   <div class="scp-timeline">
     <div class="scp-timeline-row">
-      <div class="scp-timeline-step"><div class="t">Jour 1</div><div class="d">Effet lift immédiat</div></div>
-      <div class="scp-timeline-step"><div class="t">2 sem.</div><div class="d">Peau plus tonique</div></div>
-      <div class="scp-timeline-step"><div class="t">4 sem.</div><div class="d">Aspect plus lisse</div></div>
+      <div class="scp-timeline-step"><div class="t">Day 1</div><div class="d">Instant lift</div></div>
+      <div class="scp-timeline-step"><div class="t">2 wks</div><div class="d">Firmer skin</div></div>
+      <div class="scp-timeline-step"><div class="t">4 wks</div><div class="d">Smoother look</div></div>
     </div>
   </div>
 
   <section class="scp-features">
     <div class="scp-feature-grid">
-      <div class="scp-feature-card"><h3>Ne roule jamais</h3><p>La ceinture large reste en place, même en squat.</p></div>
-      <div class="scp-feature-card"><h3>100&nbsp;% opaque</h3><p>Testé squat&nbsp;: aucune transparence, même en clair.</p></div>
-      <div class="scp-feature-card"><h3>Sans coutures gênantes</h3><p>Pas de frottement, pas de pincement.</p></div>
-      <div class="scp-feature-card"><h3>Respirant</h3><p>Évacue l'humidité et sèche vite.</p></div>
+      <div class="scp-feature-card"><h3>Never rolls down</h3><p>Stays put, even in a squat.</p></div>
+      <div class="scp-feature-card"><h3>100% opaque</h3><p>Zero see-through, squat-tested.</p></div>
+      <div class="scp-feature-card"><h3>No annoying seams</h3><p>No chafing, no pinching.</p></div>
+      <div class="scp-feature-card"><h3>Breathable</h3><p>Wicks moisture, dries fast.</p></div>
     </div>
   </section>
 
+  <!--
+    NOTE: no outdoor/"walking in the city" photo available among the
+    supplied visuals — beige colorway used here in the meantime.
+  -->
   <section class="scp-chapter">
-    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-black.jpg' | asset_url }}" alt="" loading="lazy"></div>
+    <div class="scp-chapter-media"><img src="{{ 'sculptia-colorway-beige.jpg' | asset_url }}" alt="" loading="lazy"></div>
     <div class="scp-chapter-copy">
-      <p class="scp-eyebrow scp-accent">AU QUOTIDIEN</p>
-      <h2>Du sport à la vie de tous les jours</h2>
-      <p>Yoga du matin, courses de midi, brunch du dimanche&nbsp;: il se porte avec des baskets comme avec des bottes. Un seul legging, toutes vos journées.</p>
+      <p class="scp-eyebrow scp-accent">EVERYDAY WEAR</p>
+      <h2>From workouts to everyday life</h2>
+      <p>Wear it with sneakers or boots, from morning yoga to Sunday brunch.</p>
       <div class="scp-tag-row">
-        <span class="scp-tag">SPORT</span><span class="scp-tag">BUREAU</span><span class="scp-tag">VOYAGE</span><span class="scp-tag">VILLE</span>
+        <span class="scp-tag">WORKOUT</span><span class="scp-tag">OFFICE</span><span class="scp-tag">TRAVEL</span><span class="scp-tag">CITY</span>
       </div>
     </div>
   </section>
 
   <section class="scp-material">
-    <h2>Sculptant sans sacrifier le confort</h2>
-    <p>{{ section.settings.material_text | default: "70 % polyamide, 30 % élasthanne : une matière seconde peau qui s'oublie une fois enfilée." }}</p>
+    <h2>Sculpting without sacrificing comfort</h2>
+    <p>{{ section.settings.material_text | default: "70% nylon, 30% spandex — a second-skin fabric you'll forget you're wearing." }}</p>
   </section>
 
   <section class="scp-final-cta">
-    <h2>Prête à révéler votre silhouette&nbsp;?</h2>
-    <p>2 achetés + 1 OFFERT aujourd'hui · Livraison offerte dès 49€ · Remboursé 30 jours</p>
-    <a class="scp-cta scp-light" href="#scp-top">CHOISIR MON OFFRE</a>
+    <h2>Ready to reveal your shape?</h2>
+    <p>Buy 2 get 1 FREE today · Free shipping over $65 · 30-day refund</p>
+    <a class="scp-cta scp-light" href="#scp-top">CHOOSE MY BUNDLE</a>
   </section>
 
-  <section class="scp-reviews" id="scp-avis">
-    <h2>Adoré par plus de 7000 femmes</h2>
+  <section class="scp-reviews" id="scp-reviews">
+    <h2>Loved by over 7,000 women</h2>
     <div class="scp-review-summary">
       <div class="scp-review-avg">{{ section.settings.review_average | default: 4.7 }}</div>
       <div class="scp-stars" id="scp-stars-summary" style="justify-content:center;margin-top:6px;"></div>
-      <div class="scp-review-count">{{ section.settings.review_count | default: 355 }} avis vérifiés</div>
+      <div class="scp-review-count">{{ section.settings.review_count | default: 355 }} verified reviews</div>
       <div class="scp-review-bars" id="scp-review-bars"></div>
     </div>
-    {%- if section.settings.review_quote != blank -%}
-    <div class="scp-review-quote">
-      <div class="scp-stars" id="scp-stars-quote"></div>
-      <p>&ldquo;{{ section.settings.review_quote }}&rdquo;</p>
-    </div>
-    {%- endif -%}
-    <p class="scp-review-note">{{ section.settings.review_note | default: "D'autres avis clients seront ajoutés ici." }}</p>
+    <div id="scp-review-list"></div>
+    <p class="scp-review-note">{{ section.settings.review_note | default: "More Sculptia customer reviews will be added over time." }}</p>
   </section>
 
   <section class="scp-faq" id="scp-faq-list">
-    <h2>Questions fréquentes</h2>
+    <h2>Frequently Asked Questions</h2>
     {%- for block in section.blocks -%}
       {%- if block.type == 'faq' -%}
       <div class="scp-faq-item{% if forloop.first %} scp-open{% endif %}">
@@ -213,7 +222,8 @@
   </section>
 
   <div class="scp-sticky-cta">
-    <button class="scp-cta" id="scp-cta-sticky" type="button" style="margin-top:0;">AJOUTER AU PANIER · <span class="scp-num" id="scp-cta-price-sticky"></span></button>
+    <button class="scp-cta" id="scp-cta-sticky" type="button" style="margin-top:0;">ADD TO CART · <span class="scp-num" id="scp-cta-price-sticky"></span></button>
+    <p class="scp-cta-note" id="scp-cta-note-sticky"></p>
   </div>
 </div>
 
@@ -225,52 +235,47 @@
 
 {% schema %}
 {
-  "name": "Sculptia — Page produit",
+  "name": "Sculptia — Product Page",
   "settings": [
-    { "type": "header", "content": "Bandeau & badges" },
-    { "type": "text", "id": "announcement", "label": "Bandeau d'annonce" },
-    { "type": "text", "id": "badge_text", "label": "Badge produit", "default": "Best-seller" },
-    { "type": "text", "id": "urgency_text", "label": "Texte urgence" },
-    { "type": "header", "content": "Bénéfices (un par ligne)" },
+    { "type": "header", "content": "Banner & badges" },
+    { "type": "text", "id": "announcement", "label": "Announcement bar" },
+    { "type": "text", "id": "badge_text", "label": "Product badge", "default": "Best-Seller" },
+    { "type": "text", "id": "urgency_text", "label": "Urgency text" },
+    { "type": "header", "content": "Benefits (one per line)" },
     {
       "type": "textarea",
       "id": "benefit_bullets",
-      "label": "Bullets bénéfices",
-      "default": "Réduit visiblement la cellulite plus vite\nTonne vos jambes sans effort\nLift et galbe les fesses instantanément\nAnti-transparence, testé squat"
+      "label": "Benefit bullets",
+      "default": "Visibly reduces cellulite faster\nTones your legs effortlessly\nLifts and shapes your butt instantly\nSquat-proof, zero see-through"
     },
-    { "type": "header", "content": "Promesse" },
-    { "type": "text", "id": "promise_title", "label": "Titre" },
-    { "type": "textarea", "id": "promise_text", "label": "Texte" },
-    { "type": "header", "content": "Infographies (image_picker — sinon visuels par défaut)" },
-    { "type": "image_picker", "id": "infographic_1", "label": "Infographie 1" },
-    { "type": "image_picker", "id": "infographic_2", "label": "Infographie 2" },
-    { "type": "image_picker", "id": "infographic_3", "label": "Infographie 3" },
-    { "type": "header", "content": "Matière" },
-    { "type": "textarea", "id": "material_text", "label": "Texte matière" },
-    { "type": "header", "content": "Avis" },
-    { "type": "number", "id": "review_average", "label": "Note moyenne", "default": 4.7 },
-    { "type": "number", "id": "review_count", "label": "Nombre d'avis", "default": 355 },
-    { "type": "textarea", "id": "review_quote", "label": "Avis mis en avant" },
-    { "type": "text", "id": "review_note", "label": "Note sous les avis" }
+    { "type": "header", "content": "Promise" },
+    { "type": "text", "id": "promise_title", "label": "Title" },
+    { "type": "textarea", "id": "promise_text", "label": "Text" },
+    { "type": "header", "content": "Material" },
+    { "type": "textarea", "id": "material_text", "label": "Material text" },
+    { "type": "header", "content": "Reviews" },
+    { "type": "number", "id": "review_average", "label": "Average rating", "default": 4.7 },
+    { "type": "number", "id": "review_count", "label": "Number of reviews", "default": 355 },
+    { "type": "text", "id": "review_note", "label": "Note below reviews" }
   ],
   "blocks": [
     {
       "type": "faq",
-      "name": "Question FAQ",
+      "name": "FAQ question",
       "settings": [
         { "type": "text", "id": "question", "label": "Question" },
-        { "type": "richtext", "id": "answer", "label": "Réponse" }
+        { "type": "richtext", "id": "answer", "label": "Answer" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Sculptia — Page produit",
+      "name": "Sculptia — Product Page",
       "blocks": [
-        { "type": "faq", "settings": { "question": "Est-ce qu'on voit à travers quand je squatte ?", "answer": "<p>Non. La maille 3D compressive est entièrement opaque et anti-transparence, même dans les couleurs claires — testé squat.</p>" } },
-        { "type": "faq", "settings": { "question": "Comment taille-t-il ? Quelle taille choisir ?", "answer": "<p>Il taille normalement du XS au XXL. Entre deux tailles, prenez la plus petite pour plus de compression.</p>" } },
-        { "type": "faq", "settings": { "question": "Au bout de combien de temps verrai-je des résultats ?", "answer": "<p>Effet lift dès le premier jour. Peau plus tonique dès 2 semaines. Aspect plus lisse après 4 semaines d'utilisation régulière.</p>" } },
-        { "type": "faq", "settings": { "question": "Livraison & retours ?", "answer": "<p>Livraison offerte dès 49€ d'achat. Retours et échanges gratuits sous 30 jours si le produit ne vous convient pas.</p>" } }
+        { "type": "faq", "settings": { "question": "Can you see through it when I squat?", "answer": "<p>No. The 3D compressive mesh is fully opaque and squat-proof, even in light colors.</p>" } },
+        { "type": "faq", "settings": { "question": "How does it fit? What size should I get?", "answer": "<p>It runs true to size from XS to XXL. Between two sizes, size down for more compression.</p>" } },
+        { "type": "faq", "settings": { "question": "When will I see results?", "answer": "<p>Instant lift on day 1. Firmer-looking skin by week 2. Visibly smoother by week 4 of regular wear.</p>" } },
+        { "type": "faq", "settings": { "question": "Shipping & returns?", "answer": "<p>Free shipping on orders over $65. Free returns and exchanges within 30 days if it's not right for you.</p>" } }
       ]
     }
   ]

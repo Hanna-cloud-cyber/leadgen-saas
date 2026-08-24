@@ -26,6 +26,7 @@
     "olive": { hex: "#5c6b3a", img: "sculptia-colorway-olive.jpg" },
     "kaki foncé": { hex: "#3a3a28", img: "sculptia-colorway-olive-dark.jpg" },
     "dark khaki": { hex: "#3a3a28", img: "sculptia-colorway-olive-dark.jpg" },
+    "dark olive": { hex: "#3a3a28", img: "sculptia-colorway-olive-dark.jpg" },
     "lavande": { hex: "#c3c3ec", img: "sculptia-colorway-lavender.jpg" },
     "lavender": { hex: "#c3c3ec", img: "sculptia-colorway-lavender.jpg" },
     "bleu ciel": { hex: "#29b8d8", img: "sculptia-colorway-sky-blue.jpg" },
@@ -53,13 +54,22 @@
   }
 
   var bundles = [
-    { id: "solo", name: "1 Legging", sub: "Pour essayer", qty: 1, badge: null },
-    { id: "duo", name: "2 achetés + 1 OFFERT", sub: "Un à porter, un à laver, un de rechange", qty: 2, badge: "LE PLUS POPULAIRE" },
-    { id: "trio", name: "3 achetés + 2 OFFERTS", sub: "Livraison offerte incluse", qty: 3, badge: "MEILLEURE VALEUR" }
+    { id: "solo", name: "1 Legging", sub: "Try it out", qty: 1, free: 0, badge: null },
+    { id: "duo", name: "Buy 2, Get 1 FREE", sub: "One to wear, one to wash, one to spare", qty: 2, free: 1, badge: "MOST POPULAR" },
+    { id: "trio", name: "Buy 3, Get 2 FREE", sub: "Free shipping included", qty: 3, free: 2, badge: "BEST VALUE" }
   ];
 
   var reviewBars = [
     { s: 5, c: 284 }, { s: 4, c: 47 }, { s: 3, c: 15 }, { s: 2, c: 6 }, { s: 1, c: 3 }
+  ];
+
+  // Placeholder reviews — written as examples of tone/length, not sourced
+  // from any real customer. Swap for genuine Sculptia reviews (real
+  // customers, their consent) or a reviews app (Judge.me, Loox, Yotpo...).
+  var reviews = [
+    { name: "Emily R.", rating: 5, text: "The fabric is really unique — I feel a light massage when I wear it. After a few weeks the difference is visible." },
+    { name: "Ashley M.", rating: 5, text: "The waistband never rolls down, even by the end of the day. Perfect fit and it really shapes." },
+    { name: "Taylor B.", rating: 4, text: "Super comfortable and opaque even in light colors. Wish there were more length options." }
   ];
 
   var state = {
@@ -107,10 +117,11 @@
     return fmt.replace(placeholder, value);
   }
 
-  function starsSVG() {
+  function starsSVG(filled) {
+    filled = filled == null ? 5 : filled;
     var out = "";
     for (var i = 0; i < 5; i++) {
-      out += '<svg width="16" height="16" viewBox="0 0 20 20" fill="var(--scp-ink)"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6.1-5.4-3.2-5.4 3.2 1.3-6.1L1.3 7.7l6.1-.6L10 1.5z"/></svg>';
+      out += '<svg width="16" height="16" viewBox="0 0 20 20" fill="' + (i < filled ? "var(--scp-ink)" : "var(--scp-line-strong)") + '"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6.1-5.4-3.2-5.4 3.2 1.3-6.1L1.3 7.7l6.1-.6L10 1.5z"/></svg>';
     }
     return out;
   }
@@ -118,9 +129,9 @@
   function el(id) { return document.getElementById(id); }
 
   function renderStars() {
-    ["scp-stars-hero", "scp-stars-summary", "scp-stars-quote"].forEach(function (id) {
+    ["scp-stars-hero", "scp-stars-summary"].forEach(function (id) {
       var n = el(id);
-      if (n) n.innerHTML = starsSVG();
+      if (n) n.innerHTML = starsSVG(5);
     });
   }
 
@@ -240,11 +251,28 @@
     var wrap = el("scp-review-bars");
     if (!wrap) return;
     wrap.innerHTML = reviewBars.map(function (r) {
+      var pct = (r.c / total) * 100;
       return (
         '<div class="scp-review-bar-row">' +
         '<span class="scp-lbl">' + r.s + " ★</span>" +
-        '<span class="scp-review-bar-track"><span class="scp-review-bar-fill" style="width:' + ((r.c / total) * 100).toFixed(1) + '%"></span></span>' +
-        '<span class="scp-cnt scp-num">' + r.c + "</span>" +
+        '<span class="scp-review-bar-track"><span class="scp-review-bar-fill" style="width:' + pct + '%"></span></span>' +
+        '<span class="scp-pct scp-num">' + pct.toFixed(0) + "%</span>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function renderReviewList() {
+    var wrap = el("scp-review-list");
+    if (!wrap) return;
+    wrap.innerHTML = reviews.map(function (r) {
+      return (
+        '<div class="scp-review-quote">' +
+        '<div class="scp-review-quote-head">' +
+        '<div class="scp-stars">' + starsSVG(r.rating) + "</div>" +
+        '<span class="scp-review-quote-name">' + r.name + "</span>" +
+        "</div>" +
+        "<p>&ldquo;" + r.text + "&rdquo;</p>" +
         "</div>"
       );
     }).join("");
@@ -268,7 +296,7 @@
 
     if (!variant) {
       if (ctaBtn) { ctaBtn.disabled = true; }
-      if (stockNote) stockNote.textContent = "Cette combinaison n'est pas disponible.";
+      if (stockNote) stockNote.textContent = "This combination isn't available.";
       return;
     }
 
@@ -281,12 +309,19 @@
       if (wasEl) wasEl.textContent = formatMoney(unitCompare);
       if (saveEl) {
         var pct = Math.round((1 - unitPrice / unitCompare) * 100);
-        saveEl.textContent = "ÉCONOMISEZ " + pct + "%";
+        saveEl.textContent = "SAVE " + pct + "%";
       }
     }
 
     if (ctaPrice) ctaPrice.textContent = formatMoney(totalPrice);
     if (ctaPriceSticky) ctaPriceSticky.textContent = formatMoney(totalPrice);
+
+    var noteEl = el("scp-cta-note");
+    var noteStickyEl = el("scp-cta-note-sticky");
+    var bundle = bundles.find(function (x) { return x.id === state.bundleId; });
+    var note = bundle && bundle.free > 0 ? "That's " + bundle.qty + " leggings, " + bundle.free + " free" : "1 legging";
+    if (noteEl) noteEl.textContent = note;
+    if (noteStickyEl) noteStickyEl.textContent = note;
 
     if (ctaBtn) {
       ctaBtn.disabled = !variant.available;
@@ -295,8 +330,8 @@
     }
     if (stockNote) {
       stockNote.textContent = variant.available
-        ? "En stock · Livraison offerte · Remboursé 30 jours"
-        : "Rupture de stock pour cette combinaison.";
+        ? "In stock · Free shipping · 30-day refund"
+        : "Out of stock for this combination.";
     }
   }
 
@@ -308,7 +343,7 @@
 
     ctaBtn.disabled = true;
     var original = ctaBtn.textContent;
-    ctaBtn.textContent = "Ajout en cours…";
+    ctaBtn.textContent = "Adding…";
 
     fetch(window.Shopify && window.Shopify.routes && window.Shopify.routes.root
       ? window.Shopify.routes.root + "cart/add.js"
@@ -323,7 +358,7 @@
           ? window.Shopify.routes.root : "/") + "cart";
       })
       .catch(function () {
-        ctaBtn.textContent = "Erreur — réessayer";
+        ctaBtn.textContent = "Error — try again";
         setTimeout(function () { ctaBtn.textContent = original; ctaBtn.disabled = false; }, 2000);
       });
   }
@@ -377,6 +412,7 @@
   renderBundles();
   updateVariant();
   renderReviewBars();
+  renderReviewList();
   renderFaq();
   startCountdown();
 })();

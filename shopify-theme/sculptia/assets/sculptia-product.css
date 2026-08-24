@@ -75,7 +75,8 @@
 .scp-bundle-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--scp-line-strong);flex-shrink:0;margin-top:3px;}
 .scp-bundle.scp-active .scp-bundle-radio{border-color:var(--scp-ink);background:var(--scp-ink);box-shadow:inset 0 0 0 3px var(--scp-card);}
 .scp-bundle-mid{flex:1;}
-.scp-bundle-name{font-weight:700;font-size:14px;}
+.scp-bundle-name{font-weight:700;font-size:14px;color:var(--scp-ink);}
+.scp-cta-note{text-align:center;font-size:11px;color:var(--scp-ink-faint);margin-top:6px;}
 .scp-bundle-sub{font-size:12px;color:var(--scp-ink-faint);margin-top:2px;}
 .scp-bundle-save{font-size:12px;color:var(--scp-ink-faint);margin-top:5px;}
 .scp-bundle-price{text-align:right;}
@@ -140,14 +141,16 @@
 .scp-reviews{max-width:700px;margin:0 auto;padding:76px 24px;}
 .scp-reviews > h2{font-size:26px;text-align:center;}
 .scp-review-summary{border:1px solid var(--scp-line);background:var(--scp-card);padding:30px;margin-top:32px;text-align:center;}
+.scp-review-quote-head{display:flex;align-items:center;justify-content:space-between;}
+.scp-review-quote-name{font-size:12px;font-weight:700;color:var(--scp-ink-soft);}
 .scp-review-avg{font-family:var(--scp-font-display);font-weight:900;font-size:44px;}
 .scp-review-count{font-size:13px;color:var(--scp-ink-faint);margin-top:4px;}
-.scp-review-bars{margin-top:24px;display:grid;gap:8px;text-align:left;}
-.scp-review-bar-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--scp-ink-soft);}
-.scp-review-bar-row .scp-lbl{width:34px;flex-shrink:0;}
-.scp-review-bar-track{flex:1;height:7px;background:var(--scp-surface);}
-.scp-review-bar-fill{height:100%;background:var(--scp-ink);}
-.scp-review-bar-row .scp-cnt{width:32px;text-align:right;flex-shrink:0;}
+.scp-review-bars{margin-top:28px;display:grid;gap:12px;text-align:left;}
+.scp-review-bar-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--scp-ink-soft);}
+.scp-review-bar-row .scp-lbl{width:36px;flex-shrink:0;font-weight:600;color:var(--scp-ink);}
+.scp-review-bar-track{flex:1;height:12px;background:var(--scp-surface);border-radius:99px;overflow:hidden;}
+.scp-review-bar-fill{height:100%;background:var(--scp-ink);border-radius:99px;}
+.scp-review-bar-row .scp-pct{width:40px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;color:var(--scp-ink-soft);}
 .scp-review-quote{border:1px solid var(--scp-line);background:var(--scp-card);padding:26px;margin-top:16px;}
 .scp-review-quote p{font-size:15px;line-height:1.55;margin-top:12px;}
 .scp-review-note{text-align:center;font-size:12px;color:var(--scp-ink-faint);margin-top:16px;}

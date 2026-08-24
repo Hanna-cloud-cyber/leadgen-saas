@@ -32,17 +32,17 @@ le contenu correspondant.
 
 ## 2. Créer le produit
 
-Dans Produits → Ajouter un produit :
+Dans Produits → Ajouter un produit — assure-toi d'abord que la devise de
+ta boutique (Réglages → Général) est bien en USD.
 
-- **Titre** : `Legging Sculptia 3D Anti-Cellulite`
-- **Prix** : `29,00 €` et **Prix comparé** : `49,00 €` (pour afficher le
-  barré -41 % automatiquement — c'est le vrai prix Shopify qui s'affiche,
+- **Titre** : `Sculptia 3D Anti-Cellulite Legging`
+- **Prix** : `$38.00` et **Prix comparé** : `$65.00` (pour afficher le
+  barré -42 % automatiquement — c'est le vrai prix Shopify qui s'affiche,
   plus besoin d'y toucher dans le code)
-- **Option 1** : nommée exactement `Couleur` (ou `Color`), avec ces valeurs
+- **Option 1** : nommée exactement `Color` (ou `Couleur`), avec ces 8 valeurs
   (respecte l'orthographe, la correspondance couleur↔photo est basée dessus) :
-  `Noir, Gris Charbon, Gris Chiné, Beige, Marine, Vert Olive, Kaki Foncé,
-  Lavande, Bleu Ciel, Bleu Clair, Rose Fuchsia, Rose Clair`
-- **Option 2** : nommée exactement `Taille` (ou `Size`), valeurs `XS, S, M, L, XL, XXL`
+  `Black, Heather Grey, Beige, Navy, Dark Olive, Hot Pink, Light Pink, Light Blue`
+- **Option 2** : nommée exactement `Size` (ou `Taille`), valeurs `XS, S, M, L, XL, XXL`
 - Renseigne le stock de chaque variante normalement.
 
 Puis, dans l'onglet **Modèle de thème** de la fiche produit (en bas à
@@ -55,14 +55,14 @@ nom du fichier photo à utiliser). Sans entrée correspondante, le rond de
 couleur s'affiche en gris neutre et la galerie ne changera pas de photo,
 mais la vente fonctionne quand même.
 
-## 3. Important — la remise "2 achetés + 1 offert"
+## 3. Important — la remise "Buy 2, Get 1 FREE"
 
-Le bouton "Ajouter au panier" ajoute simplement **la quantité choisie**
+Le bouton "Add to Cart" ajoute simplement **la quantité choisie**
 (1, 2 ou 3) de la variante sélectionnée — c'est tout ce qu'un thème peut
-faire. Le prix réduit affiché en face de chaque formule (58 €, 87 €...)
+faire. Le prix réduit affiché en face de chaque formule ($76, $114...)
 n'est **pas** appliqué automatiquement au panier : pour que le client
 paie vraiment ce prix-là, crée une **remise automatique** dans
-Marketing → Remises → Automatique, du type **"Achetez X, obtenez Y"**
+Marketing → Remises → Automatique, du type **"Buy X, get Y"**
 (ex. achetez 2, obtenez 1 gratuit) appliquée à ce produit. Shopify se
 charge alors du calcul exact au panier/checkout — c'est plus fiable que
 de le faire côté thème, et c'est la méthode que Shopify recommande.
