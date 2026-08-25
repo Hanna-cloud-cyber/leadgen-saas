@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Colorway, SculptiaProduct } from "./data";
 
 const ASSETS = "/sculptia/product-assets";
@@ -635,8 +635,37 @@ function ImageTextRow({
   );
 }
 
+function msUntilMidnight() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+  return midnight.getTime() - now.getTime();
+}
+
+function formatCountdown(ms: number) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return hours > 0
+    ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+    : `${pad(minutes)}:${pad(seconds)}`;
+}
+
 function CountdownBadge() {
-  return <span className="font-mono font-bold">29:35</span>;
+  const [remaining, setRemaining] = useState<number | null>(null);
+
+  useEffect(() => {
+    setRemaining(msUntilMidnight());
+    const id = setInterval(() => setRemaining(msUntilMidnight()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  if (remaining === null) {
+    return <span className="font-mono font-bold">&nbsp;</span>;
+  }
+
+  return <span className="font-mono font-bold">{formatCountdown(remaining)}</span>;
 }
 
 function TruckIcon() {
