@@ -87,7 +87,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
     }
 
     try {
-      await addLine(variantId, bundle.qty);
+      await addLine(variantId, bundle.qty + bundle.free);
       setCartOpen(true);
     } catch {
       // error already captured in cartError by the hook
@@ -291,7 +291,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
             )}
             <p className="text-center text-xs text-neutral-400 mt-1.5">
               {bundle.free > 0
-                ? `That's ${bundle.qty} leggings, ${bundle.free} free`
+                ? `That's ${bundle.qty + bundle.free} leggings, ${bundle.free} free`
                 : "1 legging"}
             </p>
 
@@ -542,7 +542,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
           {addToCartLabel}
         </button>
         <p className="text-center text-[11px] text-neutral-400 mt-1">
-          {bundle.free > 0 ? `That's ${bundle.qty} leggings, ${bundle.free} free` : "1 legging"}
+          {bundle.free > 0 ? `That's ${bundle.qty + bundle.free} leggings, ${bundle.free} free` : "1 legging"}
         </p>
       </div>
 
