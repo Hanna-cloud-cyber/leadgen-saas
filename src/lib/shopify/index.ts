@@ -34,7 +34,10 @@ async function shopifyFetch<T>(
   );
 
   if (!res.ok) {
-    throw new Error(`Shopify Storefront API error: ${res.status} ${res.statusText}`);
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `Shopify Storefront API error: ${res.status} ${res.statusText} — ${body.slice(0, 300)}`
+    );
   }
 
   const json = (await res.json()) as GraphQLResponse<T>;
