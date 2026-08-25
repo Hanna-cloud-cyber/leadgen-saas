@@ -379,8 +379,8 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
           <div className="grid grid-cols-3 text-center gap-4">
             {[
               ["Day 1", "Instant lift"],
-              ["2 wks", "Firmer skin"],
-              ["4 wks", "Smoother look"],
+              ["2 Weeks", "Firmer skin"],
+              ["4 Weeks", "Smoother look"],
             ].map(([t, d]) => (
               <div key={t}>
                 <div className="text-xl font-black">{t}</div>
@@ -600,7 +600,7 @@ function ImageTextRow({
       </div>
       <div className={reverse ? "md:order-1" : ""}>
         <p className="text-[11px] font-bold tracking-[0.25em] text-neutral-400">{eyebrow}</p>
-        <h2 className="text-2xl sm:text-3xl font-black uppercase mt-2 leading-tight">{title}</h2>
+        <h2 className="text-[21px] sm:text-3xl font-black uppercase mt-2 leading-tight tracking-tight sm:tracking-normal">{title}</h2>
         {text && <p className="text-neutral-500 mt-4">{text}</p>}
         {bullets.length > 0 && (
           <ul className="mt-4 space-y-2">
