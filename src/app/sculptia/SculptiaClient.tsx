@@ -10,6 +10,14 @@ function usd(n: number) {
   return `$${n.toFixed(2)}`;
 }
 
+// Colorway studio photos have a lot of headroom above the model; a plain
+// centered object-cover crops into her forehead on the 4:5 product frame.
+// Bias the crop upward for those specifically — lifestyle photos are
+// already framed tightly and don't need it.
+function photoObjectPosition(src: string) {
+  return src.includes("colorway-") ? "object-[center_35%]" : "object-center";
+}
+
 function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
   return (
     <div className="flex gap-0.5" aria-label={`${rating} out of 5`}>
@@ -131,7 +139,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                 src={gallery[galleryIndex]}
                 alt={`Sculptia 3D Anti-Cellulite Legging — ${color.label}`}
                 fill
-                className="object-cover"
+                className={`object-cover ${photoObjectPosition(gallery[galleryIndex])}`}
                 priority
               />
             </div>
@@ -144,7 +152,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                     i === galleryIndex ? "border-[#161616]" : "border-transparent"
                   }`}
                 >
-                  <Image src={src} alt="" fill className="object-cover" />
+                  <Image src={src} alt="" fill className={`object-cover ${photoObjectPosition(src)}`} />
                 </button>
               ))}
             </div>
@@ -599,7 +607,7 @@ function ImageTextRow({
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 py-14 grid md:grid-cols-2 gap-8 items-center">
       <div className={`relative aspect-[4/5] bg-neutral-100 ${reverse ? "md:order-2" : ""}`}>
-        <Image src={image} alt={title} fill className="object-cover" />
+        <Image src={image} alt={title} fill className={`object-cover ${photoObjectPosition(image)}`} />
       </div>
       <div className={reverse ? "md:order-1" : ""}>
         <p className="text-[11px] font-bold tracking-[0.25em] text-neutral-400">{eyebrow}</p>
