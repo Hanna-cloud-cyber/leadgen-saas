@@ -53,12 +53,14 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
   const bundle = bundles.find((b) => b.id === bundleId)!;
   const solo = bundles.find((b) => b.id === "solo")!;
 
-  const gallery = [
-    color.image,
-    `${ASSETS}/colorway-black.png`,
-    `${ASSETS}/lifestyle-couch.png`,
-    `${ASSETS}/lifestyle-yoga.png`,
-  ];
+  const gallery = Array.from(
+    new Set([
+      color.image,
+      `${ASSETS}/colorway-black.png`,
+      `${ASSETS}/lifestyle-couch.png`,
+      `${ASSETS}/lifestyle-yoga.png`,
+    ])
+  );
 
   async function handleAddToCart() {
     if (!shopifyEnabled) {
