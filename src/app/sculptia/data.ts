@@ -1,3 +1,5 @@
+import { getProductByHandle, shopifyConfigured, type ShopifyVariant } from "@/lib/shopify";
+
 export type Colorway = {
   id: string;
   label: string;
@@ -5,7 +7,7 @@ export type Colorway = {
   image: string;
 };
 
-export const colorways: Colorway[] = [
+export const fallbackColorways: Colorway[] = [
   { id: "black", label: "Black", swatch: "#161616", image: "/sculptia/product-assets/colorway-black.png" },
   { id: "heather-grey", label: "Heather Grey", swatch: "#9a9a9a", image: "/sculptia/product-assets/colorway-gray-chine.png" },
   { id: "beige", label: "Beige", swatch: "#d9c9a8", image: "/sculptia/product-assets/colorway-beige.png" },
@@ -16,7 +18,10 @@ export const colorways: Colorway[] = [
   { id: "light-blue", label: "Light Blue", swatch: "#cfe8f5", image: "/sculptia/product-assets/colorway-light-blue.png" },
 ];
 
-export const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+export const fallbackSizes = ["XS", "S", "M", "L", "XL", "XXL"];
+
+export const fallbackPrice = 38;
+export const fallbackCompareAt = 65;
 
 export type Bundle = {
   id: string;
@@ -29,6 +34,11 @@ export type Bundle = {
   badge?: string;
 };
 
+// Bundle pricing is a merchandising construct, not a Shopify catalog price:
+// it's what the page *shows* per bundle. What the customer actually pays is
+// enforced by a Shopify "Buy X, Get Y" automatic discount configured in
+// Marketing → Discounts (see README-SHOPIFY.md). Keep these numbers in sync
+// with that discount by hand.
 export const bundles: Bundle[] = [
   {
     id: "solo",
@@ -112,3 +122,128 @@ export const faqs = [
     a: "Free shipping on orders over $65. Free returns and exchanges within 30 days if it's not right for you.",
   },
 ];
+
+export type SculptiaProduct = {
+  shopifyEnabled: boolean;
+  productId: string | null;
+  colorways: Colorway[];
+  sizes: string[];
+  price: number;
+  compareAt: number;
+  currency: string;
+  // "Color label|Size label" -> Shopify variant GID, for cart mutations.
+  variantMap: Record<string, string>;
+  bundles: Bundle[];
+  reviewBreakdown: typeof reviewBreakdown;
+  reviewTotal: number;
+  reviewAverage: number;
+  reviews: typeof reviews;
+  faqs: typeof faqs;
+};
+
+const PRODUCT_HANDLE = process.env.SHOPIFY_PRODUCT_HANDLE || "sculptia-3d-anti-cellulite-legging";
+
+function variantKey(color: string, size: string) {
+  return `${color}|${size}`;
+}
+
+function buildFallbackProduct(): SculptiaProduct {
+  return {
+    shopifyEnabled: false,
+    productId: null,
+    colorways: fallbackColorways,
+    sizes: fallbackSizes,
+    price: fallbackPrice,
+    compareAt: fallbackCompareAt,
+    currency: "USD",
+    variantMap: {},
+    bundles,
+    reviewBreakdown,
+    reviewTotal,
+    reviewAverage,
+    reviews,
+    faqs,
+  };
+}
+
+function mapShopifyColorways(
+  colorValues: string[],
+  variants: ShopifyVariant[]
+): Colorway[] {
+  return colorValues.map((label) => {
+    const local = fallbackColorways.find(
+      (c) => c.label.toLowerCase() === label.toLowerCase()
+    );
+    const variantWithImage = variants.find(
+      (v) =>
+        v.selectedOptions.some(
+          (o) => o.name === "Color" && o.value === label
+        ) && v.image
+    );
+    return {
+      id: local?.id ?? label.toLowerCase().replace(/\s+/g, "-"),
+      label,
+      swatch: local?.swatch ?? "#a3a3a3",
+      image: variantWithImage?.image?.url ?? local?.image ?? fallbackColorways[0].image,
+    };
+  });
+}
+
+// Fetches live product data (colors, sizes, prices, variant IDs) from the
+// Shopify Storefront API. Falls back to the hardcoded catalog above when
+// Shopify isn't configured (no env vars) or the request fails, so the page
+// always renders — see README-SHOPIFY.md for setup.
+export async function getSculptiaProduct(): Promise<SculptiaProduct> {
+  if (!shopifyConfigured) {
+    return buildFallbackProduct();
+  }
+
+  try {
+    const product = await getProductByHandle(PRODUCT_HANDLE);
+    if (!product) {
+      console.warn(
+        `[shopify] No product found for handle "${PRODUCT_HANDLE}" — using fallback catalog.`
+      );
+      return buildFallbackProduct();
+    }
+
+    const colorOption = product.options.find((o) => o.name === "Color");
+    const sizeOption = product.options.find((o) => o.name === "Size");
+
+    const colorways = colorOption
+      ? mapShopifyColorways(colorOption.values, product.variants)
+      : fallbackColorways;
+    const sizes = sizeOption ? sizeOption.values : fallbackSizes;
+
+    const variantMap: Record<string, string> = {};
+    for (const variant of product.variants) {
+      const color = variant.selectedOptions.find((o) => o.name === "Color")?.value;
+      const size = variant.selectedOptions.find((o) => o.name === "Size")?.value;
+      if (color && size) {
+        variantMap[variantKey(color, size)] = variant.id;
+      }
+    }
+
+    return {
+      shopifyEnabled: true,
+      productId: product.id,
+      colorways,
+      sizes,
+      price: Number(product.priceRange.minVariantPrice.amount),
+      compareAt: Number(
+        product.compareAtPriceRange.minVariantPrice.amount || product.priceRange.minVariantPrice.amount
+      ),
+      currency: product.priceRange.minVariantPrice.currencyCode,
+      variantMap,
+      bundles,
+      reviewBreakdown,
+      reviewTotal,
+      reviewAverage,
+      reviews,
+      faqs,
+    };
+  } catch (err) {
+    console.error("[shopify] Failed to fetch product, using fallback catalog:", err);
+    return buildFallbackProduct();
+  }
+}
