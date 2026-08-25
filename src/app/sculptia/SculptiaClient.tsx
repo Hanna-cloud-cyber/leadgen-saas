@@ -99,7 +99,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
   return (
     <div className="min-h-screen bg-white text-[#161616] font-sans">
       {/* Announcement bar */}
-      <div className="bg-[#161616] text-white text-[11px] sm:text-xs font-semibold tracking-wide text-center py-2 px-4">
+      <div className="bg-[#161616] text-white text-[8.5px] sm:text-xs font-semibold tracking-normal sm:tracking-wide text-center py-2 px-2 whitespace-nowrap overflow-hidden">
         FREE SHIPPING OVER {usd(solo.compareAt)} &nbsp;·&nbsp; BUY 2 GET 1 FREE — TODAY ONLY
       </div>
 
