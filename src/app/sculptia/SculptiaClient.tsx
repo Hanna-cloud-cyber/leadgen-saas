@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { Colorway, SculptiaProduct } from "./data";
+import { useCart } from "./useCart";
+import CartDrawer from "./CartDrawer";
 
 const ASSETS = "/sculptia/product-assets";
 
@@ -57,8 +59,8 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
   const [bundleId, setBundleId] = useState("duo");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [galleryIndex, setGalleryIndex] = useState(0);
-  const [cartStatus, setCartStatus] = useState<"idle" | "loading" | "error">("idle");
-  const [cartMessage, setCartMessage] = useState<string | null>(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const { cart, loading: cartLoading, error: cartError, addLine, updateLineQuantity, removeLine, setError: setCartError } = useCart();
 
   const bundle = bundles.find((b) => b.id === bundleId)!;
   const solo = bundles.find((b) => b.id === "solo")!;
@@ -74,39 +76,25 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
 
   async function handleAddToCart() {
     if (!shopifyEnabled) {
-      setCartStatus("error");
-      setCartMessage("Store checkout isn't connected yet — see README-SHOPIFY.md to enable it.");
+      setCartError("Store checkout isn't connected yet — see README-SHOPIFY.md to enable it.");
       return;
     }
 
     const variantId = variantMap[`${color.label}|${size}`];
     if (!variantId) {
-      setCartStatus("error");
-      setCartMessage("This color/size isn't available right now.");
+      setCartError("This color/size isn't available right now.");
       return;
     }
 
-    setCartStatus("loading");
-    setCartMessage(null);
     try {
-      const res = await fetch("/api/sculptia/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ variantId, quantity: bundle.qty }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.checkoutUrl) {
-        throw new Error(data.error || "Checkout unavailable.");
-      }
-      window.location.href = data.checkoutUrl;
-    } catch (err) {
-      setCartStatus("error");
-      setCartMessage(err instanceof Error ? err.message : "Something went wrong — try again.");
+      await addLine(variantId, bundle.qty);
+      setCartOpen(true);
+    } catch {
+      // error already captured in cartError by the hook
     }
   }
 
-  const addToCartLabel =
-    cartStatus === "loading" ? "ADDING…" : `ADD TO CART · ${usd(bundle.price)}`;
+  const addToCartLabel = cartLoading ? "ADDING…" : `ADD TO CART · ${usd(bundle.price)}`;
 
   return (
     <div className="min-h-screen bg-white text-[#161616] font-sans">
@@ -122,11 +110,16 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
             THE LEGGING
           </span>
           <span className="text-2xl font-black tracking-[0.3em]">SCULPTIA</span>
-          <button className="relative" aria-label="Cart">
+          <button className="relative" aria-label="Cart" onClick={() => setCartOpen(true)}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" strokeWidth="1.8">
               <path d="M6 8h12l-1 12H7L6 8z" />
               <path d="M9 8V6a3 3 0 0 1 6 0v2" />
             </svg>
+            {cart && cart.totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#161616] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {cart.totalQuantity}
+              </span>
+            )}
           </button>
         </div>
       </header>
@@ -288,13 +281,13 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
 
             <button
               onClick={handleAddToCart}
-              disabled={cartStatus === "loading"}
+              disabled={cartLoading}
               className="w-full bg-[#161616] text-white font-bold tracking-wide py-4 mt-5 hover:bg-neutral-800 transition-colors disabled:opacity-60"
             >
               {addToCartLabel}
             </button>
-            {cartMessage && (
-              <p className="text-center text-xs text-red-600 mt-1.5">{cartMessage}</p>
+            {cartError && (
+              <p className="text-center text-xs text-red-600 mt-1.5">{cartError}</p>
             )}
             <p className="text-center text-xs text-neutral-400 mt-1.5">
               {bundle.free > 0
@@ -531,7 +524,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
       <div className="fixed bottom-0 inset-x-0 bg-white border-t border-neutral-200 p-3 lg:hidden z-40">
         <button
           onClick={handleAddToCart}
-          disabled={cartStatus === "loading"}
+          disabled={cartLoading}
           className="w-full bg-[#161616] text-white font-bold tracking-wide py-3 disabled:opacity-60"
         >
           {addToCartLabel}
@@ -576,6 +569,15 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
           © {new Date().getFullYear()} Sculptia. All rights reserved.
         </p>
       </footer>
+
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        cart={cart}
+        loading={cartLoading}
+        onUpdateQuantity={updateLineQuantity}
+        onRemove={removeLine}
+      />
     </div>
   );
 }
@@ -662,6 +664,9 @@ function CountdownBadge() {
   const [remaining, setRemaining] = useState<number | null>(null);
 
   useEffect(() => {
+    // Deliberately client-only: computing this during render would mismatch
+    // between server render time and client hydration time.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRemaining(msUntilMidnight());
     const id = setInterval(() => setRemaining(msUntilMidnight()), 1000);
     return () => clearInterval(id);

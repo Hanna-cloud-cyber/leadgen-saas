@@ -160,12 +160,136 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
   };
 }
 
+export type CartLineInput = { merchandiseId: string; quantity: number };
+
+export type CartLine = {
+  id: string;
+  quantity: number;
+  merchandiseId: string;
+  title: string;
+  variantTitle: string;
+  price: number;
+  compareAtPrice: number | null;
+  image: { url: string; altText: string | null } | null;
+  availableForSale: boolean;
+};
+
+export type Cart = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+  subtotal: number;
+  total: number;
+  currency: string;
+  lines: CartLine[];
+};
+
+const CART_FRAGMENT = /* GraphQL */ `
+  fragment CartFields on Cart {
+    id
+    checkoutUrl
+    totalQuantity
+    cost {
+      subtotalAmount {
+        amount
+        currencyCode
+      }
+      totalAmount {
+        amount
+        currencyCode
+      }
+    }
+    lines(first: 50) {
+      nodes {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+            title
+            availableForSale
+            price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
+              amount
+            }
+            image {
+              url
+              altText
+            }
+            product {
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+type RawCart = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+  cost: {
+    subtotalAmount: ShopifyMoney;
+    totalAmount: ShopifyMoney;
+  };
+  lines: {
+    nodes: {
+      id: string;
+      quantity: number;
+      merchandise: {
+        id: string;
+        title: string;
+        availableForSale: boolean;
+        price: ShopifyMoney;
+        compareAtPrice: { amount: string } | null;
+        image: { url: string; altText: string | null } | null;
+        product: { title: string };
+      };
+    }[];
+  };
+};
+
+function mapCart(raw: RawCart): Cart {
+  return {
+    id: raw.id,
+    checkoutUrl: raw.checkoutUrl,
+    totalQuantity: raw.totalQuantity,
+    subtotal: Number(raw.cost.subtotalAmount.amount),
+    total: Number(raw.cost.totalAmount.amount),
+    currency: raw.cost.subtotalAmount.currencyCode,
+    lines: raw.lines.nodes.map((line) => ({
+      id: line.id,
+      quantity: line.quantity,
+      merchandiseId: line.merchandise.id,
+      title: line.merchandise.product.title,
+      variantTitle: line.merchandise.title,
+      price: Number(line.merchandise.price.amount),
+      compareAtPrice: line.merchandise.compareAtPrice
+        ? Number(line.merchandise.compareAtPrice.amount)
+        : null,
+      image: line.merchandise.image,
+      availableForSale: line.merchandise.availableForSale,
+    })),
+  };
+}
+
+function checkCartErrors(userErrors: { field: string[]; message: string }[]) {
+  if (userErrors.length) {
+    throw new Error(`Shopify cart error: ${userErrors.map((e) => e.message).join(", ")}`);
+  }
+}
+
 const CART_CREATE_MUTATION = /* GraphQL */ `
+  ${CART_FRAGMENT}
   mutation CartCreate($lines: [CartLineInput!]!) {
     cartCreate(input: { lines: $lines }) {
       cart {
-        id
-        checkoutUrl
+        ...CartFields
       }
       userErrors {
         field
@@ -175,24 +299,125 @@ const CART_CREATE_MUTATION = /* GraphQL */ `
   }
 `;
 
-export type CartLineInput = { merchandiseId: string; quantity: number };
-
-export async function createCart(
-  lines: CartLineInput[]
-): Promise<{ id: string; checkoutUrl: string }> {
+export async function createCart(lines: CartLineInput[]): Promise<Cart> {
   const data = await shopifyFetch<{
     cartCreate: {
-      cart: { id: string; checkoutUrl: string } | null;
+      cart: RawCart | null;
       userErrors: { field: string[]; message: string }[];
     };
   }>(CART_CREATE_MUTATION, { lines });
 
-  const { cart, userErrors } = data.cartCreate;
-  if (userErrors.length) {
-    throw new Error(`Shopify cart error: ${userErrors.map((e) => e.message).join(", ")}`);
-  }
-  if (!cart) {
+  checkCartErrors(data.cartCreate.userErrors);
+  if (!data.cartCreate.cart) {
     throw new Error("Shopify cart creation failed — no cart returned.");
   }
-  return cart;
+  return mapCart(data.cartCreate.cart);
+}
+
+const CART_QUERY = /* GraphQL */ `
+  ${CART_FRAGMENT}
+  query CartById($id: ID!) {
+    cart(id: $id) {
+      ...CartFields
+    }
+  }
+`;
+
+export async function getCart(id: string): Promise<Cart | null> {
+  const data = await shopifyFetch<{ cart: RawCart | null }>(CART_QUERY, { id });
+  return data.cart ? mapCart(data.cart) : null;
+}
+
+const CART_LINES_ADD_MUTATION = /* GraphQL */ `
+  ${CART_FRAGMENT}
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function addCartLines(cartId: string, lines: CartLineInput[]): Promise<Cart> {
+  const data = await shopifyFetch<{
+    cartLinesAdd: {
+      cart: RawCart | null;
+      userErrors: { field: string[]; message: string }[];
+    };
+  }>(CART_LINES_ADD_MUTATION, { cartId, lines });
+
+  checkCartErrors(data.cartLinesAdd.userErrors);
+  if (!data.cartLinesAdd.cart) {
+    throw new Error("Could not add to cart.");
+  }
+  return mapCart(data.cartLinesAdd.cart);
+}
+
+const CART_LINES_UPDATE_MUTATION = /* GraphQL */ `
+  ${CART_FRAGMENT}
+  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function updateCartLine(
+  cartId: string,
+  lineId: string,
+  quantity: number
+): Promise<Cart> {
+  const data = await shopifyFetch<{
+    cartLinesUpdate: {
+      cart: RawCart | null;
+      userErrors: { field: string[]; message: string }[];
+    };
+  }>(CART_LINES_UPDATE_MUTATION, { cartId, lines: [{ id: lineId, quantity }] });
+
+  checkCartErrors(data.cartLinesUpdate.userErrors);
+  if (!data.cartLinesUpdate.cart) {
+    throw new Error("Could not update cart.");
+  }
+  return mapCart(data.cartLinesUpdate.cart);
+}
+
+const CART_LINES_REMOVE_MUTATION = /* GraphQL */ `
+  ${CART_FRAGMENT}
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function removeCartLine(cartId: string, lineId: string): Promise<Cart> {
+  const data = await shopifyFetch<{
+    cartLinesRemove: {
+      cart: RawCart | null;
+      userErrors: { field: string[]; message: string }[];
+    };
+  }>(CART_LINES_REMOVE_MUTATION, { cartId, lineIds: [lineId] });
+
+  checkCartErrors(data.cartLinesRemove.userErrors);
+  if (!data.cartLinesRemove.cart) {
+    throw new Error("Could not update cart.");
+  }
+  return mapCart(data.cartLinesRemove.cart);
 }
