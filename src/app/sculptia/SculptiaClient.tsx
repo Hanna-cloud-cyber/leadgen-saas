@@ -185,22 +185,8 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
               </span>
             </div>
 
-            <ul className="mt-5 space-y-2">
-              {[
-                "Visibly reduces cellulite faster",
-                "Tones your legs effortlessly",
-                "Lifts and shapes your butt instantly",
-                "Squat-proof, zero see-through",
-              ].map((b) => (
-                <li key={b} className="flex items-start gap-2 text-[15px]">
-                  <span className="text-green-600 font-bold mt-0.5">✓</span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-
             {/* Color selector */}
-            <div className="mt-6">
+            <div className="mt-5">
               <span className="text-xs font-bold tracking-wide">
                 COLOR: <span className="font-normal text-neutral-600">{color.label}</span>
               </span>
@@ -243,6 +229,20 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                 ))}
               </div>
             </div>
+
+            <ul className="mt-6 space-y-2">
+              {[
+                "Visibly reduces cellulite faster",
+                "Tones your legs effortlessly",
+                "Lifts and shapes your butt instantly",
+                "Squat-proof, zero see-through",
+              ].map((b) => (
+                <li key={b} className="flex items-start gap-2 text-[15px]">
+                  <span className="text-green-600 font-bold mt-0.5">✓</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
 
             {/* Urgency */}
             <div className="mt-5 bg-neutral-100 text-center py-3 text-sm font-semibold flex items-center justify-center gap-2">
