@@ -418,21 +418,13 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
         </section>
 
         {/* Daily use */}
-        {/*
-          NOTE: no outdoor/"walking in the city" photo available among the
-          supplied visuals — every shot received is studio or indoor. Copy
-          below is scoped to match what the studio photo actually shows
-          (fit + colorway), rather than claiming locations (office/city/
-          travel) the photo doesn't depict. Swap in a real lifestyle photo
-          and restore the fuller copy once you have one.
-        */}
         <ImageTextRow
           eyebrow="EVERYDAY WEAR"
-          title="One legging, every shade"
-          text="Squat-proof and true to size, so it looks this good whichever of the 8 colorways you pick."
+          title="From workouts to everyday life"
+          text="Wear it with sneakers or boots, from morning yoga to Sunday brunch."
           bullets={[]}
-          tags={["ALL-DAY COMFORT", "SQUAT-PROOF", "8 COLORS", "TRUE TO SIZE"]}
-          image={`${ASSETS}/colorway-beige.png`}
+          tags={["WORKOUT", "OFFICE", "TRAVEL", "CITY"]}
+          image={`${ASSETS}/lifestyle-office.png`}
         />
 
         {/* Material */}
