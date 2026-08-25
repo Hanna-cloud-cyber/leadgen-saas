@@ -438,7 +438,10 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
             Ready to reveal your shape?
           </h2>
           <p className="text-neutral-300 mt-3 text-sm">
-            Buy 2 get 1 FREE today · Free shipping over {usd(solo.compareAt)} · 30-day refund
+            Buy 2 get 1 FREE today · Free shipping over {usd(solo.compareAt)}
+            <br className="sm:hidden" />
+            <span className="hidden sm:inline"> </span>
+            <span className="whitespace-nowrap">· 30-day refund</span>
           </p>
           <a
             href="#top"
