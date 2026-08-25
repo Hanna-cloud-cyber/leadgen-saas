@@ -316,6 +316,18 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
           </div>
         </section>
 
+        {/* Anti-cellulite infographic */}
+        <section className="max-w-lg mx-auto px-4 sm:px-6 pb-10">
+          <div className="relative aspect-square">
+            <Image
+              src={`${ASSETS}/infographic-number1-legging.png`}
+              alt="The #1 anti-cellulite legging — smoothing and slimming"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </section>
+
         {/* Promise banner */}
         <section className="bg-[#161616] text-white text-center py-14 px-4">
           <p className="text-[11px] tracking-[0.3em] font-semibold text-neutral-400">
