@@ -155,7 +155,7 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
             <span className="inline-block bg-[#161616] text-white text-[11px] font-bold tracking-wider px-3 py-1 mb-4">
               BEST-SELLER
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black uppercase leading-tight">
+            <h1 className="text-[19px] sm:text-3xl font-black uppercase leading-tight tracking-tight whitespace-nowrap sm:whitespace-normal">
               Sculptia 3D Anti-Cellulite Legging
             </h1>
 
