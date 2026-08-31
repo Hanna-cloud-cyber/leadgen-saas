@@ -2,114 +2,204 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
+  --primary: #1a1a2e;
+  --accent: #0057b8;
+  --accent-hover: #004494;
+  --success: #16a34a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --surface: #f9fafb;
+  --card-hover: #f3f4f6;
+  --dark-bg: #1a1a2e;
+  --dark-text: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-surface: var(--surface);
+  --color-card-hover: var(--card-hover);
+  --color-dark-bg: var(--dark-bg);
+  --color-dark-text: var(--dark-text);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Glow effects */
-.glow-indigo {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15), 0 0 60px rgba(99, 102, 241, 0.05);
+/* ═══ BUTTONS ═══ */
+.btn-dark {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  padding: 12px 28px;
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: background 0.2s;
 }
+.btn-dark:hover { background: #000; }
 
-.glow-purple {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.1), 0 0 80px rgba(139, 92, 246, 0.05);
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  padding: 12px 28px;
+  border: 2px solid var(--primary);
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: all 0.2s;
 }
+.btn-outline:hover { background: var(--primary); color: #fff; }
 
-/* Gradient border effect */
-.gradient-border {
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  padding: 12px 28px;
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+.btn-accent:hover { background: var(--accent-hover); }
+
+/* ═══ PRODUCT CARD (FIFA style) ═══ */
+.product-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  transition: all 0.25s ease;
   position: relative;
 }
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.1), transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.product-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border-color: var(--border);
+}
+.product-card:hover .card-image {
+  transform: scale(1.03);
+}
+.card-image {
+  transition: transform 0.4s ease;
 }
 
-/* Hero background mesh */
-.hero-gradient {
-  background:
-    radial-gradient(ellipse 50% 50% at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 100%),
-    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 60% 40% at 50% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
+/* ═══ TOP BAR ═══ */
+.top-bar {
+  background: var(--primary);
+  color: #fff;
 }
 
-/* Smooth fade-in animation */
+/* ═══ NAV ═══ */
+.nav-link {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.nav-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ═══ HERO BANNER (FIFA style full-width) ═══ */
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ═══ SECTION HEADINGS ═══ */
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  text-transform: uppercase;
+}
+
+/* ═══ BADGE ═══ */
+.badge-sale {
+  background: #dc2626;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+.badge-new {
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+.badge-hot {
+  background: #ea580c;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ═══ ANIMATIONS ═══ */
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
+.animate-fade-in-up { animation: fade-in-up 0.5s ease forwards; }
+.animate-fade-in { animation: fade-in 0.4s ease forwards; }
 .animate-delay-100 { animation-delay: 100ms; }
 .animate-delay-200 { animation-delay: 200ms; }
 .animate-delay-300 { animation-delay: 300ms; }
-.animate-delay-400 { animation-delay: 400ms; }
 
-/* Pulse glow for CTA buttons */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.5); }
+/* ═══ QUANTITY ═══ */
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
 }
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-/* Glass effect */
-.glass {
-  background: rgba(17, 17, 27, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+.qty-btn:hover {
+  background: var(--foreground);
+  color: #fff;
+  border-color: var(--foreground);
 }
