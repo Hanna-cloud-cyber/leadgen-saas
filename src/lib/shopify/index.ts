@@ -160,6 +160,105 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
   };
 }
 
+export type ShopifyCollectionProduct = {
+  id: string;
+  handle: string;
+  title: string;
+  descriptionHtml: string;
+  featuredImage: { url: string; altText: string | null } | null;
+  priceRange: { minVariantPrice: ShopifyMoney };
+  compareAtPriceRange: { minVariantPrice: ShopifyMoney };
+  variants: ShopifyVariant[];
+};
+
+const COLLECTION_PRODUCTS_QUERY = /* GraphQL */ `
+  query CollectionByHandle($handle: String!) {
+    collection(handle: $handle) {
+      products(first: 50) {
+        nodes {
+          id
+          handle
+          title
+          descriptionHtml
+          featuredImage {
+            url
+            altText
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          compareAtPriceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          variants(first: 5) {
+            nodes {
+              id
+              title
+              availableForSale
+              selectedOptions {
+                name
+                value
+              }
+              price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+              image {
+                url
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getProductsByCollectionHandle(
+  handle: string
+): Promise<ShopifyCollectionProduct[] | null> {
+  const data = await shopifyFetch<{
+    collection: {
+      products: {
+        nodes: {
+          id: string;
+          handle: string;
+          title: string;
+          descriptionHtml: string;
+          featuredImage: { url: string; altText: string | null } | null;
+          priceRange: { minVariantPrice: ShopifyMoney };
+          compareAtPriceRange: { minVariantPrice: ShopifyMoney };
+          variants: { nodes: ShopifyVariant[] };
+        }[];
+      };
+    } | null;
+  }>(COLLECTION_PRODUCTS_QUERY, { handle });
+
+  if (!data.collection) return null;
+
+  return data.collection.products.nodes.map((p) => ({
+    id: p.id,
+    handle: p.handle,
+    title: p.title,
+    descriptionHtml: p.descriptionHtml,
+    featuredImage: p.featuredImage,
+    priceRange: p.priceRange,
+    compareAtPriceRange: p.compareAtPriceRange,
+    variants: p.variants.nodes,
+  }));
+}
+
 export type CartLineInput = { merchandiseId: string; quantity: number };
 
 export type CartLine = {
