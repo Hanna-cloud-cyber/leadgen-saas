@@ -1,11 +1,43 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "LeadGen AI — Générez des leads qualifiés automatiquement",
+  metadataBase: new URL("https://www.veridian.com"),
+  title: {
+    default: "Veridian — The Global B2B Sourcing Marketplace",
+    template: "%s | Veridian",
+  },
   description:
-    "Trouvez des entreprises et contacts dans 16 pays. Emails vérifiés, prospection IA, campagnes automatiques. Le SaaS de génération de leads tout-en-un.",
-  keywords: "leads, prospection, scraping, email, B2B, CRM, marketing",
+    "Source products from 10,000+ verified manufacturers, wholesalers and distributors across 120+ countries. Compare suppliers, request quotes and build your next product with confidence.",
+  keywords: [
+    "B2B marketplace",
+    "verified suppliers",
+    "manufacturers",
+    "wholesale suppliers",
+    "private label",
+    "global sourcing",
+    "RFQ",
+  ],
+  openGraph: {
+    title: "Veridian — The Global B2B Sourcing Marketplace",
+    description:
+      "Discover verified manufacturers, wholesalers and distributors worldwide. Compare, request quotes and source smarter.",
+    type: "website",
+    siteName: "Veridian",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Veridian — The Global B2B Sourcing Marketplace",
+    description:
+      "Discover verified manufacturers, wholesalers and distributors worldwide.",
+  },
 };
 
 export default function RootLayout({
@@ -14,8 +46,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body className="antialiased font-sans">{children}</body>
+    <html lang="en">
+      <body className={`${inter.variable} antialiased font-sans`}>{children}</body>
     </html>
   );
 }
