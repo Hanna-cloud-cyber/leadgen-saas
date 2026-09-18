@@ -6,7 +6,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
+const SCULPTIA_HOSTS = ["getsculptia.com", "www.getsculptia.com"];
+
 export async function middleware(request: NextRequest) {
+  const host = request.headers.get("host") || "";
+  if (SCULPTIA_HOSTS.includes(host) && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/sculptia", request.url));
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -61,6 +68,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/dashboard/:path*",
     "/leads/:path*",
     "/contacts/:path*",
