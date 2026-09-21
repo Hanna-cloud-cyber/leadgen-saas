@@ -239,3 +239,24 @@ export const WHATS_INSIDE = [
   { title: "Monthly refresh", desc: "Dead or unresponsive suppliers get replaced automatically." },
   { title: "Lifetime access", desc: "One payment. No subscription, no recurring fees." },
 ];
+
+export type ComparisonRow = { label: string; us: boolean | string; free: boolean | string };
+
+export const COMPARISON: ComparisonRow[] = [
+  { label: "Contacts checked by hand", us: true, free: false },
+  { label: "Real MOQs & sample pricing listed", us: true, free: false },
+  { label: "Updated monthly", us: true, free: "Rarely" },
+  { label: "Ready-to-send outreach templates", us: true, free: false },
+  { label: "Scam red-flag checklist", us: true, free: false },
+  { label: "Organized by niche", us: true, free: "Sometimes" },
+  { label: "Time to first reply", us: "Same day", free: "Weeks" },
+];
+
+// A sample row shown in the hero mockup — illustrative only, not a real supplier.
+export const SAMPLE_ROW = {
+  name: "Northline Audio Co.",
+  location: "Shenzhen, CN",
+  moq: "50 units",
+  sample: "$12 / unit",
+  status: "Verified",
+};

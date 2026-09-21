@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   PACKS,
@@ -9,6 +9,8 @@ import {
   TESTIMONIALS,
   HOW_IT_WORKS,
   WHATS_INSIDE,
+  COMPARISON,
+  SAMPLE_ROW,
   TOTAL_SUPPLIERS,
 } from "./data";
 import { CategoryIcon, TruckIcon, ShieldIcon, RefreshIcon, CheckIcon } from "./icons";
@@ -26,6 +28,14 @@ function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
         </svg>
       ))}
     </div>
+  );
+}
+
+function VerifiedBadge() {
+  return (
+    <span className="inline-flex items-center gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full">
+      <CheckIcon className="w-3 h-3" /> VERIFIED
+    </span>
   );
 }
 
@@ -64,8 +74,15 @@ function CountdownBadge() {
 export default function SupplierBusinessClient() {
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [query, setQuery] = useState("");
 
   const selectedPackName = PACKS.find((p) => p.id === selectedPack)?.name;
+
+  const filteredPacks = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return PACKS;
+    return PACKS.filter((p) => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q));
+  }, [query]);
 
   return (
     <div id="top" className="min-h-screen bg-black text-white font-sans selection:bg-amber-400 selection:text-black">
@@ -101,41 +118,82 @@ export default function SupplierBusinessClient() {
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background:
-                "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,185,66,0.12) 0%, transparent 70%)",
+              backgroundImage:
+                "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,185,66,0.12) 0%, transparent 70%), radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
+              backgroundSize: "auto, 28px 28px",
             }}
           />
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16 text-center">
-            <span className="inline-block bg-amber-400/10 border border-amber-400/30 text-amber-400 text-[11px] font-bold tracking-wider px-3 py-1.5 rounded-full">
-              9 NICHES &middot; {TOTAL_SUPPLIERS}+ VERIFIED SUPPLIERS
-            </span>
-            <h1 className="text-4xl sm:text-6xl font-black leading-[1.05] tracking-tight mt-6">
-              The Supplier Packs Behind
-              <span className="block text-amber-400">Profitable Online Stores</span>
-            </h1>
-            <p className="text-neutral-400 text-base sm:text-lg mt-6 max-w-2xl mx-auto leading-relaxed">
-              Skip months of cold emails and dead directories. Get instant access to hand-vetted
-              suppliers, real minimum order quantities, and ready-to-send outreach templates &mdash;
-              organized by niche.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-9">
-              <a
-                href="#pricing"
-                className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-black font-bold px-8 py-4 rounded-full transition-colors"
-              >
-                Unlock My Supplier Packs
-              </a>
-              <a
-                href="#packs"
-                className="w-full sm:w-auto border border-neutral-700 hover:border-neutral-500 px-8 py-4 rounded-full text-neutral-300 transition-colors"
-              >
-                See What&apos;s Inside
-              </a>
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16 grid lg:grid-cols-2 gap-14 items-center">
+            <div>
+              <span className="inline-block bg-amber-400/10 border border-amber-400/30 text-amber-400 text-[11px] font-bold tracking-wider px-3 py-1.5 rounded-full">
+                9 NICHES &middot; {TOTAL_SUPPLIERS}+ VERIFIED SUPPLIERS
+              </span>
+              <h1 className="text-4xl sm:text-6xl font-black leading-[1.05] tracking-tight mt-6">
+                The Supplier Packs Behind
+                <span className="block text-amber-400">Profitable Online Stores</span>
+              </h1>
+              <p className="text-neutral-400 text-base sm:text-lg mt-6 max-w-xl leading-relaxed">
+                Skip months of cold emails and dead directories. Get instant access to hand-vetted
+                suppliers, real minimum order quantities, and ready-to-send outreach templates &mdash;
+                organized by niche.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mt-9">
+                <a
+                  href="#pricing"
+                  className="w-full sm:w-auto text-center bg-amber-400 hover:bg-amber-300 text-black font-bold px-8 py-4 rounded-full transition-colors"
+                >
+                  Unlock My Supplier Packs
+                </a>
+                <a
+                  href="#packs"
+                  className="w-full sm:w-auto text-center border border-neutral-700 hover:border-neutral-500 px-8 py-4 rounded-full text-neutral-300 transition-colors"
+                >
+                  See What&apos;s Inside
+                </a>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8 text-xs text-neutral-500">
+                <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> No subscription required</span>
+                <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> Updated every month</span>
+                <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> 30-day access guarantee</span>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-xs text-neutral-500">
-              <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> No subscription required</span>
-              <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> Updated every month</span>
-              <span className="flex items-center gap-1.5"><CheckIcon className="w-4 h-4 text-amber-400" /> 30-day access guarantee</span>
+
+            {/* Pack preview mockup */}
+            <div className="relative">
+              <div className="absolute -inset-4 bg-amber-400/10 blur-3xl rounded-full pointer-events-none" />
+              <div className="relative rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-800">
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <CategoryIcon icon="electronics" className="w-5 h-5 text-amber-400" />
+                    Electronics Pack
+                  </div>
+                  <VerifiedBadge />
+                </div>
+                <div className="p-5 space-y-4">
+                  <div className="rounded-xl border border-neutral-800 bg-black p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-sm">{SAMPLE_ROW.name}</span>
+                      <VerifiedBadge />
+                    </div>
+                    <p className="text-xs text-neutral-500 mt-1">{SAMPLE_ROW.location}</p>
+                    <div className="grid grid-cols-2 gap-3 mt-4 text-xs">
+                      <div>
+                        <div className="text-neutral-500">Min. order</div>
+                        <div className="font-semibold mt-0.5">{SAMPLE_ROW.moq}</div>
+                      </div>
+                      <div>
+                        <div className="text-neutral-500">Sample price</div>
+                        <div className="font-semibold mt-0.5">{SAMPLE_ROW.sample}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 opacity-40">
+                    <div className="h-10 rounded-lg border border-neutral-800 bg-black" />
+                    <div className="h-10 rounded-lg border border-neutral-800 bg-black" />
+                  </div>
+                  <p className="text-center text-[11px] text-neutral-600">+ {TOTAL_SUPPLIERS - 1} more suppliers inside</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -160,37 +218,59 @@ export default function SupplierBusinessClient() {
 
         {/* Packs grid */}
         <section id="packs" className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <p className="text-amber-400 text-xs font-bold tracking-widest uppercase">Choose your niche</p>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mt-3">9 Supplier Packs. One Membership.</h2>
             <p className="text-neutral-400 mt-3 max-w-xl mx-auto">
-              Tap a pack to select it, or unlock all 9 with the All-Access Bundle below.
+              Search or tap a pack to select it, or unlock all 9 with the All-Access Bundle below.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PACKS.map((pack) => (
-              <button
-                key={pack.id}
-                onClick={() => setSelectedPack(pack.id)}
-                className={`text-left rounded-2xl p-6 border transition-all duration-200 ${
-                  selectedPack === pack.id
-                    ? "border-amber-400 bg-amber-400/5"
-                    : "border-neutral-800 bg-neutral-950/60 hover:border-neutral-700"
-                }`}
-              >
-                <div className="w-11 h-11 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400">
-                  <CategoryIcon icon={pack.icon} className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-lg mt-4">{pack.name}</h3>
-                <p className="text-sm text-neutral-500 mt-1.5 leading-relaxed">{pack.tagline}</p>
-                <div className="flex items-center gap-3 mt-4 text-xs text-neutral-500">
-                  <span className="font-semibold text-neutral-300">{pack.suppliers}+ suppliers</span>
-                  <span>&middot;</span>
-                  <span>{pack.countries} countries</span>
-                </div>
-              </button>
-            ))}
+
+          <div className="max-w-md mx-auto mb-10 relative">
+            <svg viewBox="0 0 24 24" className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search a niche (e.g. beauty, scooters...)"
+              className="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-400/60 outline-none rounded-full pl-11 pr-4 py-3 text-sm placeholder:text-neutral-600 transition-colors"
+            />
           </div>
+
+          {filteredPacks.length === 0 ? (
+            <p className="text-center text-neutral-500 text-sm">No pack matches &ldquo;{query}&rdquo;.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredPacks.map((pack) => (
+                <button
+                  key={pack.id}
+                  onClick={() => setSelectedPack(pack.id)}
+                  className={`text-left rounded-2xl p-6 border transition-all duration-200 ${
+                    selectedPack === pack.id
+                      ? "border-amber-400 bg-amber-400/5"
+                      : "border-neutral-800 bg-neutral-950/60 hover:border-neutral-700"
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="w-11 h-11 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400">
+                      <CategoryIcon icon={pack.icon} className="w-6 h-6" />
+                    </div>
+                    <VerifiedBadge />
+                  </div>
+                  <h3 className="font-bold text-lg mt-4">{pack.name}</h3>
+                  <p className="text-sm text-neutral-500 mt-1.5 leading-relaxed">{pack.tagline}</p>
+                  <div className="flex items-center gap-3 mt-4 text-xs text-neutral-500">
+                    <span className="font-semibold text-neutral-300">{pack.suppliers}+ suppliers</span>
+                    <span>&middot;</span>
+                    <span>{pack.countries} countries</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* How it works */}
@@ -232,8 +312,45 @@ export default function SupplierBusinessClient() {
           </div>
         </section>
 
+        {/* Comparison table */}
+        <section className="bg-neutral-950/60 border-y border-neutral-900 py-20">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <h2 className="text-3xl font-black tracking-tight text-center">SupplierBusiness vs. Free Lists</h2>
+            <p className="text-neutral-400 text-center mt-3">Why sellers stop using random directories after one pack.</p>
+            <div className="mt-10 rounded-2xl border border-neutral-800 overflow-hidden">
+              <div className="grid grid-cols-3 bg-black text-xs font-bold uppercase tracking-wide text-neutral-500">
+                <div className="px-4 py-3">&nbsp;</div>
+                <div className="px-4 py-3 text-center text-amber-400">SupplierBusiness</div>
+                <div className="px-4 py-3 text-center">Free directories</div>
+              </div>
+              {COMPARISON.map((row, i) => (
+                <div
+                  key={row.label}
+                  className={`grid grid-cols-3 items-center text-sm ${i % 2 === 0 ? "bg-neutral-950/60" : "bg-black"}`}
+                >
+                  <div className="px-4 py-3.5 text-neutral-300">{row.label}</div>
+                  <div className="px-4 py-3.5 text-center">
+                    {row.us === true ? (
+                      <CheckIcon className="w-5 h-5 text-emerald-400 mx-auto" />
+                    ) : (
+                      <span className="text-amber-400 font-semibold">{row.us}</span>
+                    )}
+                  </div>
+                  <div className="px-4 py-3.5 text-center text-neutral-600">
+                    {row.free === false ? "—" : row.free === true ? (
+                      <CheckIcon className="w-5 h-5 text-neutral-500 mx-auto" />
+                    ) : (
+                      row.free
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Guarantee banner */}
-        <section className="bg-neutral-950/60 border-y border-neutral-900 py-14">
+        <section className="py-14">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <div className="w-14 h-14 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 mx-auto">
               <ShieldIcon className="w-7 h-7" />
@@ -304,7 +421,7 @@ export default function SupplierBusinessClient() {
             ))}
           </div>
 
-          <div className="flex items-center justify-center gap-6 mt-10 text-xs text-neutral-500">
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-xs text-neutral-500">
             <span className="flex items-center gap-1.5"><TruckIcon className="w-4 h-4" /> Instant digital access</span>
             <span className="flex items-center gap-1.5"><RefreshIcon className="w-4 h-4" /> Monthly refresh</span>
             <span className="flex items-center gap-1.5"><ShieldIcon className="w-4 h-4" /> 30-day guarantee</span>
@@ -356,7 +473,7 @@ export default function SupplierBusinessClient() {
               background: "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(245,185,66,0.1) 0%, transparent 70%)",
             }}
           />
-          <div className="relative max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
+          <div className="relative max-w-2xl mx-auto px-4 sm:px-6 py-24 pb-28 lg:pb-24 text-center">
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Stop Searching. Start Selling.</h2>
             <p className="text-neutral-400 mt-4">
               {TOTAL_SUPPLIERS}+ verified suppliers across 9 niches, ready the moment you check out.
@@ -371,8 +488,18 @@ export default function SupplierBusinessClient() {
         </section>
       </main>
 
+      {/* Sticky mobile CTA */}
+      <div className="fixed bottom-0 inset-x-0 bg-neutral-950/95 backdrop-blur border-t border-neutral-800 p-3 lg:hidden z-40">
+        <a
+          href="#pricing"
+          className="block text-center w-full bg-amber-400 text-black font-bold py-3 rounded-full"
+        >
+          Unlock My Supplier Packs
+        </a>
+      </div>
+
       {/* Footer */}
-      <footer className="border-t border-neutral-900 px-4 sm:px-6 py-10">
+      <footer className="border-t border-neutral-900 px-4 sm:px-6 py-10 pb-24 lg:pb-10">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-600">
           <span className="font-black tracking-tight text-neutral-400">
             Supplier<span className="text-amber-400">Business</span>
