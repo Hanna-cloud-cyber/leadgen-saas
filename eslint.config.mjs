@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Site statique indépendant (voyages de luxe).
+    "luxury-travel/**",
   ]),
 ]);
 
