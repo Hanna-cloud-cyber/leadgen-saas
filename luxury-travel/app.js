@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const D = window.SOLSTICE_DATA;
+  const D = window.BLUEHOUR_DATA;
   const app = document.getElementById("app");
   const euro = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   const NOW = new Date();
@@ -26,9 +26,9 @@
   };
 
   // ---------- Carnet d'envies ----------
-  const wishes = new Set(store.get("solstice-envies", []).filter(byId));
+  const wishes = new Set(store.get("bluehour-envies", []).filter(byId));
   function syncWishes() {
-    store.set("solstice-envies", [...wishes]);
+    store.set("bluehour-envies", [...wishes]);
     const count = document.getElementById("wish-count");
     count.textContent = wishes.size;
     count.hidden = wishes.size === 0;
@@ -129,7 +129,7 @@
 
     <section class="section wrap">
       <div class="statement">
-        <p class="label">La Maison Solstice</p>
+        <p class="label">La Maison Bluehour</p>
         <div>
           <h2>Nous ne vendons pas de catalogue. Nous dessinons <em>un voyage à la fois</em>, autour de vous, dans des lieux où nous sommes allés nous-mêmes.</h2>
         </div>
@@ -248,7 +248,7 @@
       <div class="band-inner">
         <div class="band-media"><img src="${g.image}" alt="Terrasse face à l'océan aux Seychelles" loading="lazy"></div>
         <div class="band-text">
-          <p class="label">Le Grand Tour Solstice</p>
+          <p class="label">Le Grand Tour Bluehour</p>
           <h2>${esc(g.title)}</h2>
           <p>${esc(g.text)}</p>
           <ol class="route">
@@ -309,7 +309,7 @@
       <header class="page-head">
         <nav class="crumbs" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span>Destinations</span></nav>
         <h1>${c ? esc(c.name) : "Nos destinations"}</h1>
-        <p class="lead">${c ? esc(c.text) : "Douze adresses sur six régions du monde, chacune visitée par un conseiller Solstice. Filtrez par envie, par région ou par mois de départ."}</p>
+        <p class="lead">${c ? esc(c.text) : "Douze adresses sur six régions du monde, chacune visitée par un conseiller Bluehour. Filtrez par envie, par région ou par mois de départ."}</p>
       </header>
       <div class="toolbar">
         <div class="chips" role="group" aria-label="Filtrer par envie">
@@ -406,7 +406,7 @@
         <div class="stay-text">
           <p class="label">Où vous séjournerez</p>
           <h2>${esc(d.stay)}</h2>
-          <p>Un conseiller Solstice a séjourné dans cette adresse. Votre carnet de voyage vous proposera aussi deux alternatives, selon vos dates et votre budget.</p>
+          <p>Un conseiller Bluehour a séjourné dans cette adresse. Votre carnet de voyage vous proposera aussi deux alternatives, selon vos dates et votre budget.</p>
           <p class="card-price">${d.nights} nuits, vols en classe affaires et transferts privés inclus, à partir de <b>${euro.format(d.price)}</b> par personne.</p>
         </div>
       </div>
@@ -437,7 +437,7 @@
       <header class="page-head">
         <nav class="crumbs" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span>Expériences</span></nav>
         <h1>Expériences</h1>
-        <p class="lead">Des moments privatisés que nous négocions directement avec nos partenaires sur place. Chacun s'ajoute à un séjour Solstice.</p>
+        <p class="lead">Des moments privatisés que nous négocions directement avec nos partenaires sur place. Chacun s'ajoute à un séjour Bluehour.</p>
       </header>
       <div class="exp-grid">
         ${D.experiences.map((x) => {
@@ -460,7 +460,7 @@
     return `<section class="dest-hero">
       <div class="dest-hero-text">
         <nav class="crumbs" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span>Grand Tour</span></nav>
-        <p class="label">Le Grand Tour Solstice 2027</p>
+        <p class="label">Le Grand Tour Bluehour 2027</p>
         <h1>${esc(g.title)}</h1>
         <p class="tagline">${esc(g.subtitle)}</p>
         <p class="lead">${esc(g.text)}</p>
@@ -508,7 +508,7 @@
     return `<div class="wrap">
       <header class="page-head">
         <nav class="crumbs" aria-label="Fil d'Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span>La Maison</span></nav>
-        <h1>La Maison Solstice</h1>
+        <h1>La Maison Bluehour</h1>
         <p class="lead">Une équipe de onze conseillers à Paris. Chacun a une spécialité, et chacun a dormi dans les adresses qu'il vous recommande.</p>
       </header>
     </div>
@@ -728,7 +728,7 @@
       title = page[1];
     }
     app.innerHTML = `<div class="view">${html}</div>`;
-    document.title = key === "accueil" ? "Solstice Voyages" : title + " · Solstice Voyages";
+    document.title = key === "accueil" ? "Bluehour Travel" : title + " · Bluehour Travel";
     document.body.classList.toggle("home", key === "accueil");
     document.querySelectorAll("[data-nav]").forEach((a) => (a.dataset.nav === nav ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
     closeMenu();
@@ -860,14 +860,14 @@
     if (form.id === "plan-form") {
       if (!validateStep()) { const bad = form.querySelector("[aria-invalid]"); if (bad) bad.focus(); return; }
       if (plan.step < 3) { plan.step += 1; renderPlanner(true); return; }
-      const requests = store.get("solstice-demandes", []);
+      const requests = store.get("bluehour-demandes", []);
       requests.push({
         destinations: [...plan.dests], envies: [...plan.colls], depart: plan.month, duree: plan.nights,
         adultes: plan.adults, enfants: plan.children, budget: plan.budget,
         prenom: plan.first, nom: plan.last, email: plan.email, telephone: plan.phone,
         contact: plan.contact, message: plan.message, creeLe: new Date().toISOString(),
       });
-      store.set("solstice-demandes", requests);
+      store.set("bluehour-demandes", requests);
       plan.done = true;
       renderPlanner(true);
       return;
@@ -876,9 +876,9 @@
       const input = document.getElementById("nl-email");
       const note = document.getElementById("nl-note");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) { note.textContent = "Indiquez une adresse e-mail valide, par exemple nom@domaine.fr."; input.focus(); return; }
-      const list = store.get("solstice-newsletter", []);
+      const list = store.get("bluehour-newsletter", []);
       list.push(input.value.trim());
-      store.set("solstice-newsletter", list);
+      store.set("bluehour-newsletter", list);
       note.textContent = "Merci, votre inscription est enregistrée. Première lettre au début du mois prochain.";
       input.value = "";
     }

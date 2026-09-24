@@ -1,8 +1,8 @@
-// Tout le contenu du site Solstice.
+// Tout le contenu du site Bluehour.
 // months : 12 valeurs de janvier à décembre. 2 = période idéale, 1 = bonne période, 0 = déconseillé.
 // collections : identifiants de la liste `collections` ci-dessous.
 
-window.SOLSTICE_DATA = {
+window.BLUEHOUR_DATA = {
   collections: [
     {
       id: "skylines",
@@ -455,7 +455,7 @@ window.SOLSTICE_DATA = {
       "Vols Paris aller et retour en classe affaires",
       "Hébergements en villa ou suite, pension complète",
       "Toutes les expériences privatisées du programme",
-      "Un conseiller Solstice joignable 24 h/24",
+      "Un conseiller Bluehour joignable 24 h/24",
     ],
   },
 

@@ -1,4 +1,4 @@
-# Solstice Voyages
+# Bluehour Travel
 
 Site d'une maison de voyages de luxe sur mesure : 12 destinations d'exception, expériences privatisées,
 un Grand Tour en jet privé et un parcours « Concevoir mon voyage » en trois étapes.
@@ -47,7 +47,7 @@ dans `images/` et renseignez `months` (12 valeurs : 2 = idéal, 1 = agréable, 0
 ## Formulaires
 
 La demande de voyage et la newsletter sont validées puis enregistrées dans le `localStorage` du navigateur
-(clés `solstice-demandes` et `solstice-newsletter`). Pour les recevoir réellement, remplacez ces enregistrements
+(clés `bluehour-demandes` et `bluehour-newsletter`). Pour les recevoir réellement, remplacez ces enregistrements
 dans `app.js` (gestionnaire `submit`) par un appel à votre backend (API, Supabase, service e-mail…).
 
 ## À remplacer avant la mise en ligne
