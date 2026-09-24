@@ -1,8 +1,9 @@
 # Solstice Voyages
 
-Site vitrine d'une maison de voyages de luxe : destinations d'exception dans le monde entier, expériences privatisées, tour du monde en jet privé et formulaire de demande de devis.
+Site d'une maison de voyages de luxe sur mesure : 12 destinations d'exception, expériences privatisées,
+un Grand Tour en jet privé et un parcours « Concevoir mon voyage » en trois étapes.
 
-Site 100 % statique (HTML, CSS, JavaScript), sans dépendance ni étape de build.
+Site statique (HTML, CSS, JavaScript), sans dépendance ni étape de build.
 
 ## Lancer en local
 
@@ -12,31 +13,44 @@ python3 -m http.server 8080
 # puis ouvrir http://localhost:8080
 ```
 
-Ouvrir `index.html` directement dans le navigateur fonctionne aussi.
+## Arborescence du site
 
-## Structure
+Navigation par ancre (`#…`), une seule page HTML :
 
-| Fichier      | Rôle                                                                 |
-|--------------|----------------------------------------------------------------------|
-| `index.html` | Structure de la page (hero, destinations, expériences, devis…)       |
-| `styles.css` | Charte graphique, thèmes clair et sombre, responsive                 |
-| `data.js`    | Tout le contenu : destinations, expériences, voyage signature, avis |
-| `app.js`     | Rendu, illustrations vectorielles, filtres, formulaire de devis      |
+| Adresse                               | Page                                                         |
+|---------------------------------------|--------------------------------------------------------------|
+| `#accueil`                            | Hero en triptyque, recherche, à la une, envies, « Où partir en… », expériences, Grand Tour, avis |
+| `#destinations`                       | Toutes les destinations, filtres (envie, région, mois) et tri |
+| `#skylines`, `#iles`, `#riviera`, `#nature` | Destinations d'une envie                               |
+| `#dubai`, `#maldives`, …              | Fiche destination : infos clés, calendrier, séjour, itinéraire, expériences |
+| `#experiences`                        | Expériences privatisées                                      |
+| `#grand-tour`                         | Voyage signature Skylines & lagons                           |
+| `#maison`                             | La Maison : méthode, engagements, avis                       |
+| `#envies`                             | Carnet d'envies (cœurs), gardé dans le navigateur            |
+| `#concevoir`                          | Demande de voyage en 3 étapes avec estimation                |
+
+## Fichiers
+
+| Fichier      | Rôle                                                   |
+|--------------|--------------------------------------------------------|
+| `index.html` | En-tête, menu, pied de page                            |
+| `styles.css` | Charte graphique, thèmes clair et sombre, responsive   |
+| `data.js`    | Tout le contenu (destinations, envies, expériences…)   |
+| `app.js`     | Pages, navigation, filtres, carnet d'envies, formulaires |
+| `images/`    | Photos des destinations                                |
 
 ## Modifier le contenu
 
-Tout se passe dans `data.js` : ajoutez une destination en copiant un objet existant.
-Le champ `scene` choisit l'illustration (`ocean`, `mountain`, `savanna`, `ice`, `desert`, `coast`, `city`)
-et `sky` ses deux couleurs de ciel. Les filtres par région se mettent à jour automatiquement.
+Tout se passe dans `data.js`. Pour ajouter une destination, copiez un objet existant, déposez la photo
+dans `images/` et renseignez `months` (12 valeurs : 2 = idéal, 1 = agréable, 0 = déconseillé).
 
-## Formulaire de devis
+## Formulaires
 
-Le formulaire valide les champs, affiche un budget indicatif et enregistre les demandes dans le
-`localStorage` du navigateur (clé `solstice-demandes`). Pour recevoir réellement les demandes, remplacez
-`saveRequest()` dans `app.js` par un appel à votre backend (API Next.js, Supabase, service e-mail…).
+La demande de voyage et la newsletter sont validées puis enregistrées dans le `localStorage` du navigateur
+(clés `solstice-demandes` et `solstice-newsletter`). Pour les recevoir réellement, remplacez ces enregistrements
+dans `app.js` (gestionnaire `submit`) par un appel à votre backend (API, Supabase, service e-mail…).
 
-## Déploiement
+## À remplacer avant la mise en ligne
 
-N'importe quel hébergeur statique : Netlify, Vercel, GitHub Pages, Cloudflare Pages (dossier racine : `luxury-travel`).
-
-Les coordonnées, le numéro d'immatriculation et les avis clients sont des exemples à remplacer.
+- Coordonnées, numéro d'immatriculation Atout France et avis clients : ce sont des exemples.
+- Photos : vérifiez que vous avez le droit de les utiliser commercialement (`images/kauai.jpg` porte un filigrane).

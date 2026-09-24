@@ -4,165 +4,101 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Solstice Voyages</title>
-<meta name="description" content="Solstice, maison de voyages d'exception : les plus beaux séjours de luxe et des expériences rares dans le monde entier, conçus sur mesure.">
+<meta name="description" content="Solstice conçoit des voyages de luxe sur mesure : penthouses à Dubaï et New York, villas aux Maldives et aux Seychelles, Riviera, Bali, Kauai. Conseillers qui ont séjourné sur place, conciergerie 24 h/24.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=DM+Mono:wght@400&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<nav class="nav" aria-label="Navigation principale">
-  <div class="wrap">
-    <a class="brand" href="#top">Sol<em>s</em>tice</a>
-    <ul>
-      <li><a href="#destinations">Destinations</a></li>
-      <li><a href="#experiences">Expériences</a></li>
-      <li><a href="#signature">Tour du monde</a></li>
-      <li><a href="#methode">Notre méthode</a></li>
-    </ul>
-    <a class="btn" href="#demande">Demander un devis</a>
-  </div>
-</nav>
+<a class="skip" href="#app">Aller au contenu</a>
 
-<header class="hero" id="top">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow">Maison de voyages d'exception · depuis Paris</p>
-      <h1>Le monde,<br><em>sur mesure.</em></h1>
-      <p class="lede">Villas sur pilotis, camps qui suivent la Grande Migration, igloos de verre sous les aurores. Nous dessinons chaque voyage autour de vous et réglons chaque détail avant votre départ.</p>
-      <div class="actions">
-        <a class="btn" href="#destinations">Voir les destinations</a>
-        <a class="btn ghost" href="#signature">Le tour du monde 2027</a>
-      </div>
-    </div>
-    <div>
-      <div class="board" aria-live="polite">
-        <div class="board-head"><span>Prochains départs</span><span id="board-clock" class="mono">CDG · LBG</span></div>
-        <div id="board-rows"></div>
-      </div>
-      <div class="hero-scene" id="hero-scene" aria-hidden="true"></div>
-    </div>
-  </div>
-  <div class="facts">
-    <div class="wrap">
-      <div><strong>9</strong>destinations d'exception</div>
-      <div><strong>5</strong>continents couverts</div>
-      <div><strong>24 h/24</strong>conciergerie pendant le voyage</div>
-      <div><strong>48 h</strong>pour recevoir votre itinéraire</div>
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+      <span></span><span></span>
+    </button>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#destinations" data-nav="destinations">Destinations</a>
+      <a href="#experiences" data-nav="experiences">Expériences</a>
+      <a href="#grand-tour" data-nav="grand-tour">Grand Tour</a>
+      <a href="#maison" data-nav="maison">La Maison</a>
+    </nav>
+    <a class="logo" href="#accueil" aria-label="Solstice, accueil">Solstice</a>
+    <div class="header-actions">
+      <a class="wish-link" href="#envies" aria-label="Mes envies">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3Z"/></svg>
+        <span class="wish-count" id="wish-count" hidden>0</span>
+      </a>
+      <a class="btn btn-line header-cta" href="#concevoir">Concevoir mon voyage</a>
     </div>
   </div>
 </header>
 
-<main>
-  <section class="block wrap" id="destinations">
-    <div class="sec-head">
-      <div>
-        <p class="eyebrow">Destinations</p>
-        <h2>Les plus beaux voyages du monde</h2>
-      </div>
-      <p>Prix indicatifs par personne, vols en classe affaires et hébergement inclus. Chaque séjour s'ajuste à vos dates et à vos envies.</p>
-    </div>
-    <div class="filters" id="filters" role="group" aria-label="Filtrer par région"></div>
-    <div class="grid" id="dest-grid"></div>
-  </section>
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Menu mobile">
+    <a href="#destinations">Destinations</a>
+    <a href="#experiences">Expériences</a>
+    <a href="#grand-tour">Grand Tour</a>
+    <a href="#maison">La Maison</a>
+    <a href="#envies">Mes envies</a>
+    <a href="#concevoir">Concevoir mon voyage</a>
+  </nav>
+  <p class="menu-contact">+33 1 84 60 20 27<br>Du lundi au samedi, 9 h – 20 h</p>
+</div>
 
-  <section class="block wrap" id="experiences">
-    <div class="sec-head">
-      <div>
-        <p class="eyebrow">Expériences exceptionnelles</p>
-        <h2>Ce que l'on ne réserve pas en ligne</h2>
-      </div>
-      <p>Des moments privatisés que nous négocions directement avec nos partenaires locaux. Ils s'ajoutent à n'importe quel séjour.</p>
-    </div>
-    <div class="exp-list" id="exp-list"></div>
-  </section>
+<main id="app" tabindex="-1"></main>
 
-  <section class="signature" id="signature">
-    <div class="wrap">
+<footer class="site-footer">
+  <section class="newsletter">
+    <div class="wrap newsletter-inner">
       <div>
-        <p class="eyebrow">Voyage signature</p>
-        <h2 id="sig-title"></h2>
-        <p id="sig-dep"></p>
-        <div class="sum" id="sig-sum"></div>
-        <div class="actions" style="margin-top:32px"><a class="btn ghost" href="#demande" data-pick="Tour du monde en jet privé">Réserver une place</a></div>
+        <p class="label">La lettre Solstice</p>
+        <h2>Une destination, une adresse, une fois par mois.</h2>
       </div>
-      <ol class="route" id="sig-route"></ol>
-    </div>
-  </section>
-
-  <section class="block wrap" id="methode">
-    <div class="sec-head">
-      <div>
-        <p class="eyebrow">Notre méthode</p>
-        <h2>De la première idée au retour</h2>
-      </div>
-    </div>
-    <ol class="steps">
-      <li><h3>Un échange</h3><p>Trente minutes avec votre conseiller pour comprendre vos envies, votre rythme et vos dates.</p></li>
-      <li><h3>Un itinéraire</h3><p>Sous 48 heures, un carnet de voyage détaillé avec deux options d'hébergement par étape.</p></li>
-      <li><h3>Les détails</h3><p>Vols, transferts, tables, guides privés : tout est confirmé avant votre départ.</p></li>
-      <li><h3>Le voyage</h3><p>Une conciergerie joignable 24 h/24 et un contact local à chaque étape.</p></li>
-    </ol>
-    <div class="quotes" id="quotes"></div>
-  </section>
-
-  <section class="block wrap" id="demande">
-    <div class="request">
-      <aside>
-        <p class="eyebrow">Demande de devis</p>
-        <h2 style="font-size:clamp(36px,5vw,56px);margin-top:10px">Parlons de votre prochain voyage</h2>
-        <p>Indiquez-nous une destination et une période. Un conseiller vous répond avec une première proposition sous 48 heures, sans engagement.</p>
-        <div class="contact">
-          <div>+33 1 84 60 20 27</div>
-          <div>voyages@solstice-travel.fr</div>
-          <div>12 rue de Castiglione, Paris 1er</div>
-        </div>
-      </aside>
-      <form class="card" id="quote-form" novalidate>
-        <div class="field">
-          <label for="f-name">Nom</label>
-          <input id="f-name" name="name" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="f-email">E-mail</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field full">
-          <label for="f-dest">Destination</label>
-          <select id="f-dest" name="destination" required></select>
-        </div>
-        <div class="field">
-          <label for="f-date">Départ souhaité</label>
-          <input id="f-date" name="date" type="month" required>
-        </div>
-        <div class="field">
-          <label for="f-guests">Voyageurs</label>
-          <select id="f-guests" name="guests">
-            <option value="1">1 personne</option>
-            <option value="2" selected>2 personnes</option>
-            <option value="3">3 personnes</option>
-            <option value="4">4 personnes</option>
-            <option value="6">6 personnes</option>
-            <option value="8">8 personnes et plus</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label for="f-notes">Vos envies</label>
-          <textarea id="f-notes" name="notes" placeholder="Anniversaire de mariage, voyage en famille, plongée, gastronomie…"></textarea>
-        </div>
-        <p class="estimate" id="estimate"></p>
-        <button class="btn" type="submit">Envoyer ma demande</button>
-        <div class="done" id="done" hidden></div>
+      <form id="newsletter-form" class="newsletter-form" novalidate>
+        <label class="sr-only" for="nl-email">Adresse e-mail</label>
+        <input id="nl-email" type="email" placeholder="Votre adresse e-mail" autocomplete="email">
+        <button class="btn btn-solid" type="submit">S'inscrire</button>
+        <p class="form-note" id="nl-note" aria-live="polite"></p>
       </form>
     </div>
   </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <span>© 2026 Solstice Voyages · Immatriculation Atout France IM075000000 (exemple)</span>
-    <span>Garantie financière et assurance RCP incluses</span>
+  <div class="wrap footer-cols">
+    <div>
+      <a class="logo logo-footer" href="#accueil">Solstice</a>
+      <p class="footer-about">Maison de voyages sur mesure. Nos conseillers ont séjourné dans chaque adresse qu'ils vous proposent.</p>
+    </div>
+    <div>
+      <p class="label">Destinations</p>
+      <ul id="footer-dest"></ul>
+    </div>
+    <div>
+      <p class="label">Envies</p>
+      <ul id="footer-coll"></ul>
+    </div>
+    <div>
+      <p class="label">Solstice</p>
+      <ul>
+        <li><a href="#maison">La Maison</a></li>
+        <li><a href="#experiences">Expériences</a></li>
+        <li><a href="#grand-tour">Grand Tour</a></li>
+        <li><a href="#concevoir">Concevoir mon voyage</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="label">Nous joindre</p>
+      <ul class="plain">
+        <li>+33 1 84 60 20 27</li>
+        <li>voyages@solstice-travel.fr</li>
+        <li>12 rue de Castiglione<br>75001 Paris</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    <span>© 2026 Solstice Voyages</span>
+    <span>Immatriculation Atout France IM075000000 (exemple) · Garantie financière et assurance RCP</span>
   </div>
 </footer>
 
