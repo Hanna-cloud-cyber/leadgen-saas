@@ -558,6 +558,11 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                   Politique de Confidentialité
                 </Link>
               </li>
+              <li>
+                <Link href="/conditions-generales-de-vente" className="hover:text-neutral-700 hover:underline underline-offset-2">
+                  Conditions Générales de Ventes
+                </Link>
+              </li>
               <li>Shipping</li>
               <li>Contact</li>
             </ul>
