@@ -563,7 +563,11 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                   Conditions Générales de Ventes
                 </Link>
               </li>
-              <li>Shipping</li>
+              <li>
+                <Link href="/politiques-expedition" className="hover:text-neutral-700 hover:underline underline-offset-2">
+                  Politiques d&apos;expéditions
+                </Link>
+              </li>
               <li>Contact</li>
             </ul>
           </div>
