@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Colorway, SculptiaProduct } from "./data";
 import { useCart } from "./useCart";
@@ -547,7 +548,11 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
             <div className="font-bold mb-3">Help</div>
             <ul className="space-y-2 text-neutral-500">
               <li>Order tracking</li>
-              <li>Returns &amp; exchanges</li>
+              <li>
+                <Link href="/politique-de-retour" className="hover:text-neutral-700 hover:underline underline-offset-2">
+                  Politique de retour
+                </Link>
+              </li>
               <li>Shipping</li>
               <li>Contact</li>
             </ul>
