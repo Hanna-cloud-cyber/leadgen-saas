@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales de Ventes — Sculptia",
-  description: "Conditions générales de vente et d'utilisation de la boutique Sculptia.",
+  title: "Conditions Générales de vente — Sculptia",
+  description: "Conditions générales de vente de la boutique Sculptia.",
 };
 
 export default function TermsPage() {
@@ -18,157 +18,196 @@ export default function TermsPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <h1 className="text-2xl sm:text-3xl font-black uppercase mb-2">
-          Conditions générales de vente et d&rsquo;utilisation
-        </h1>
+        <h1 className="text-2xl sm:text-3xl font-black uppercase mb-2">Conditions générales de vente</h1>
         <p className="text-sm text-neutral-400 mb-8">Dernière mise à jour : 20 Septembre 2026</p>
 
         <div className="space-y-6 text-[15px] text-neutral-700 leading-relaxed">
           <p>
-            Les présentes conditions générales de vente et d&rsquo;utilisation régissent
-            l&rsquo;utilisation de notre boutique en ligne ainsi que les achats effectués sur
-            celle-ci.
+            Les présentes Conditions générales de vente régissent les commandes effectuées sur la
+            boutique en ligne Sculptia.
+          </p>
+          <p>
+            En passant une commande sur notre site, le client reconnaît avoir pris connaissance
+            des présentes conditions et les accepter.
           </p>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">1. Produits et services</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">1. Produits</h2>
             <p>
-              Nous nous efforçons de présenter les produits disponibles sur notre boutique de
-              manière aussi précise que possible.
+              Nous nous efforçons de présenter nos produits de manière aussi fidèle et précise
+              que possible.
             </p>
             <p className="mt-3">
-              Les photographies, couleurs et illustrations sont présentées à titre indicatif et
-              peuvent légèrement différer du produit réel.
+              Les photographies, couleurs, dimensions et illustrations présentées sur le site sont
+              fournies à titre indicatif. De légères différences peuvent exister entre les images
+              présentées et le produit reçu.
             </p>
-            <p className="mt-3">
-              Nous nous réservons le droit de modifier ou de supprimer certains produits, ainsi
-              que de modifier leurs prix, à tout moment.
-            </p>
+            <p className="mt-3">Les produits sont proposés dans la limite des stocks disponibles.</p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">2. Prix</h2>
-            <p>
-              Les prix affichés sur le site sont indiqués en EUR / USD et incluent les taxes
-              applicables lorsque cela est indiqué.
+            <p>Les prix applicables sont ceux affichés sur notre boutique au moment de la commande.</p>
+            <p className="mt-3">
+              Les éventuels frais de livraison ou autres frais supplémentaires sont indiqués au
+              client avant la validation définitive de la commande.
             </p>
             <p className="mt-3">
-              Les éventuels frais de livraison sont indiqués avant la validation définitive de la
-              commande.
-            </p>
-            <p className="mt-3">
-              Nous nous réservons le droit de modifier nos prix à tout moment. Toutefois, les
-              produits sont facturés au prix affiché au moment de la validation de la commande.
+              Nous nous réservons le droit de modifier nos prix à tout moment. Toute commande déjà
+              validée conserve toutefois le prix applicable au moment de son achat.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">3. Commandes</h2>
             <p>
-              En passant commande sur notre site, le client confirme l&rsquo;exactitude des
-              informations fournies.
+              Le client est responsable de l&rsquo;exactitude des informations renseignées lors de
+              sa commande, notamment son nom, son adresse de livraison et ses coordonnées.
             </p>
             <p className="mt-3">
-              La commande devient définitive après validation du paiement et réception d&rsquo;un
-              e-mail de confirmation.
+              Après validation du paiement, un e-mail de confirmation peut être envoyé au client.
             </p>
             <p className="mt-3">
-              Nous nous réservons le droit de refuser ou d&rsquo;annuler une commande en cas de
-              suspicion de fraude, d&rsquo;erreur manifeste de prix ou de problème lié au paiement.
+              Nous nous réservons le droit de refuser ou d&rsquo;annuler une commande notamment en
+              cas de :
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>suspicion de fraude ;</li>
+              <li>paiement refusé ou non validé ;</li>
+              <li>erreur manifeste concernant le prix ou les informations du produit ;</li>
+              <li>indisponibilité du produit ;</li>
+              <li>informations de commande incorrectes ou incomplètes.</li>
+            </ul>
+            <p className="mt-3">
+              En cas d&rsquo;annulation d&rsquo;une commande déjà payée, le remboursement sera
+              effectué conformément aux règles applicables.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">4. Paiement</h2>
-            <p>Les moyens de paiement disponibles sont indiqués lors du passage de la commande.</p>
-            <p className="mt-3">
-              Le paiement doit être effectué intégralement au moment de la commande, sauf
-              indication contraire.
+            <p>
+              Le paiement est effectué au moment de la commande par l&rsquo;intermédiaire des
+              moyens de paiement proposés sur notre boutique.
             </p>
             <p className="mt-3">
-              Les paiements peuvent être traités par des prestataires tiers sécurisés.
+              Les transactions peuvent être traitées par des prestataires de paiement tiers
+              sécurisés.
+            </p>
+            <p className="mt-3">
+              Nous n&rsquo;avons pas nécessairement accès à l&rsquo;intégralité des informations
+              bancaires utilisées lors de la transaction.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">5. Livraison</h2>
-            <p>
-              Les commandes sont expédiées à l&rsquo;adresse indiquée par le client au moment de
-              la commande.
+            <p>Les commandes sont expédiées à l&rsquo;adresse indiquée par le client lors de son achat.</p>
+            <p className="mt-3">
+              Les délais de préparation et de livraison sont précisés dans notre{" "}
+              <Link href="/politiques-expedition" className="underline underline-offset-2">
+                Politique d&rsquo;expédition
+              </Link>
+              .
             </p>
             <p className="mt-3">
-              Les délais de livraison indiqués sur le site sont des estimations et peuvent varier
-              selon la destination, le transporteur ou des circonstances indépendantes de notre
-              volonté.
+              Les délais annoncés sont des estimations et peuvent varier en raison du
+              transporteur, de la destination, des formalités douanières, des périodes de forte
+              activité ou d&rsquo;autres circonstances indépendantes de notre volonté.
             </p>
-            <p className="mt-3">
-              Le client est responsable de fournir une adresse de livraison correcte et complète.
-            </p>
+            <p className="mt-3">Le client doit vérifier son adresse avant de confirmer sa commande.</p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">6. Retours et remboursements</h2>
             <p>
-              Les conditions de retour et de remboursement sont précisées dans notre{" "}
+              Les demandes de retour, d&rsquo;échange ou de remboursement sont traitées
+              conformément à notre{" "}
               <Link href="/politique-de-retour" className="underline underline-offset-2">
-                Politique de retour
-              </Link>{" "}
-              disponible sur le site.
+                Politique de remboursement
+              </Link>
+              .
             </p>
             <p className="mt-3">
-              Lorsqu&rsquo;un droit de rétractation est applicable conformément à la législation
-              en vigueur, le client peut demander un retour dans le délai légal applicable.
+              Lorsque la législation applicable accorde au client un droit de rétractation,
+              celui-ci reste pleinement applicable.
             </p>
             <p className="mt-3">
-              Certains produits peuvent être exclus des retours lorsque la loi le permet,
-              notamment certains produits personnalisés, périssables ou descellés pour des
-              raisons d&rsquo;hygiène.
+              Les produits retournés doivent respecter les conditions indiquées dans notre
+              Politique de remboursement.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">7. Produits endommagés ou incorrects</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">7. Produits défectueux ou endommagés</h2>
             <p>
-              En cas de réception d&rsquo;un produit endommagé, défectueux ou différent de celui
-              commandé, le client peut nous contacter via les coordonnées disponibles sur notre
-              boutique.
+              Si un produit est reçu endommagé, défectueux ou incorrect, le client doit nous
+              contacter dès que possible.
             </p>
             <p className="mt-3">
-              Nous examinerons la demande et proposerons une solution appropriée conformément à
-              la réglementation applicable.
+              Nous pouvons demander le numéro de commande ainsi que des photographies permettant
+              de constater le problème.
+            </p>
+            <p className="mt-3">
+              Après examen de la demande, une solution appropriée pourra être proposée, par
+              exemple un remplacement ou un remboursement, selon les circonstances et les règles
+              applicables.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">8. Propriété intellectuelle</h2>
-            <p>
-              Tous les contenus présents sur le site, notamment les textes, images, logos,
-              photographies, graphismes et éléments visuels, sont protégés par les lois relatives
-              à la propriété intellectuelle.
-            </p>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">8. Disponibilité</h2>
+            <p>Tous les produits sont proposés sous réserve de disponibilité.</p>
             <p className="mt-3">
-              Ils ne peuvent être copiés, reproduits, modifiés ou exploités sans autorisation
-              préalable, sauf lorsque la loi l&rsquo;autorise.
+              Si un produit devient indisponible après la validation d&rsquo;une commande, nous
+              pouvons annuler tout ou partie de celle-ci et rembourser le montant correspondant.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">9. Utilisation du site</h2>
-            <p>
-              Il est interdit d&rsquo;utiliser notre site à des fins frauduleuses, illégales ou
-              susceptibles de porter atteinte au fonctionnement du site ou à des tiers.
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">9. Promotions et codes de réduction</h2>
+            <p>Les promotions et codes de réduction peuvent être soumis à des conditions particulières.</p>
+            <p className="mt-3">
+              Sauf indication contraire, plusieurs codes promotionnels ne peuvent pas
+              nécessairement être cumulés.
             </p>
             <p className="mt-3">
-              Nous pouvons suspendre ou limiter l&rsquo;accès au site en cas d&rsquo;utilisation
-              abusive ou contraire aux présentes conditions.
+              Nous nous réservons le droit de modifier ou de mettre fin à une offre promotionnelle
+              conformément aux conditions annoncées.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">10. Données personnelles</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">10. Utilisation des produits</h2>
             <p>
-              Les données personnelles collectées lors de l&rsquo;utilisation du site ou
-              d&rsquo;une commande sont traitées conformément à notre{" "}
+              Le client est responsable de l&rsquo;utilisation des produits conformément à leur
+              destination et aux éventuelles instructions fournies.
+            </p>
+            <p className="mt-3">
+              Sculptia ne peut être tenue responsable d&rsquo;une mauvaise utilisation d&rsquo;un
+              produit, sous réserve des responsabilités qui ne peuvent légalement être exclues ou
+              limitées.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">11. Propriété intellectuelle</h2>
+            <p>
+              Les textes, images, logos, graphismes, photographies et autres contenus présents
+              sur notre boutique sont protégés par les règles applicables en matière de propriété
+              intellectuelle.
+            </p>
+            <p className="mt-3">
+              Toute reproduction ou exploitation non autorisée est interdite, sauf lorsque la loi
+              l&rsquo;autorise.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">12. Données personnelles</h2>
+            <p>
+              Les informations personnelles recueillies dans le cadre des commandes et de
+              l&rsquo;utilisation du site sont traitées conformément à notre{" "}
               <Link href="/politique-de-confidentialite" className="underline underline-offset-2">
                 Politique de confidentialité
               </Link>
@@ -177,61 +216,56 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">11. Limitation de responsabilité</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">13. Responsabilité</h2>
             <p>
-              Nous ne pouvons être tenus responsables des dommages résultant d&rsquo;une mauvaise
-              utilisation des produits ou d&rsquo;événements indépendants de notre volonté, dans
-              les limites autorisées par la législation applicable.
+              Nous nous efforçons d&rsquo;assurer le bon fonctionnement de notre boutique et
+              l&rsquo;exactitude des informations qui y sont présentées.
             </p>
             <p className="mt-3">
-              Aucune disposition des présentes conditions ne vise à limiter les droits
-              obligatoires dont bénéficie le consommateur.
+              Notre responsabilité ne peut être exclue ou limitée lorsqu&rsquo;une telle exclusion
+              ou limitation est interdite par la législation applicable.
+            </p>
+            <p className="mt-3">
+              Les droits obligatoires accordés aux consommateurs restent applicables.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">12. Liens et services tiers</h2>
-            <p>Notre boutique peut contenir des liens vers des sites ou services exploités par des tiers.</p>
-            <p className="mt-3">
-              Nous ne sommes pas responsables du contenu, des pratiques ou des politiques de ces
-              sites tiers.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">13. Modification des présentes conditions</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">14. Modification des conditions</h2>
             <p>
-              Nous pouvons modifier les présentes conditions afin de tenir compte de changements
-              concernant notre activité, nos services ou la réglementation applicable.
+              Nous pouvons modifier les présentes Conditions générales de vente afin de tenir
+              compte de changements relatifs à nos produits, nos services, notre activité ou à la
+              réglementation applicable.
             </p>
-            <p className="mt-3">La version la plus récente est celle publiée sur notre site.</p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">14. Droit applicable et litiges</h2>
-            <p>Les présentes conditions sont régies par la législation applicable.</p>
             <p className="mt-3">
-              En cas de litige, les parties sont invitées à rechercher une solution amiable avant
-              toute procédure judiciaire.
+              La version applicable à une commande est celle en vigueur au moment de sa
+              validation.
             </p>
-            <p className="mt-3">Les droits légaux obligatoires du consommateur restent applicables.</p>
           </section>
 
           <section>
-            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">15. Contact</h2>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">15. Droit applicable et litiges</h2>
             <p>
-              Pour toute question concernant une commande ou les présentes conditions, vous pouvez
-              nous contacter via notre formulaire de contact ou nos coordonnées disponibles sur la
-              boutique.
+              En cas de désaccord concernant une commande, le client est invité à nous contacter
+              afin de rechercher une solution amiable.
             </p>
             <p className="mt-3">
-              Adresse de contact :
+              Les présentes conditions sont soumises aux règles légales applicables, sans priver
+              le consommateur des protections impératives dont il bénéficie dans son pays de
+              résidence lorsque celles-ci s&rsquo;appliquent.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-[#161616] mt-8 mb-3">16. Contact</h2>
+            <p>
+              Pour toute question relative à une commande ou aux présentes Conditions générales de
+              vente, vous pouvez nous contacter à l&rsquo;adresse suivante :
+            </p>
+            <p className="mt-3">
+              Sculptia
               <br />
-              1234 Sunset Avenue
-              <br />
-              Miami, FL 33101
-              <br />
-              United States
+              E-mail : sculptiapro@gmail.com
             </p>
           </section>
         </div>
