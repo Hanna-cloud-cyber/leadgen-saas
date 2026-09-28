@@ -568,6 +568,11 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                   Politiques d&apos;expéditions
                 </Link>
               </li>
+              <li>
+                <Link href="/mentions-legales" className="hover:text-neutral-700 hover:underline underline-offset-2">
+                  Mentions légales
+                </Link>
+              </li>
               <li>Contact</li>
             </ul>
           </div>
