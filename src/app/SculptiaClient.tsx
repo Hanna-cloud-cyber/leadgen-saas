@@ -553,6 +553,11 @@ export default function SculptiaClient({ product }: { product: SculptiaProduct }
                   Politique de retour
                 </Link>
               </li>
+              <li>
+                <Link href="/politique-de-confidentialite" className="hover:text-neutral-700 hover:underline underline-offset-2">
+                  Politique de Confidentialité
+                </Link>
+              </li>
               <li>Shipping</li>
               <li>Contact</li>
             </ul>
