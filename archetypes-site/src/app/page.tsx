@@ -9,16 +9,11 @@ import { faqs, pillars, reviews, store, usd } from "@/data";
 export default function Home() {
   return (
     <main>
-      {/* Hero: title, then the book, then the price */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-16 text-center">
-        <h1 className="font-display font-bold leading-[1.05] whitespace-nowrap">
-          <span className="block text-[22px] sm:text-4xl">
-            <span className="text-gold">THE 30 </span>
-            <span className="text-rose">ARCHETYPES</span>
-          </span>
-          <span className="block text-gold text-[24px] sm:text-[44px]">OF WOMEN</span>
-        </h1>
-        <div className="mt-4">
+      {/* Hero: the book, then the price */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16 text-center">
+        {/* Title is on the cover itself; kept for search engines and screen readers. */}
+        <h1 className="sr-only">{store.productName}</h1>
+        <div>
           <BookCover src="/cover.webp" />
         </div>
 
