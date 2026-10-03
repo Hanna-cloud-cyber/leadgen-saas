@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { store } from "@/data";
+import { store, usd } from "@/data";
 
 export function AnnouncementBar() {
   return (
     <div className="pill-rose text-center text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] py-2 px-3 uppercase">
-      Instant digital access · {store.refundDays}-day guarantee
+      {store.promoLabel}: {usd(store.priceCents)} instead of <s className="opacity-60">{usd(store.compareAtCents)}</s>
     </div>
   );
 }
@@ -14,15 +14,15 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[rgba(11,8,6,0.85)] backdrop-blur">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-3">
         <Link href="/" className="font-display font-bold leading-none">
-          <span className="text-gold text-lg">THE 30 </span>
-          <span className="text-rose text-lg">ARCHETYPES</span>
+          <span className="text-gold text-lg">DIVINE </span>
+          <span className="text-rose text-lg">WOMEN</span>
         </Link>
         <nav className="hidden md:flex items-center gap-7 text-[11px] tracking-[0.25em] uppercase text-muted">
           <Link href="/quiz" className="hover:text-cream">Free Quiz</Link>
           <Link href="/#faq" className="hover:text-cream">FAQ</Link>
         </nav>
-        <Link href="/#buy" className="btn-gold text-[11px] px-5 py-2.5">
-          Get the guide
+        <Link href="/#buy" className="btn-gold text-[11px] px-5 py-2.5 whitespace-nowrap">
+          Golden Ticket · {usd(store.priceCents)}
         </Link>
       </div>
     </header>
@@ -36,8 +36,8 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid gap-10 sm:grid-cols-3 text-sm">
         <div>
           <div className="font-display font-bold">
-            <span className="text-gold">THE 30 </span>
-            <span className="text-rose">ARCHETYPES</span>
+            <span className="text-gold">DIVINE </span>
+            <span className="text-rose">WOMEN</span>
           </div>
           <p className="text-muted mt-3 leading-relaxed">
             {store.tagline}. A digital guide to understanding, embracing, and developing your feminine power.
