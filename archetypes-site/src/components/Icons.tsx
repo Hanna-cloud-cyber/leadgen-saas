@@ -14,9 +14,9 @@ function GoldDefs() {
   return (
     <defs>
       <linearGradient id="goldStroke" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#f5e1ad" />
-        <stop offset="60%" stopColor="#d6ad5e" />
-        <stop offset="100%" stopColor="#9c7533" />
+        <stop offset="0%" stopColor="#fdf2d9" />
+        <stop offset="60%" stopColor="#ebc697" />
+        <stop offset="100%" stopColor="#c4955d" />
       </linearGradient>
     </defs>
   );
