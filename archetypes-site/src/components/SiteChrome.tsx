@@ -12,7 +12,7 @@ export function AnnouncementBar() {
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[rgba(11,8,6,0.85)] backdrop-blur">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-2">
+      <div className="max-w-6xl mx-auto flex items-center justify-center md:justify-between gap-4 px-4 sm:px-6 py-3">
         <Link href="/" className="font-display font-bold leading-none">
           <span className="text-gold text-lg">DIVINE </span>
           <span className="text-rose text-lg">WOMEN</span>
@@ -21,9 +21,6 @@ export function Header() {
           <Link href="/quiz" className="hover:text-cream">Free Quiz</Link>
           <Link href="/#faq" className="hover:text-cream">FAQ</Link>
         </nav>
-        <Link href="/#buy" className="btn-gold text-[11px] px-5 py-2.5 whitespace-nowrap">
-          Golden Ticket · {usd(store.priceCents)}
-        </Link>
       </div>
     </header>
   );
