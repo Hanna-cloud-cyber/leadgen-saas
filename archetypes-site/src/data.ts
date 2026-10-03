@@ -6,7 +6,7 @@ export const store = {
   tagline: "The Hidden Map of Feminine Dynamics",
   // TODO: replace with your real legal entity, state, and support email.
   legalName: "The 30 Archetypes",
-  supportEmail: "support@the30archetypes.com",
+  supportEmail: "womenpower2026@hotmail.com",
   governingState: "Delaware",
   // Price in USD cents. The checkout charges exactly this (or the Stripe
   // Price in ARCHETYPES_STRIPE_PRICE_ID, if set — keep both in sync).
