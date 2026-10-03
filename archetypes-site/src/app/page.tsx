@@ -9,34 +9,44 @@ import { faqs, included, pillars, store, usd } from "@/data";
 export default function Home() {
   return (
     <main>
-      {/* Hero */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-16 grid lg:grid-cols-[1.15fr_1fr] gap-14 items-center">
-        <div className="text-center lg:text-left">
-          <h1 className="font-display font-bold leading-[0.95]">
-            <span className="block">
-              <span className="text-gold text-4xl sm:text-6xl">THE </span>
-              <span className="text-gold text-7xl sm:text-[120px]">30</span>
-            </span>
-            <span className="block text-rose text-[44px] sm:text-[88px] tracking-tight">ARCHETYPES</span>
-            <span className="block text-gold">
-              <span className="text-3xl sm:text-5xl">OF </span>
-              <span className="text-6xl sm:text-[96px]">WOMEN</span>
-            </span>
-          </h1>
-          <Rule className="mt-6 max-w-md mx-auto lg:mx-0" />
-          <p className="text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.35em] mt-4 text-cream whitespace-nowrap">
-            THE HIDDEN MAP OF FEMININE DYNAMICS
-          </p>
-          <p className="font-condensed text-[20px] sm:text-3xl tracking-[0.06em] sm:tracking-[0.08em] mt-8 uppercase">
-            Discover your archetype
-            <span className="block text-rose">and unlock your feminine power</span>
-          </p>
-          <div className="mt-8 flex flex-col gap-3 max-w-md mx-auto lg:mx-0">
-            <Link href="#buy" className="btn-gold px-6 py-4 text-sm"><span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span></Link>
-            <Link href="/quiz" className="btn-ghost px-8 py-4 text-sm">Free quiz</Link>
-          </div>
+      {/* Hero: title, then the book, then the price */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-16 text-center">
+        <h1 className="font-display font-bold leading-[0.95]">
+          <span className="block">
+            <span className="text-gold text-3xl sm:text-5xl">THE </span>
+            <span className="text-gold text-6xl sm:text-[96px]">30</span>
+          </span>
+          <span className="block text-rose text-[40px] sm:text-[72px] tracking-tight">ARCHETYPES</span>
+          <span className="block text-gold">
+            <span className="text-2xl sm:text-4xl">OF </span>
+            <span className="text-5xl sm:text-[80px]">WOMEN</span>
+          </span>
+        </h1>
+        <Rule className="mt-5 max-w-md mx-auto" />
+        <p className="text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.35em] mt-4 text-cream whitespace-nowrap">
+          THE HIDDEN MAP OF FEMININE DYNAMICS
+        </p>
+
+        <div className="mt-10">
+          <BookCover src="/cover.webp" />
         </div>
-        <BookCover src="/cover.webp" />
+
+        <p className="text-[11px] tracking-[0.3em] uppercase text-rose mt-12">{store.promoLabel}</p>
+        <div className="flex items-baseline justify-center gap-3 mt-1">
+          <span className="font-display text-6xl font-bold text-gold">{usd(store.priceCents)}</span>
+          <s className="text-2xl text-muted">{usd(store.compareAtCents)}</s>
+        </div>
+        <p className="text-xs text-muted mt-2">One-time payment · Instant PDF download</p>
+
+        <div className="mt-6 flex flex-col gap-3 max-w-md mx-auto">
+          <BuyButton label={<span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>} className="w-full px-6 py-4 text-sm" />
+          <Link href="/quiz" className="btn-ghost px-8 py-4 text-sm">Free quiz</Link>
+        </div>
+
+        <p className="font-condensed text-[20px] sm:text-3xl tracking-[0.06em] sm:tracking-[0.08em] mt-12 uppercase">
+          Discover your archetype
+          <span className="block text-rose">and unlock your feminine power</span>
+        </p>
       </section>
 
       {/* Pillars, as on the cover */}

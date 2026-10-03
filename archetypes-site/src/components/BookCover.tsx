@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function BookCover({ src }: { src?: string }) {
   return (
-    <div className="relative mx-auto w-[240px] sm:w-[300px] [perspective:1400px]">
+    <div className="relative mx-auto w-[260px] sm:w-[360px] [perspective:1400px]">
       <div className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(235,198,151,0.35),transparent_65%)] blur-2xl" />
       <div className="relative [transform:rotateY(-14deg)] [transform-style:preserve-3d]">
         {/* Page edges */}
