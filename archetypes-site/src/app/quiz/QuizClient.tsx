@@ -82,7 +82,7 @@ export default function QuizClient() {
           <button
             key={a.text}
             onClick={() => setAnswers([...answers, a.family])}
-            className="w-full card px-5 py-4 text-left text-[15px] hover:border-[var(--gold)] hover:bg-[rgba(214,173,94,0.08)] transition-colors"
+            className="w-full card px-5 py-4 text-left text-[15px] hover:border-[var(--gold)] hover:bg-[rgba(235,198,151,0.08)] transition-colors"
           >
             {a.text}
           </button>

@@ -7,12 +7,13 @@
   --ink-2: #15100b;
   --cream: #f4ebe0;
   --muted: #b9a993;
-  --gold: #d6ad5e;
-  --gold-light: #f5e1ad;
-  --gold-dark: #9c7533;
+  --gold: #ebc697;
+  --gold-light: #fdf2d9;
+  --gold-mid: #f5d7ac;
+  --gold-dark: #c4955d;
   --rose: #eab1a8;
   --rose-light: #fbe1dc;
-  --line: rgba(214, 173, 94, 0.35);
+  --line: rgba(235, 198, 151, 0.35);
 }
 
 @theme inline {
@@ -32,16 +33,16 @@ html {
 
 body {
   background:
-    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(156, 117, 51, 0.28) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 0% 30%, rgba(156, 117, 51, 0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 100% 30%, rgba(156, 117, 51, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(150, 110, 60, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 0% 30%, rgba(150, 110, 60, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 100% 30%, rgba(150, 110, 60, 0.12) 0%, transparent 70%),
     var(--ink);
   color: var(--cream);
   font-family: var(--font-montserrat), system-ui, sans-serif;
 }
 
 .text-gold {
-  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-dark) 100%);
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-mid) 35%, var(--gold) 70%, var(--gold-dark) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -58,19 +59,19 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-mid) 30%, var(--gold) 65%, var(--gold-dark) 100%);
   color: #140f08;
   font-family: var(--font-oswald), sans-serif;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   border-radius: 999px;
-  box-shadow: 0 8px 30px rgba(214, 173, 94, 0.25);
+  box-shadow: 0 8px 30px rgba(235, 198, 151, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 .btn-gold:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 40px rgba(214, 173, 94, 0.4);
+  box-shadow: 0 10px 40px rgba(235, 198, 151, 0.4);
 }
 .btn-gold:disabled {
   opacity: 0.6;
@@ -91,7 +92,7 @@ body {
 }
 .btn-ghost:hover {
   border-color: var(--gold);
-  background: rgba(214, 173, 94, 0.08);
+  background: rgba(235, 198, 151, 0.08);
 }
 
 .pill-rose {
