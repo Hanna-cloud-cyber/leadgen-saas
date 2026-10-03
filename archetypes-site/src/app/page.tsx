@@ -31,13 +31,13 @@ export default function Home() {
         <p className="text-xs text-muted mt-2">One-time payment · Instant PDF download</p>
 
         <div className="mt-6 flex flex-col gap-3 max-w-md mx-auto">
-          <BuyButton label={<span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>} className="w-full px-6 py-4 text-sm" />
+          <BuyButton label={<span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>} className="w-full px-4 py-4 text-[13px] sm:text-sm whitespace-nowrap" />
           <Link href="/quiz" className="btn-ghost px-8 py-4 text-sm">Free quiz</Link>
         </div>
         <p className="text-xs text-muted mt-3">Secure checkout · {store.refundDays}-day money-back guarantee</p>
         </div>
 
-        <p className="font-condensed text-[20px] sm:text-3xl tracking-[0.06em] sm:tracking-[0.08em] mt-12 uppercase">
+        <p className="font-condensed text-[17px] sm:text-3xl tracking-[0.04em] sm:tracking-[0.08em] mt-12 uppercase">
           Discover your archetype
           <span className="block text-rose">and unlock your feminine power</span>
         </p>

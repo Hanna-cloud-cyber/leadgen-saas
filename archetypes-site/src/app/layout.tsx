@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Cinzel, Montserrat, Oswald } from "next/font/google";
+import { Bodoni_Moda, Poppins } from "next/font/google";
 import { AnnouncementBar, Footer, Header } from "@/components/SiteChrome";
 import { store } from "@/data";
 import "./globals.css";
 
-const cinzel = Cinzel({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-cinzel" });
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-montserrat" });
-const oswald = Oswald({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-oswald" });
+const bodoni = Bodoni_Moda({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-serif" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--font-body" });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${montserrat.variable} ${oswald.variable}`}>
+    <html lang="en" className={`${bodoni.variable} ${poppins.variable}`}>
       <body className="antialiased min-h-screen">
         <AnnouncementBar />
         <Header />
