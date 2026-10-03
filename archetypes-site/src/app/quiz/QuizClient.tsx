@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import BuyButton from "@/components/BuyButton";
-import { families, quiz, store, usd, type FamilyId } from "@/data";
+import SalePrice from "@/components/SalePrice";
+import { families, quiz, store, type FamilyId } from "@/data";
 
 export default function QuizClient() {
   const [answers, setAnswers] = useState<FamilyId[]>([]);
@@ -44,7 +45,7 @@ export default function QuizClient() {
             The Self-Discovery Test inside the guide reveals your exact archetype out of all 30.
           </p>
           <div className="max-w-sm mx-auto mt-8">
-            <BuyButton label={`Get the guide · ${usd(store.priceCents)}`} className="w-full py-4 text-sm" />
+            <BuyButton label={<span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>} className="w-full py-4 text-sm" />
           </div>
           <p className="text-xs text-muted mt-3">Instant PDF download · {store.refundDays}-day money-back guarantee</p>
         </div>

@@ -5,12 +5,17 @@ export const store = {
   productName: "The 30 Archetypes of Women",
   tagline: "The Hidden Map of Feminine Dynamics",
   // TODO: replace with your real legal entity, state, and support email.
-  legalName: "The 30 Archetypes",
+  brandName: "Divine Women",
+  legalName: "Divine Women",
   supportEmail: "womenpower2026@hotmail.com",
   governingState: "Delaware",
   // Price in USD cents. The checkout charges exactly this (or the Stripe
   // Price in ARCHETYPES_STRIPE_PRICE_ID, if set — keep both in sync).
   priceCents: 3900,
+  // Regular price, shown struck through next to the sale price.
+  compareAtCents: 6600,
+  promoLabel: "Fall Special",
+  ctaLabel: "Claim Your Golden Ticket",
   pages: 180,
   refundDays: 30,
 };

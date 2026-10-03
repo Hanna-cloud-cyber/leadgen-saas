@@ -2,6 +2,7 @@ import Link from "next/link";
 import BookCover from "@/components/BookCover";
 import BuyButton from "@/components/BuyButton";
 import { CheckIcon, pillarIcons } from "@/components/Icons";
+import SalePrice from "@/components/SalePrice";
 import { Rule } from "@/components/SiteChrome";
 import { faqs, included, pillars, store, usd } from "@/data";
 
@@ -30,8 +31,8 @@ export default function Home() {
             Discover your archetype
             <span className="block text-rose">and unlock your feminine power</span>
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start max-w-md mx-auto lg:mx-0">
-            <Link href="#buy" className="btn-gold px-8 py-4 text-sm">Get the guide · {usd(store.priceCents)}</Link>
+          <div className="mt-8 flex flex-col gap-3 max-w-md mx-auto lg:mx-0">
+            <Link href="#buy" className="btn-gold px-6 py-4 text-sm"><span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span></Link>
             <Link href="/quiz" className="btn-ghost px-8 py-4 text-sm">Free quiz</Link>
           </div>
         </div>
@@ -62,7 +63,11 @@ export default function Home() {
           <h2 className="font-display text-2xl sm:text-3xl font-bold">
             <span className="text-gold">{store.productName}</span>
           </h2>
-          <div className="font-display text-6xl font-bold text-gold mt-6">{usd(store.priceCents)}</div>
+          <p className="text-[11px] tracking-[0.3em] uppercase text-rose mt-4">{store.promoLabel}</p>
+          <div className="flex items-baseline justify-center gap-3 mt-2">
+            <span className="font-display text-6xl font-bold text-gold">{usd(store.priceCents)}</span>
+            <s className="text-2xl text-muted">{usd(store.compareAtCents)}</s>
+          </div>
           <p className="text-xs text-muted mt-2">One-time payment · Digital guide (PDF)</p>
           <ul className="mt-8 space-y-3 inline-block text-left">
             {included.map((item) => (
@@ -73,7 +78,7 @@ export default function Home() {
             ))}
           </ul>
           <div className="mt-8">
-            <BuyButton label={`Get instant access · ${usd(store.priceCents)}`} className="w-full py-4 text-sm sm:text-base" />
+            <BuyButton label={<span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>} className="w-full py-4 text-sm sm:text-base" />
           </div>
           <p className="text-xs text-muted mt-4">
             Secure checkout · {store.refundDays}-day money-back guarantee
@@ -100,7 +105,7 @@ export default function Home() {
       {/* Sticky mobile CTA */}
       <div className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-[var(--line)] bg-[rgba(11,8,6,0.95)] backdrop-blur p-3">
         <Link href="#buy" className="btn-gold w-full py-3.5 text-sm">
-          Get the guide · {usd(store.priceCents)}
+          <span>{store.ctaLabel} · <SalePrice className="ml-1 whitespace-nowrap" /></span>
         </Link>
       </div>
     </main>

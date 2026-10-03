@@ -13,8 +13,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${store.productName} — ${store.tagline}`,
-    template: `%s · ${store.productName}`,
+    default: `${store.brandName} · ${store.productName}`,
+    template: `%s · ${store.brandName}`,
   },
   description:
     "Discover your archetype and unlock your feminine power. 30 archetypes, psychological insights, practical guidance, and a self-discovery test — instant digital download.",

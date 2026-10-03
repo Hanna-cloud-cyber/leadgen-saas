@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 export default function BuyButton({
   label,
   className = "",
 }: {
-  label: string;
+  label: ReactNode;
   className?: string;
 }) {
   const [loading, setLoading] = useState(false);
