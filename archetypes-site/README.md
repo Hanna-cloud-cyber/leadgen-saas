@@ -30,10 +30,21 @@ cp .env.example .env.local   # fill in values
 npm run dev                  # http://localhost:3000
 ```
 
-## Deploy (Vercel)
-Import the repo on vercel.com, set **Root Directory** to `archetypes-site`,
-add the environment variables, deploy. Set `NEXT_PUBLIC_SITE_URL` to your
-final domain.
+## Deploy (Vercel) on womenbossworld.com
+1. On vercel.com: **Add New → Project** → import this GitHub repo → set
+   **Root Directory** to `archetypes-site` → add the environment variables
+   from `.env.example` (`NEXT_PUBLIC_SITE_URL=https://womenbossworld.com`)
+   → **Deploy**.
+2. In the Vercel project: **Settings → Domains** → add `womenbossworld.com`
+   (and accept adding `www.womenbossworld.com`). Vercel shows the DNS records
+   to create.
+3. In IONOS: **Domains & SSL** → `womenbossworld.com` → **DNS**:
+   - `A` record, host `@` → `76.76.21.21` (replace the existing IONOS `A` record)
+   - delete any `AAAA` record on `@` (IONOS adds one by default; it breaks Vercel)
+   - `CNAME` record, host `www` → `cname.vercel-dns.com`
+   If Vercel shows different values, use Vercel's.
+4. Wait 10 min to a few hours. Vercel issues the HTTPS certificate automatically.
+5. In Stripe, nothing to change: redirects use `NEXT_PUBLIC_SITE_URL`.
 
 ## Note on the current cover
 The cover artwork shows the likenesses of real celebrities. Using a real
