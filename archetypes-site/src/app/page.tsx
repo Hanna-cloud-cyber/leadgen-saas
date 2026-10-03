@@ -63,14 +63,15 @@ export default function Home() {
 
       {/* Reader reviews */}
       <section id="reviews" className="max-w-5xl mx-auto px-4 sm:px-6 py-20 scroll-mt-24">
-        <div className="text-center">
-          <p className="eyebrow">Reader stories</p>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
-            <span className="text-gold">What Women </span>
-            <span className="text-rose">Are Saying</span>
-          </h2>
-        </div>
         {reviews.length > 0 ? (
+          <>
+          <div className="text-center">
+            <p className="eyebrow">Reader stories</p>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
+              <span className="text-gold">What Women </span>
+              <span className="text-rose">Are Saying</span>
+            </h2>
+          </div>
           <div className="grid md:grid-cols-2 gap-5 mt-10">
             {reviews.map((r) => (
               <figure key={r.name} className="card p-6 flex gap-4">
@@ -106,13 +107,21 @@ export default function Home() {
               </figure>
             ))}
           </div>
+          </>
         ) : (
-          <div className="frame-gold rounded-2xl p-8 mt-10 text-center max-w-xl mx-auto">
-            <p className="font-display text-lg text-gold">Be one of the first to share your story</p>
-            <p className="text-sm text-muted mt-3 leading-relaxed">
-              Already read the guide? Tell us which archetype you discovered and what changed for you.
-              We&apos;ll feature real reader stories right here.
+          <div className="frame-gold rounded-2xl p-8 sm:p-10 text-center max-w-xl mx-auto">
+            <p className="eyebrow">The Divine Women Club</p>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-3">
+              <span className="text-gold">Join </span>
+              <span className="text-rose">the Club</span>
+            </h2>
+            <p className="text-sm text-muted mt-4 leading-relaxed">
+              If you&apos;d like to join the club of women who embody the Divine Woman, to transcend your
+              life and grow into new opportunities around the world, send me an email.
             </p>
+            <a href={`mailto:${store.supportEmail}?subject=${encodeURIComponent("Join the Divine Women Club")}`} className="btn-gold px-6 py-3.5 text-xs mt-6">
+              Email me
+            </a>
             <p className="text-sm text-cream mt-4 select-all">{store.supportEmail}</p>
           </div>
         )}
