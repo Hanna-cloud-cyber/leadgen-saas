@@ -3,35 +3,29 @@ import BookCover from "@/components/BookCover";
 import BuyButton from "@/components/BuyButton";
 import { CheckIcon, pillarIcons } from "@/components/Icons";
 import SalePrice from "@/components/SalePrice";
-import { Rule } from "@/components/SiteChrome";
 import { faqs, included, pillars, store, usd } from "@/data";
 
 export default function Home() {
   return (
     <main>
       {/* Hero: title, then the book, then the price */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-16 text-center">
-        <h1 className="font-display font-bold leading-[0.95]">
-          <span className="block">
-            <span className="text-gold text-3xl sm:text-5xl">THE </span>
-            <span className="text-gold text-6xl sm:text-[96px]">30</span>
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-16 text-center">
+        <h1 className="font-display font-bold leading-[1.05] whitespace-nowrap">
+          <span className="block text-[26px] sm:text-5xl">
+            <span className="text-gold">THE 30 </span>
+            <span className="text-rose">ARCHETYPES</span>
           </span>
-          <span className="block text-rose text-[40px] sm:text-[72px] tracking-tight">ARCHETYPES</span>
-          <span className="block text-gold">
-            <span className="text-2xl sm:text-4xl">OF </span>
-            <span className="text-5xl sm:text-[80px]">WOMEN</span>
-          </span>
+          <span className="block text-gold text-[30px] sm:text-[56px]">OF WOMEN</span>
         </h1>
-        <Rule className="mt-5 max-w-md mx-auto" />
-        <p className="text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.35em] mt-4 text-cream whitespace-nowrap">
+        <p className="text-[9px] sm:text-xs tracking-[0.22em] sm:tracking-[0.35em] mt-3 text-cream whitespace-nowrap">
           THE HIDDEN MAP OF FEMININE DYNAMICS
         </p>
 
-        <div className="mt-10">
+        <div className="mt-6">
           <BookCover src="/cover.webp" />
         </div>
 
-        <p className="text-[11px] tracking-[0.3em] uppercase text-rose mt-12">{store.promoLabel}</p>
+        <p className="text-[11px] tracking-[0.3em] uppercase text-rose mt-10">{store.promoLabel}</p>
         <div className="flex items-baseline justify-center gap-3 mt-1">
           <span className="font-display text-6xl font-bold text-gold">{usd(store.priceCents)}</span>
           <s className="text-2xl text-muted">{usd(store.compareAtCents)}</s>
