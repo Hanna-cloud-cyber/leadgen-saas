@@ -3,7 +3,7 @@ import { store, usd } from "@/data";
 
 export function AnnouncementBar() {
   return (
-    <div className="pill-rose text-center text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] py-2 px-3 uppercase">
+    <div className="pill-rose text-center text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] py-1.5 px-3 uppercase">
       {store.promoLabel}: {usd(store.priceCents)} instead of <s className="opacity-60">{usd(store.compareAtCents)}</s>
     </div>
   );
@@ -12,7 +12,7 @@ export function AnnouncementBar() {
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[rgba(11,8,6,0.85)] backdrop-blur">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-3">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-2">
         <Link href="/" className="font-display font-bold leading-none">
           <span className="text-gold text-lg">DIVINE </span>
           <span className="text-rose text-lg">WOMEN</span>
