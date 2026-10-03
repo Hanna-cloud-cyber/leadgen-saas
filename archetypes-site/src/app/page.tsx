@@ -3,7 +3,7 @@ import BookCover from "@/components/BookCover";
 import BuyButton from "@/components/BuyButton";
 import { pillarIcons } from "@/components/Icons";
 import SalePrice from "@/components/SalePrice";
-import { faqs, phoenixStories, pillars, store, usd } from "@/data";
+import { faqs, pillars, store, usd } from "@/data";
 
 export default function Home() {
   return (
@@ -57,27 +57,6 @@ export default function Home() {
         </div>
         <div className="pill-rose rounded-xl mt-14 py-4 px-4 text-center font-semibold text-[11px] sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]">
           UNDERSTAND · EMBRACE · DEVELOP · BECOME
-        </div>
-      </section>
-
-      {/* Phoenix: who the guide is for */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
-        <p className="eyebrow">For the women who rise again</p>
-        <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
-          <span className="text-gold">Rise Like </span>
-          <span className="text-rose">the Phoenix</span>
-        </h2>
-        <p className="text-muted mt-4 max-w-xl mx-auto leading-relaxed">
-          This guide was written for women who have been through the fire and are ready to
-          meet the woman they are becoming.
-        </p>
-        <div className="grid sm:grid-cols-2 gap-4 mt-10 text-left">
-          {phoenixStories.map((p) => (
-            <div key={p.title} className="card p-6">
-              <h3 className="font-display font-bold text-gold">{p.title}</h3>
-              <p className="text-sm text-muted mt-2 leading-relaxed">{p.text}</p>
-            </div>
-          ))}
         </div>
       </section>
 
