@@ -9,19 +9,15 @@ export default function Home() {
   return (
     <main>
       {/* Hero: title, then the book, then the price */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-16 text-center">
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-16 text-center">
         <h1 className="font-display font-bold leading-[1.05] whitespace-nowrap">
-          <span className="block text-[26px] sm:text-5xl">
+          <span className="block text-[22px] sm:text-4xl">
             <span className="text-gold">THE 30 </span>
             <span className="text-rose">ARCHETYPES</span>
           </span>
-          <span className="block text-gold text-[30px] sm:text-[56px]">OF WOMEN</span>
+          <span className="block text-gold text-[24px] sm:text-[44px]">OF WOMEN</span>
         </h1>
-        <p className="text-[9px] sm:text-xs tracking-[0.22em] sm:tracking-[0.35em] mt-3 text-cream whitespace-nowrap">
-          THE HIDDEN MAP OF FEMININE DYNAMICS
-        </p>
-
-        <div className="mt-6">
+        <div className="mt-4">
           <BookCover src="/cover.webp" />
         </div>
 
