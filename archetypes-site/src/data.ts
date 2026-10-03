@@ -127,6 +127,27 @@ export const included = [
   "Instant download, lifetime access",
 ];
 
+// "Rise like the Phoenix" section: who the guide is for. Not testimonials —
+// add real customer reviews (with consent) once you have them.
+export const phoenixStories = [
+  {
+    title: "After heartbreak",
+    text: "For the woman rebuilding after a love that broke her, learning why she was drawn to it, and how not to repeat it.",
+  },
+  {
+    title: "After betrayal",
+    text: "For the woman who trusted and was let down, and is ready to trust herself first.",
+  },
+  {
+    title: "After burnout",
+    text: "For the woman who gave everything to everyone, and is taking her energy and her power back.",
+  },
+  {
+    title: "After losing herself",
+    text: "For the woman who no longer recognizes the person in the mirror, and wants to meet her true archetype.",
+  },
+];
+
 export const faqs = [
   {
     q: "Is this a physical book?",
