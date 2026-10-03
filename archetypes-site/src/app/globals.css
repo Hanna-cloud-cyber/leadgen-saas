@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* Brand palette, taken from the cover: deep black with a warm bronze glow,
+   champagne gold, rose gold / blush pink. */
+:root {
+  --ink: #0b0806;
+  --ink-2: #15100b;
+  --cream: #f4ebe0;
+  --muted: #b9a993;
+  --gold: #d6ad5e;
+  --gold-light: #f5e1ad;
+  --gold-dark: #9c7533;
+  --rose: #eab1a8;
+  --rose-light: #fbe1dc;
+  --line: rgba(214, 173, 94, 0.35);
+}
+
+@theme inline {
+  --font-display: var(--font-cinzel);
+  --font-sans: var(--font-montserrat);
+  --font-condensed: var(--font-oswald);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-cream: var(--cream);
+  --color-muted: var(--muted);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ink);
+}
+
+body {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(156, 117, 51, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 0% 30%, rgba(156, 117, 51, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 100% 30%, rgba(156, 117, 51, 0.12) 0%, transparent 70%),
+    var(--ink);
+  color: var(--cream);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+}
+
+.text-gold {
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-rose {
+  background: linear-gradient(180deg, var(--rose-light) 0%, var(--rose) 60%, #c98478 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+  color: #140f08;
+  font-family: var(--font-oswald), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  box-shadow: 0 8px 30px rgba(214, 173, 94, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 40px rgba(214, 173, 94, 0.4);
+}
+.btn-gold:disabled {
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  color: var(--gold-light);
+  font-family: var(--font-oswald), sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  background: rgba(214, 173, 94, 0.08);
+}
+
+.pill-rose {
+  background: linear-gradient(90deg, #f3c4bd 0%, var(--rose-light) 50%, #f3c4bd 100%);
+  color: #1a120c;
+}
+
+.card {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 240, 215, 0.04) 0%, rgba(255, 240, 215, 0.01) 100%);
+  border-radius: 14px;
+}
+
+.frame-gold {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--ink-2), var(--ink-2)) padding-box,
+    linear-gradient(135deg, var(--gold-light), var(--gold-dark) 50%, var(--gold-light)) border-box;
+}
+
+/* Thin gold rule with a diamond in the middle, as under the cover title. */
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+}
+.rule::before,
+.rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.rule::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.eyebrow {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+.prose-legal h2 {
+  font-family: var(--font-cinzel), serif;
+  color: var(--gold-light);
+  font-size: 1.15rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.prose-legal p,
+.prose-legal li {
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.5rem 0;
+}
+.prose-legal a {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
