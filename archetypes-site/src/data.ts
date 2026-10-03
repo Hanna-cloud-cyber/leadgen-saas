@@ -127,6 +127,20 @@ export const included = [
   "Instant download, lifetime access",
 ];
 
+// Reader reviews shown above the FAQ. Only add genuine reviews from people
+// who read the guide, with their permission to publish their first name,
+// words and photo. Photos go in public/reviews/. If a reviewer is a friend
+// or got a free copy, set `disclosure` (US FTC rules require it).
+export type Review = {
+  name: string;
+  text: string;
+  rating: number;
+  photo?: string;
+  disclosure?: string;
+};
+
+export const reviews: Review[] = [];
+
 export const faqs = [
   {
     q: "Is this a physical book?",
