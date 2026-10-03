@@ -36,6 +36,20 @@ export default async function ThankYou({
           >
             Download my guide (PDF)
           </a>
+          <div className="card p-6 mt-12 text-left">
+            <p className="font-display font-bold text-gold">Share your story</p>
+            <p className="text-sm text-muted mt-2 leading-relaxed">
+              Once you&apos;ve read the guide, we&apos;d love to hear which archetype you discovered. Email us
+              a few lines (and a smiling photo if you&apos;d like it shown) at{" "}
+              <a
+                href={`mailto:${store.supportEmail}?subject=${encodeURIComponent("My Divine Women story")}&body=${encodeURIComponent("First name:\nMy review:\n\nI agree that my first name, review and photo may be shown on the site: yes / no")}`}
+                className="underline underline-offset-4 text-cream"
+              >
+                {store.supportEmail}
+              </a>
+              . With your permission, we&apos;ll feature it on the site.
+            </p>
+          </div>
           <p className="text-xs text-muted mt-6">
             Bookmark this page to download again later. Trouble downloading? Email{" "}
             <a href={`mailto:${store.supportEmail}`} className="underline underline-offset-4">{store.supportEmail}</a>.

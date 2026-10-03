@@ -3,7 +3,8 @@ import BookCover from "@/components/BookCover";
 import BuyButton from "@/components/BuyButton";
 import { pillarIcons } from "@/components/Icons";
 import SalePrice from "@/components/SalePrice";
-import { faqs, pillars, store, usd } from "@/data";
+import Image from "next/image";
+import { faqs, pillars, reviews, store, usd } from "@/data";
 
 export default function Home() {
   return (
@@ -58,6 +59,63 @@ export default function Home() {
         <div className="pill-rose rounded-xl mt-14 py-4 px-4 text-center font-semibold text-[11px] sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]">
           UNDERSTAND · EMBRACE · DEVELOP · BECOME
         </div>
+      </section>
+
+      {/* Reader reviews */}
+      <section id="reviews" className="max-w-5xl mx-auto px-4 sm:px-6 py-20 scroll-mt-24">
+        <div className="text-center">
+          <p className="eyebrow">Reader stories</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
+            <span className="text-gold">What Women </span>
+            <span className="text-rose">Are Saying</span>
+          </h2>
+        </div>
+        {reviews.length > 0 ? (
+          <div className="grid md:grid-cols-2 gap-5 mt-10">
+            {reviews.map((r) => (
+              <figure key={r.name} className="card p-6 flex gap-4">
+                <div className="shrink-0">
+                  {r.photo ? (
+                    <Image
+                      src={r.photo}
+                      alt={r.name}
+                      width={56}
+                      height={56}
+                      className="w-14 h-14 rounded-full object-cover frame-gold"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full frame-gold flex items-center justify-center font-display text-xl">
+                      <span className="text-gold">{r.name[0]}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-3">
+                    <figcaption className="font-display font-bold text-cream">{r.name}</figcaption>
+                    <span className="text-gold text-sm tracking-widest" aria-label={`${r.rating} out of 5`}>
+                      {"★".repeat(r.rating)}
+                    </span>
+                  </div>
+                  <blockquote className="text-sm text-muted mt-2 leading-relaxed">
+                    <span className="text-gold font-display text-lg leading-none">&ldquo;</span>
+                    {r.text}
+                    <span className="text-gold font-display text-lg leading-none">&rdquo;</span>
+                  </blockquote>
+                  {r.disclosure && <p className="text-[11px] text-muted/70 mt-2 italic">{r.disclosure}</p>}
+                </div>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div className="frame-gold rounded-2xl p-8 mt-10 text-center max-w-xl mx-auto">
+            <p className="font-display text-lg text-gold">Be one of the first to share your story</p>
+            <p className="text-sm text-muted mt-3 leading-relaxed">
+              Already read the guide? Tell us which archetype you discovered and what changed for you.
+              We&apos;ll feature real reader stories right here.
+            </p>
+            <p className="text-sm text-cream mt-4 select-all">{store.supportEmail}</p>
+          </div>
+        )}
       </section>
 
       {/* FAQ */}
