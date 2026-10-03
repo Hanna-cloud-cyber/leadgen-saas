@@ -35,7 +35,7 @@ export default function Home() {
             <Link href="/quiz" className="btn-ghost px-8 py-4 text-sm">Free quiz</Link>
           </div>
         </div>
-        <BookCover />
+        <BookCover src="/cover.webp" />
       </section>
 
       {/* Pillars, as on the cover */}

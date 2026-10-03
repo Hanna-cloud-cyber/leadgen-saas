@@ -18,9 +18,8 @@ digital guide in the US, in USD, through Stripe Checkout.
 3. **The PDF** — upload it somewhere private and put the link in
    `ARCHETYPES_DOWNLOAD_URL`. `/api/download` only redirects there after
    checking with Stripe that the order is paid.
-4. **Cover image (optional)** — drop it at `public/cover.jpg` and use
-   `<BookCover src="/cover.jpg" />` in `src/app/page.tsx`. Use a cover without
-   real celebrities' faces (see note below).
+4. **Cover image** — `public/cover.webp`, shown in the hero via
+   `<BookCover src="/cover.webp" />`. Replace the file to change it.
 5. **Sales tax** — enable Stripe Tax if you have US sales-tax obligations.
 
 ## Run locally
@@ -37,7 +36,7 @@ add the environment variables, deploy. Set `NEXT_PUBLIC_SITE_URL` to your
 final domain.
 
 ## Note on the current cover
-The current cover artwork shows the likenesses of real celebrities. Using a
-real person's face to sell a product in the US without permission can violate
-right-of-publicity laws, so the site deliberately uses a typographic cover
-instead.
+The cover artwork shows the likenesses of real celebrities. Using a real
+person's face to sell a product in the US without their permission can violate
+right-of-publicity laws (and can get ads rejected on Meta/TikTok). Consider a
+version without recognizable faces before running paid traffic.
