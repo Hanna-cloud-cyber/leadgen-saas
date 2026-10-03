@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { store, usd } from "@/data";
+import { store } from "@/data";
 
 export function AnnouncementBar() {
   return (
     <div className="pill-rose text-center text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] py-2 px-3 uppercase">
-      Launch price {usd(store.priceCents)} <span className="line-through opacity-60">{usd(store.compareAtCents)}</span>
-      <span className="hidden sm:inline"> · Instant digital access · {store.refundDays}-day guarantee</span>
+      Instant digital access · {store.refundDays}-day guarantee
     </div>
   );
 }
@@ -19,8 +18,6 @@ export function Header() {
           <span className="text-rose text-lg">ARCHETYPES</span>
         </Link>
         <nav className="hidden md:flex items-center gap-7 text-[11px] tracking-[0.25em] uppercase text-muted">
-          <Link href="/#archetypes" className="hover:text-cream">The 30</Link>
-          <Link href="/#inside" className="hover:text-cream">Inside</Link>
           <Link href="/quiz" className="hover:text-cream">Free Quiz</Link>
           <Link href="/#faq" className="hover:text-cream">FAQ</Link>
         </nav>
@@ -49,7 +46,6 @@ export function Footer() {
         <div>
           <div className="eyebrow mb-3">Explore</div>
           <ul className="space-y-2 text-muted">
-            <li><Link href="/#archetypes" className="hover:text-cream">The 30 Archetypes</Link></li>
             <li><Link href="/quiz" className="hover:text-cream">Free Archetype Quiz</Link></li>
             <li><Link href="/#faq" className="hover:text-cream">FAQ</Link></li>
             <li><Link href="/contact" className="hover:text-cream">Contact</Link></li>

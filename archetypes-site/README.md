@@ -11,7 +11,7 @@ digital guide in the US, in USD, through Stripe Checkout.
 
 ## Before launch
 1. **Business details** — edit `store` in `src/data.ts`: legal name, support
-   email, state, price (`priceCents`, currently $27 vs $47).
+   email, state, price (`priceCents`, currently $39).
 2. **Stripe** — create an account at stripe.com, copy the secret key into
    `STRIPE_SECRET_KEY` (see `.env.example`). Test with `sk_test_...` and card
    `4242 4242 4242 4242` first, then switch to the live key.

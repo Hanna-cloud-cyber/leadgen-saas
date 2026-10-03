@@ -10,8 +10,7 @@ export const store = {
   governingState: "Delaware",
   // Price in USD cents. The checkout charges exactly this (or the Stripe
   // Price in ARCHETYPES_STRIPE_PRICE_ID, if set — keep both in sync).
-  priceCents: 2700,
-  compareAtCents: 4700,
+  priceCents: 3900,
   pages: 180,
   refundDays: 30,
 };
@@ -22,14 +21,12 @@ export function usd(cents: number) {
 
 export type FamilyId = "sovereign" | "enchantress" | "mystic" | "sage" | "freespirit";
 
-export type Archetype = { name: string; gift: string; shadow: string };
-
 export type Family = {
   id: FamilyId;
   name: string;
   essence: string;
   description: string;
-  archetypes: Archetype[];
+  archetypes: string[];
 };
 
 export const families: Family[] = [
@@ -40,12 +37,12 @@ export const families: Family[] = [
     description:
       "You were born to lead. Sovereign women command a room without raising their voice, protect what they love, and build things that last.",
     archetypes: [
-      { name: "The Queen", gift: "Natural authority and grace under pressure", shadow: "Control that leaves no room for others" },
-      { name: "The Empress", gift: "Abundance, beauty, and the power to build an empire", shadow: "Measuring worth by status" },
-      { name: "The Huntress", gift: "Focus, independence, and relentless pursuit", shadow: "Isolation in the name of self-reliance" },
-      { name: "The Warrior", gift: "Courage to fight for herself and others", shadow: "Treating every situation as a battle" },
-      { name: "The Strategist", gift: "Seeing ten moves ahead", shadow: "Keeping her heart behind a plan" },
-      { name: "The Matriarch", gift: "Holding families and communities together", shadow: "Carrying everyone but herself" },
+      "The Queen",
+      "The Empress",
+      "The Huntress",
+      "The Warrior",
+      "The Strategist",
+      "The Matriarch",
     ],
   },
   {
@@ -55,12 +52,12 @@ export const families: Family[] = [
     description:
       "You draw people in. Enchantresses understand attraction, emotion, and the quiet power of being fully present in their own body.",
     archetypes: [
-      { name: "The Siren", gift: "Irresistible magnetism", shadow: "Confusing attention with love" },
-      { name: "The Muse", gift: "Inspiring greatness in everyone around her", shadow: "Living through other people's creations" },
-      { name: "The Femme Fatale", gift: "Mystery and total self-possession", shadow: "Using distance as armor" },
-      { name: "The Lover", gift: "Passion, sensuality, and deep devotion", shadow: "Losing herself in another person" },
-      { name: "The Coquette", gift: "Playful charm that lights up a room", shadow: "Never letting anyone see her depth" },
-      { name: "The Star", gift: "Radiance, confidence, and stage presence", shadow: "Needing the spotlight to feel real" },
+      "The Siren",
+      "The Muse",
+      "The Femme Fatale",
+      "The Lover",
+      "The Coquette",
+      "The Star",
     ],
   },
   {
@@ -70,12 +67,12 @@ export const families: Family[] = [
     description:
       "You feel what others miss. Mystic women trust their inner knowing, read energy instantly, and transform pain into wisdom.",
     archetypes: [
-      { name: "The Priestess", gift: "Sacred intuition and inner stillness", shadow: "Withdrawing from the world" },
-      { name: "The Oracle", gift: "Reading people and patterns before they surface", shadow: "Doubting what she already knows" },
-      { name: "The Alchemist", gift: "Turning hardship into power", shadow: "Seeking chaos to feel alive" },
-      { name: "The Dreamer", gift: "Imagination without limits", shadow: "Escaping instead of acting" },
-      { name: "The Healer", gift: "Restoring others with her presence", shadow: "Absorbing pain that isn't hers" },
-      { name: "The Phoenix", gift: "Rising stronger from every ending", shadow: "Burning down what could be repaired" },
+      "The Priestess",
+      "The Oracle",
+      "The Alchemist",
+      "The Dreamer",
+      "The Healer",
+      "The Phoenix",
     ],
   },
   {
@@ -85,12 +82,12 @@ export const families: Family[] = [
     description:
       "You see the bigger picture. Sage women are guided by curiosity and clarity — they create, teach, and change how others think.",
     archetypes: [
-      { name: "The Sage", gift: "Wisdom earned through experience", shadow: "Hiding feelings behind analysis" },
-      { name: "The Scholar", gift: "A brilliant, endlessly curious mind", shadow: "Waiting to know everything before living" },
-      { name: "The Visionary", gift: "Seeing the future before it exists", shadow: "Impatience with the present" },
-      { name: "The Artist", gift: "Turning emotion into beauty", shadow: "Perfectionism that blocks creation" },
-      { name: "The Diplomat", gift: "Bringing harmony to any conflict", shadow: "Silencing her own needs to keep the peace" },
-      { name: "The Mentor", gift: "Unlocking the potential in others", shadow: "Forgetting her own growth" },
+      "The Sage",
+      "The Scholar",
+      "The Visionary",
+      "The Artist",
+      "The Diplomat",
+      "The Mentor",
     ],
   },
   {
@@ -100,12 +97,12 @@ export const families: Family[] = [
     description:
       "You refuse to be boxed in. Free Spirits live by their own rules, chase adventure, and remind everyone what it means to be truly alive.",
     archetypes: [
-      { name: "The Rebel", gift: "Breaking rules that deserve to be broken", shadow: "Rebelling even against what she wants" },
-      { name: "The Wild Woman", gift: "Raw instinct and untamed confidence", shadow: "Running from commitment" },
-      { name: "The Explorer", gift: "Courage to go where no one has gone", shadow: "Restlessness that never lets her land" },
-      { name: "The Maiden", gift: "Openness, optimism, and fresh beginnings", shadow: "Waiting to be chosen" },
-      { name: "The Playmate", gift: "Joy, humor, and lightness", shadow: "Avoiding anything serious" },
-      { name: "The Nomad", gift: "Feeling at home anywhere", shadow: "Never letting roots grow" },
+      "The Rebel",
+      "The Wild Woman",
+      "The Explorer",
+      "The Maiden",
+      "The Playmate",
+      "The Nomad",
     ],
   },
 ];
@@ -113,49 +110,22 @@ export const families: Family[] = [
 export const archetypeCount = families.reduce((n, f) => n + f.archetypes.length, 0);
 
 export const pillars = [
-  { icon: "crown", title: "30 Archetypes", text: "Every feminine archetype decoded — her gifts, her shadow, her power." },
-  { icon: "lotus", title: "Psychological Insights", text: "Why you love, lead, and react the way you do — explained clearly." },
-  { icon: "diamond", title: "Practical Guidance", text: "Concrete exercises to develop the archetypes you want to embody." },
-  { icon: "heart", title: "A Self-Discovery Test", text: "Find your dominant and secondary archetypes in minutes." },
+  { icon: "crown", title: "30 Archetypes" },
+  { icon: "lotus", title: "Psychological Insights" },
+  { icon: "diamond", title: "Practical Guidance" },
+  { icon: "heart", title: "A Self-Discovery Test" },
 ] as const;
 
-export const method = [
-  { step: "Understand", text: "Identify your dominant archetype and the patterns it creates in love, work, and friendships." },
-  { step: "Embrace", text: "Own your gifts — and meet your shadow side with compassion instead of shame." },
-  { step: "Develop", text: "Activate the archetypes you're missing with guided practices and daily rituals." },
-  { step: "Become", text: "Step into the full, magnetic, unapologetic version of yourself." },
-];
-
-export const insideEachProfile = [
-  "Her core gift and the energy she radiates",
-  "Her shadow side — and how it quietly sabotages her",
-  "How she loves, and the partners she attracts",
-  "Her strengths at work and in leadership",
-  "The archetypes she clashes with — and the ones that complete her",
-  "Rituals and journaling prompts to awaken her energy",
-];
-
 export const included = [
-  "The complete 30 Archetypes guide (PDF, 180+ pages)",
-  "The full Self-Discovery Test with scoring key",
-  "Your dominant + secondary archetype profile",
-  "30 shadow-work journaling prompts",
-  "Compatibility map: how archetypes attract and clash",
-  "Lifetime access — read on phone, tablet, or computer",
+  "The complete guide (PDF)",
+  "The Self-Discovery Test",
+  "Instant download, lifetime access",
 ];
 
 export const faqs = [
   {
     q: "Is this a physical book?",
     a: "No — it's a digital guide (PDF). You get instant access right after checkout, and you can read it on any phone, tablet, or computer. Nothing is shipped.",
-  },
-  {
-    q: "How do I receive it?",
-    a: "As soon as your payment is confirmed, you're taken to a download page. You'll also get a receipt by email from our payment processor, Stripe.",
-  },
-  {
-    q: "Is the free quiz the same as the test in the guide?",
-    a: "The free quiz reveals your archetype family (1 of 5). The full Self-Discovery Test inside the guide pinpoints your exact dominant and secondary archetypes out of all 30.",
   },
   {
     q: "What if it's not for me?",

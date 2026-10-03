@@ -29,14 +29,9 @@ export default function QuizClient() {
           </p>
         )}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-10 text-left">
-          {family.archetypes.map((a) => (
-            <div key={a.name} className="card p-4">
-              <div className="font-display font-semibold">{a.name}</div>
-              <p className="text-xs text-muted mt-1.5">
-                <span className="text-gold">Gift:</span> {a.gift}
-              </p>
-            </div>
+        <div className="flex flex-wrap justify-center gap-2 mt-8">
+          {family.archetypes.map((name) => (
+            <span key={name} className="card px-4 py-2 font-display text-sm">{name}</span>
           ))}
         </div>
 
@@ -46,11 +41,10 @@ export default function QuizClient() {
             <span className="text-rose">Find out which.</span>
           </h2>
           <p className="text-muted mt-4 max-w-lg mx-auto text-sm leading-relaxed">
-            The full Self-Discovery Test inside the guide reveals your exact dominant and secondary archetypes —
-            plus your shadow, your love patterns, and how to develop the energies you&apos;re missing.
+            The Self-Discovery Test inside the guide reveals your exact archetype out of all 30.
           </p>
           <div className="max-w-sm mx-auto mt-8">
-            <BuyButton label={`Unlock my full profile · ${usd(store.priceCents)}`} className="w-full py-4 text-sm" />
+            <BuyButton label={`Get the guide · ${usd(store.priceCents)}`} className="w-full py-4 text-sm" />
           </div>
           <p className="text-xs text-muted mt-3">Instant PDF download · {store.refundDays}-day money-back guarantee</p>
         </div>
