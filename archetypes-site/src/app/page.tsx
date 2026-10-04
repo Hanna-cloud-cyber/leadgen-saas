@@ -56,10 +56,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reader reviews */}
-      <section id="reviews" className="max-w-5xl mx-auto px-4 sm:px-6 py-20 scroll-mt-24">
-        {reviews.length > 0 ? (
-          <>
+      {/* Reader reviews: shown once real reviews are added to data.ts */}
+      {reviews.length > 0 && (
+        <section id="reviews" className="max-w-5xl mx-auto px-4 sm:px-6 py-20 scroll-mt-24">
           <div className="text-center">
             <p className="eyebrow">Reader stories</p>
             <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3">
@@ -102,28 +101,11 @@ export default function Home() {
               </figure>
             ))}
           </div>
-          </>
-        ) : (
-          <div className="frame-gold rounded-2xl p-8 sm:p-10 text-center max-w-xl mx-auto">
-            <p className="eyebrow">The Divine Women Club</p>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-3">
-              <span className="text-gold">Join </span>
-              <span className="text-rose">the Club</span>
-            </h2>
-            <p className="text-sm text-muted mt-4 leading-relaxed">
-              If you&apos;d like to join the club of women who embody the Divine Woman, to transcend your
-              life and grow into new opportunities around the world, send me an email.
-            </p>
-            <a href={`mailto:${store.supportEmail}?subject=${encodeURIComponent("Join the Divine Women Club")}`} className="btn-gold px-6 py-3.5 text-xs mt-6">
-              Email me
-            </a>
-            <p className="text-sm text-cream mt-4 select-all">{store.supportEmail}</p>
-          </div>
-        )}
-      </section>
+        </section>
+      )}
 
       {/* FAQ */}
-      <section id="faq" className="max-w-2xl mx-auto px-4 sm:px-6 pb-16 scroll-mt-24">
+      <section id="faq" className="max-w-2xl mx-auto px-4 sm:px-6 pt-20 pb-16 scroll-mt-24">
         <h2 className="font-display text-2xl font-bold text-center text-gold">FAQ</h2>
         <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
           {faqs.map((f) => (
