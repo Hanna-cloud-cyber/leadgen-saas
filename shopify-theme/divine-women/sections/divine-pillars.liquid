@@ -1,0 +1,37 @@
+<section class="dw-wrap">
+  <div class="dw-pillars">
+    {%- for block in section.blocks -%}
+      <div class="dw-pillar" {{ block.shopify_attributes }}>
+        {% render 'divine-icon', name: block.settings.icon, size: 52 %}
+        <h3>{{ block.settings.title | escape }}</h3>
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.motto != blank -%}
+    <div class="dw-motto dw-pill">{{ section.settings.motto | escape }}</div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Pillars",
+  "settings": [
+    { "type": "text", "id": "motto", "label": "Pink banner", "default": "UNDERSTAND · EMBRACE · DEVELOP · BECOME" }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "crown", "options": [
+          { "value": "crown", "label": "Crown" }, { "value": "lotus", "label": "Lotus" },
+          { "value": "diamond", "label": "Diamond" }, { "value": "heart", "label": "Heart" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "30 Archetypes" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "Pillars" }]
+}
+{% endschema %}

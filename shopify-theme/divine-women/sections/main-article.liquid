@@ -1,0 +1,7 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">{{ article.title | escape }}</h1>
+    <div class="dw-rte">{{ article.content }}</div>
+  </div>
+</section>
+{% schema %}{ "name": "Article" }{% endschema %}

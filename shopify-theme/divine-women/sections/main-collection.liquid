@@ -1,0 +1,17 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">{{ collection.title | escape }}</h1>
+    {%- paginate collection.products by 24 -%}
+      {%- for product in collection.products -%}
+        <div class="dw-cart-line">
+          {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 160 | image_tag: alt: product.title }}{%- endif -%}
+          <div class="dw-cart-line__info"><a href="{{ product.url }}">{{ product.title | escape }}</a></div>
+          <div>{{ product.price | money_without_trailing_zeros }}</div>
+        </div>
+      {%- else -%}
+        <p class="dw-center dw-muted">No products yet.</p>
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+{% schema %}{ "name": "Collection" }{% endschema %}

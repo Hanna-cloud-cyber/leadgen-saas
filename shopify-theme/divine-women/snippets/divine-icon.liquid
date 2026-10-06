@@ -1,0 +1,21 @@
+{%- comment -%} Thin gold line icons. Usage: {% render 'divine-icon', name: 'crown', size: 52 %} {%- endcomment -%}
+{%- assign s = size | default: 48 -%}
+<svg width="{{ s }}" height="{{ s }}" viewBox="0 0 48 48" aria-hidden="true">
+  <defs>
+    <linearGradient id="dwGold-{{ name }}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf2d9"/><stop offset="60%" stop-color="#ebc697"/><stop offset="100%" stop-color="#c4955d"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#dwGold-{{ name }})" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+  {%- case name -%}
+    {%- when 'crown' -%}
+      <path d="M8 36h32M9 32l-3-18 11 9 7-13 7 13 11-9-3 18z"/><circle cx="6" cy="13" r="1.6"/><circle cx="24" cy="9" r="1.6"/><circle cx="42" cy="13" r="1.6"/>
+    {%- when 'lotus' -%}
+      <path d="M24 36c-5-4-6-11 0-20 6 9 5 16 0 20z"/><path d="M24 36c-7 0-13-5-14-13 6 0 11 4 14 13z"/><path d="M24 36c7 0 13-5 14-13-6 0-11 4-14 13z"/><path d="M24 36c-9 2-16-1-20-6 6-2 13 0 20 6zM24 36c9 2 16-1 20-6-6-2-13 0-20 6z"/>
+    {%- when 'diamond' -%}
+      <path d="M13 10h22l8 10-19 20L5 20z"/><path d="M5 20h38M18 10l-4 10 10 20 10-20-4-10M14 20l10-10 10 10"/>
+    {%- else -%}
+      <path d="M24 40S6 29 6 17c0-6 4.5-10 9.5-10 4 0 7 2.5 8.5 5.5C25.5 9.5 28.5 7 32.5 7 37.5 7 42 11 42 17c0 12-18 23-18 23z"/>
+  {%- endcase -%}
+  </g>
+</svg>

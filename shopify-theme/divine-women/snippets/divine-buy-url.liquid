@@ -1,0 +1,9 @@
+{%- comment -%}
+  Outputs a cart permalink that sends the buyer straight to Shopify checkout
+  with 1 copy of the product. Usage: {% render 'divine-buy-url', product: product %}
+{%- endcomment -%}
+{%- if product and product.selected_or_first_available_variant -%}
+  {{- routes.cart_url }}/{{ product.selected_or_first_available_variant.id }}:1
+{%- else -%}
+  {{- routes.all_products_collection_url -}}
+{%- endif -%}

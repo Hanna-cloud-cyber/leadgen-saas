@@ -1,0 +1,17 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">Search</h1>
+    <form action="{{ routes.search_url }}" method="get" class="dw-form">
+      <label class="dw-sr-only" for="SearchInput">Search</label>
+      <input class="dw-input" id="SearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search">
+    </form>
+    {%- if search.performed -%}
+      {%- for item in search.results -%}
+        <div class="dw-cart-line"><a href="{{ item.url }}">{{ item.title | escape }}</a></div>
+      {%- else -%}
+        <p class="dw-center dw-muted" style="margin-top:24px">No results.</p>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}{ "name": "Search" }{% endschema %}

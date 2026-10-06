@@ -1,0 +1,22 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gift card · {{ shop.name }}</title>
+    {{ 'divine.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+  </head>
+  <body>
+    <main class="dw-page dw-center">
+      <div class="dw-narrow">
+        <h1 class="dw-serif dw-gold">{{ gift_card.balance | money }}</h1>
+        <p class="dw-muted">Your gift card code</p>
+        <p style="font-size:20px;letter-spacing:.1em">{{ gift_card.code | format_code }}</p>
+        {%- if gift_card.pass_url -%}<p><a href="{{ gift_card.pass_url }}">Add to Apple Wallet</a></p>{%- endif -%}
+        <div style="max-width:20rem;margin:24px auto 0"><a href="{{ shop.url }}" class="dw-btn dw-btn--gold">Shop now</a></div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">Collections</h1>
+    {%- for collection in collections -%}
+      <div class="dw-cart-line"><a href="{{ collection.url }}">{{ collection.title | escape }}</a></div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}{ "name": "Collections list" }{% endschema %}

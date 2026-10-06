@@ -1,0 +1,11 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">{{ blog.title | escape }}</h1>
+    {%- paginate blog.articles by 12 -%}
+      {%- for article in blog.articles -%}
+        <div class="dw-cart-line"><a href="{{ article.url }}">{{ article.title | escape }}</a></div>
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+{% schema %}{ "name": "Blog" }{% endschema %}

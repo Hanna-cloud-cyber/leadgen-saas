@@ -1,0 +1,20 @@
+{%- capture buy_url -%}{% render 'divine-buy-url', product: product %}{%- endcapture -%}
+<section class="dw-hero">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold" style="font-size:32px;margin:0 0 24px">{{ product.title | escape }}</h1>
+    {%- if product.featured_image -%}
+      <div class="dw-book"><div class="dw-book__glow"></div><div class="dw-book__body"><div class="dw-book__pages"></div>
+        <div class="dw-book__cover">{{ product.featured_image | image_url: width: 900 | image_tag: alt: product.title }}</div>
+      </div></div>
+    {%- endif -%}
+    <div class="dw-price">
+      <div class="dw-price__row">
+        <span class="dw-price__now dw-gold">{{ product.price | money_without_trailing_zeros }}</span>
+        {%- if product.compare_at_price > product.price -%}<s class="dw-price__was">{{ product.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+      </div>
+      <div class="dw-ctas"><a href="{{ buy_url | strip }}" class="dw-btn dw-btn--gold">Buy now</a></div>
+    </div>
+    {%- if product.description != blank -%}<div class="dw-rte" style="margin-top:40px;text-align:left">{{ product.description }}</div>{%- endif -%}
+  </div>
+</section>
+{% schema %}{ "name": "Product" }{% endschema %}

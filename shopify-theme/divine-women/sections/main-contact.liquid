@@ -1,0 +1,20 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">{{ page.title | escape }}</h1>
+    {%- if page.content != blank -%}<div class="dw-rte dw-center">{{ page.content }}</div>{%- endif -%}
+    {%- form 'contact', class: 'dw-form', style: 'margin-top:32px' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="dw-center" style="color:var(--gold)">Thank you! We'll get back to you within one business day.</p>
+      {%- endif -%}
+      {%- if form.errors -%}<div class="dw-center" style="color:var(--rose)">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <label class="dw-sr-only" for="ContactName">Name</label>
+      <input class="dw-input" id="ContactName" type="text" name="contact[name]" placeholder="Name" autocomplete="name">
+      <label class="dw-sr-only" for="ContactEmail">Email</label>
+      <input class="dw-input" id="ContactEmail" type="email" name="contact[email]" placeholder="Email" autocomplete="email" required>
+      <label class="dw-sr-only" for="ContactBody">Message</label>
+      <textarea class="dw-input" id="ContactBody" name="contact[body]" rows="6" placeholder="Message" required></textarea>
+      <button type="submit" class="dw-btn dw-btn--gold">Send</button>
+    {%- endform -%}
+  </div>
+</section>
+{% schema %}{ "name": "Contact form" }{% endschema %}

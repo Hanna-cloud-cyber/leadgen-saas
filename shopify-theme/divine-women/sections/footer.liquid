@@ -1,0 +1,41 @@
+<footer class="dw-footer">
+  <div class="dw-wrap">
+    <div class="dw-footer__grid">
+      <div>
+        <div class="dw-logo"><span class="dw-gold">DIVINE </span><span class="dw-rose">WOMEN</span></div>
+        <p class="dw-muted" style="line-height:1.7;margin-top:12px">{{ section.settings.about | escape }}</p>
+      </div>
+      <div>
+        <p class="dw-eyebrow">Explore</p>
+        <ul>
+          <li><a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}">Free Archetype Quiz</a></li>
+          <li><a href="{{ routes.root_url }}#faq">FAQ</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="dw-eyebrow">Legal</p>
+        <ul>
+          {%- for policy in shop.policies -%}
+            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+    <div class="dw-footer__fine">
+      <p>{{ section.settings.disclaimer | escape }}</p>
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved. Prices in USD.</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "about", "label": "About", "default": "The Hidden Map of Feminine Dynamics. A digital guide to understanding, embracing, and developing your feminine power." },
+    { "type": "url", "id": "quiz_url", "label": "Free quiz page" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer", "default": "This guide is for educational and self-reflection purposes only and is not a substitute for professional psychological, medical, or relationship advice." }
+  ]
+}
+{% endschema %}

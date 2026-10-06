@@ -1,0 +1,95 @@
+{
+  "sections": {
+    "hero": {
+      "type": "divine-hero",
+      "settings": {
+        "quiz_url": "/pages/quiz"
+      }
+    },
+    "pillars": {
+      "type": "divine-pillars",
+      "blocks": {
+        "p0": {
+          "type": "pillar",
+          "settings": {
+            "icon": "crown",
+            "title": "30 Archetypes"
+          }
+        },
+        "p1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "lotus",
+            "title": "Psychological Insights"
+          }
+        },
+        "p2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "diamond",
+            "title": "Practical Guidance"
+          }
+        },
+        "p3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "heart",
+            "title": "A Self-Discovery Test"
+          }
+        }
+      },
+      "block_order": [
+        "p0",
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {}
+    },
+    "faq": {
+      "type": "divine-faq",
+      "blocks": {
+        "q0": {
+          "type": "question",
+          "settings": {
+            "question": "Is this a physical book?",
+            "answer": "No. It's a digital guide (PDF). You get instant access right after checkout, and you can read it on any phone, tablet, or computer. Nothing is shipped."
+          }
+        },
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "What if it's not for me?",
+            "answer": "You're covered by our 30-day money-back guarantee. Email us within 30 days of purchase and we'll refund you in full, no questions asked."
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Is this therapy or psychological treatment?",
+            "answer": "No. The guide is an educational and self-reflection tool inspired by archetypal psychology. It is not a substitute for professional mental health care."
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Is checkout secure?",
+            "answer": "Yes. Checkout is handled by Shopify, with encrypted card payments, Apple Pay, Google Pay and Shop Pay. We never see or store your card details."
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "pillars",
+    "faq"
+  ]
+}

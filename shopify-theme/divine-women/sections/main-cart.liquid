@@ -1,0 +1,28 @@
+<section class="dw-page">
+  <div class="dw-narrow">
+    <h1 class="dw-serif dw-gold">{{ 'cart.title' | t }}</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post">
+        {%- for item in cart.items -%}
+          <div class="dw-cart-line">
+            {%- if item.image -%}{{ item.image | image_url: width: 160 | image_tag: alt: item.title }}{%- endif -%}
+            <div class="dw-cart-line__info">
+              <div>{{ item.product.title | escape }}</div>
+              <a href="{{ item.url_to_remove }}" class="dw-small">{{ 'cart.remove' | t }}</a>
+            </div>
+            <input class="dw-input" style="width:72px" type="number" min="0" name="updates[]" value="{{ item.quantity }}" aria-label="Quantity">
+            <div>{{ item.final_line_price | money }}</div>
+          </div>
+        {%- endfor -%}
+        <p class="dw-center" style="margin-top:24px">{{ 'cart.subtotal' | t }}: <strong>{{ cart.total_price | money }}</strong></p>
+        <div style="max-width:24rem;margin:16px auto 0">
+          <button type="submit" name="checkout" class="dw-btn dw-btn--gold">{{ 'cart.checkout' | t }}</button>
+        </div>
+      </form>
+    {%- else -%}
+      <p class="dw-center dw-muted">{{ 'cart.empty' | t }}</p>
+      <div style="max-width:20rem;margin:24px auto 0"><a href="{{ routes.root_url }}" class="dw-btn dw-btn--ghost">Back to home</a></div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}{ "name": "Cart" }{% endschema %}
