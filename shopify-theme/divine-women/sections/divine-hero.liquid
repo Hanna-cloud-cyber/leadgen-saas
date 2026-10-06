@@ -51,9 +51,6 @@
         {%- else -%}
           <p class="dw-small">Choose your product in Customize → Hero.</p>
         {%- endif -%}
-        {%- if section.settings.quiz_url != blank -%}
-          <a href="{{ section.settings.quiz_url }}" class="dw-btn dw-btn--ghost">Free quiz</a>
-        {%- endif -%}
       </div>
       <p class="dw-small">{{ section.settings.guarantee | escape }}</p>
     </div>
@@ -83,7 +80,6 @@
     { "type": "text", "id": "promo_label", "label": "Promo label", "default": "Fall Special" },
     { "type": "text", "id": "price_note", "label": "Under the price", "default": "One-time payment · Instant PDF download" },
     { "type": "text", "id": "button_label", "label": "Buy button", "default": "Claim Your Golden Ticket" },
-    { "type": "url", "id": "quiz_url", "label": "Free quiz page" },
     { "type": "text", "id": "guarantee", "label": "Under the buttons", "default": "Secure checkout · 30-day money-back guarantee" },
     { "type": "text", "id": "tagline_1", "label": "Tagline line 1", "default": "Discover your archetype" },
     { "type": "text", "id": "tagline_2", "label": "Tagline line 2", "default": "and unlock your feminine power" }

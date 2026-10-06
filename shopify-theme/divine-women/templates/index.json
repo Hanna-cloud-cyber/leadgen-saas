@@ -2,9 +2,7 @@
   "sections": {
     "hero": {
       "type": "divine-hero",
-      "settings": {
-        "quiz_url": "/pages/quiz"
-      }
+      "settings": {}
     },
     "pillars": {
       "type": "divine-pillars",

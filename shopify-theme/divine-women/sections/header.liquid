@@ -4,7 +4,6 @@
       <span class="dw-gold">{{ section.settings.logo_gold | escape }} </span><span class="dw-rose">{{ section.settings.logo_rose | escape }}</span>
     </a>
     <nav class="dw-nav" aria-label="Main">
-      <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}">Free Quiz</a>
       <a href="{{ routes.root_url }}#faq">FAQ</a>
     </nav>
   </div>
@@ -15,8 +14,7 @@
   "name": "Header",
   "settings": [
     { "type": "text", "id": "logo_gold", "label": "Logo (gold part)", "default": "DIVINE" },
-    { "type": "text", "id": "logo_rose", "label": "Logo (rose part)", "default": "WOMEN" },
-    { "type": "url", "id": "quiz_url", "label": "Free quiz page" }
+    { "type": "text", "id": "logo_rose", "label": "Logo (rose part)", "default": "WOMEN" }
   ]
 }
 {% endschema %}

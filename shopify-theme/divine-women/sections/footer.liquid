@@ -8,7 +8,6 @@
       <div>
         <p class="dw-eyebrow">Explore</p>
         <ul>
-          <li><a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}">Free Archetype Quiz</a></li>
           <li><a href="{{ routes.root_url }}#faq">FAQ</a></li>
           <li><a href="/pages/contact">Contact</a></li>
         </ul>
@@ -34,7 +33,6 @@
   "name": "Footer",
   "settings": [
     { "type": "textarea", "id": "about", "label": "About", "default": "The Hidden Map of Feminine Dynamics. A digital guide to understanding, embracing, and developing your feminine power." },
-    { "type": "url", "id": "quiz_url", "label": "Free quiz page" },
     { "type": "textarea", "id": "disclaimer", "label": "Disclaimer", "default": "This guide is for educational and self-reflection purposes only and is not a substitute for professional psychological, medical, or relationship advice." }
   ]
 }
